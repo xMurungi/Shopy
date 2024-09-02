@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -20,6 +21,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Shopy"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 include(":auth:data")
 include(":auth:domain")
@@ -33,24 +35,24 @@ include(":search:data")
 include(":search:presentation")
 include(":search:domain")
 include(":cart:data")
-include(":cart:presntation")
+include(":cart:presentation")
 include(":cart:domain")
 include(":checkout:data")
 include(":checkout:payment")
-include(":checkout:presntation")
+include(":checkout:presentation")
 include(":checkout:domain")
+include(":category:presentation")
 include(":wishlist:data")
-include(":wishlist:presntation")
+include(":wishlist:presentation")
 include(":wishlist:domain")
 include(":category:data")
-include(":category:presntation")
 include(":category:domain")
 include(":profile:data")
-include(":profile:presntaion")
+include(":profile:presentation")
 include(":profile:domain")
 include(":order:data")
-include(":order:prentation")
+include(":order:presentation")
 include(":order:domain")
 include(":product:data")
-include(":product:prenstation")
 include(":product:domain")
+include(":product:presentation")

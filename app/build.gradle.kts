@@ -1,19 +1,12 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.shopy.android.application)
 }
 
 android {
     namespace = "com.ag_apps.shopy"
-    compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.ag_apps.shopy"
-        minSdk = 26
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -28,13 +21,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true
@@ -86,5 +72,42 @@ dependencies {
     // Timber
     implementation(libs.timber)
 
+    implementation(projects.core.network)
+    implementation(projects.core.domain)
+    implementation(projects.core.data)
+    implementation(projects.core.presentation)
+    implementation(projects.core.presentation.designsystem)
+    implementation(projects.core.presentation.ui)
 
+    implementation(projects.auth.domain)
+    implementation(projects.auth.data)
+    implementation(projects.auth.presentation)
+
+    implementation(projects.product.domain)
+    implementation(projects.product.data)
+    implementation(projects.product.presentation)
+
+    implementation(projects.category.domain)
+    implementation(projects.category.data)
+    implementation(projects.category.presentation)
+
+    implementation(projects.search.domain)
+    implementation(projects.search.data)
+    implementation(projects.search.presentation)
+
+    implementation(projects.cart.domain)
+    implementation(projects.cart.data)
+    implementation(projects.cart.presentation)
+
+    implementation(projects.checkout.domain)
+    implementation(projects.checkout.data)
+    implementation(projects.checkout.presentation)
+
+    implementation(projects.profile.domain)
+    implementation(projects.profile.data)
+    implementation(projects.profile.presentation)
+
+    implementation(projects.order.domain)
+    implementation(projects.order.data)
+    implementation(projects.order.presentation)
 }

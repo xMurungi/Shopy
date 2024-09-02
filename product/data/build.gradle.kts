@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.androidx.work)
-    implementation(libs.kotlinx.serialization.json)
+    implementation(projects.core.domain)
+    implementation(projects.core.network)
+    implementation(projects.product.domain)
 }
