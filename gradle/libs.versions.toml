@@ -108,5 +108,6 @@ room = { id = "androidx.room", version.ref = "room" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
 
 shopy-android-application = { id = "shopy.android.application", version = "unspecified" }
+shopy-android-application-compose = { id = "shopy.android.application.compose", version = "unspecified" }
 
 [bundles]
