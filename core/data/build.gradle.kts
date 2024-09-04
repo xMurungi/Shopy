@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.shopy.android.library)
+    alias(libs.plugins.shopy.jvm.ktor)
 }
 
 android {
@@ -11,5 +12,4 @@ dependencies {
     implementation(libs.koin.android.workmanager)
 
     implementation(projects.core.domain)
-    implementation(projects.core.network)
 }
