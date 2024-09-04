@@ -23,6 +23,7 @@ internal fun Project.configureBuildTypes(
         }
 
         val baseUrl = gradleLocalProperties(rootDir).getProperty("BASE_URL")
+
         when (extensionType) {
             ExtensionType.APPLICATION -> {
                 extensions.configure<ApplicationExtension>() {

@@ -22,5 +22,9 @@ gradlePlugin {
             id = "shopy.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
+        register("androidLibrary") {
+            id = "shopy.android.library"
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
     }
 }
