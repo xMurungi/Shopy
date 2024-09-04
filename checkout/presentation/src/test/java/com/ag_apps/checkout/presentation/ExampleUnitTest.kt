@@ -1,4 +1,4 @@
-package com.ag_apps.order.prentation
+package com.ag_apps.checkout.presentation
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.ag_apps.wishlist.presntation
+package com.ag_apps.profile.presentation
 
 import org.junit.Test
 

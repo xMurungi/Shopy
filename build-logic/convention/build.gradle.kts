@@ -32,5 +32,10 @@ gradlePlugin {
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
 
+        register("androidFeatureUi") {
+            id = "shopy.android.feature.ui"
+            implementationClass = "AndroidFeatureUiConventionPlugin"
+        }
+
     }
 }

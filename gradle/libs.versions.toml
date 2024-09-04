@@ -111,5 +111,30 @@ shopy-android-application = { id = "shopy.android.application", version = "unspe
 shopy-android-application-compose = { id = "shopy.android.application.compose", version = "unspecified" }
 shopy-android-library = { id = "shopy.android.library", version = "unspecified" }
 shopy-android-library-compose = { id = "shopy.android.library.compose", version = "unspecified" }
+shopy-android-feature-ui = { id = "shopy.android.feature.ui", version = "unspecified" }
 
 [bundles]
+compose = [
+    "androidx-activity-compose",
+    "androidx-lifecycle-runtime-compose",
+    "androidx-lifecycle-viewmodel-compose",
+    "androidx-compose-material3",
+    "androidx-compose-ui",
+    "androidx-compose-ui-graphics",
+    "androidx-compose-ui-tooling-preview",
+]
+compose-debug = [
+    "androidx-compose-ui-tooling",
+    "androidx-compose-ui-test-manifest",
+]
+koin = [
+    "koin-core",
+    "koin-android",
+    "koin-android-workmanager"
+]
+koin-compose = [
+    "koin-core",
+    "koin-android",
+    "koin-android-workmanager",
+    "koin-androidx-compose"
+]

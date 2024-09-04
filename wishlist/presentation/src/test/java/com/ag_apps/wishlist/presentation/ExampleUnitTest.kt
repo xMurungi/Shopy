@@ -1,4 +1,4 @@
-package com.ag_apps.checkout.presntation
+package com.ag_apps.wishlist.presentation
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.ag_apps.wishlist.presntation
+package com.ag_apps.checkout.presentation
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.ag_apps.wishlist.presntation.test", appContext.packageName)
+        assertEquals("com.ag_apps.checkout.presntation.test", appContext.packageName)
     }
 }
