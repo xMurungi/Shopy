@@ -110,5 +110,6 @@ org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org
 shopy-android-application = { id = "shopy.android.application", version = "unspecified" }
 shopy-android-application-compose = { id = "shopy.android.application.compose", version = "unspecified" }
 shopy-android-library = { id = "shopy.android.library", version = "unspecified" }
+shopy-android-library-compose = { id = "shopy.android.library.compose", version = "unspecified" }
 
 [bundles]
