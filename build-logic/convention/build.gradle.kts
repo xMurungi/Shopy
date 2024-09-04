@@ -37,5 +37,15 @@ gradlePlugin {
             implementationClass = "AndroidFeatureUiConventionPlugin"
         }
 
+        register("androidRoom") {
+            id = "shopy.android.room"
+            implementationClass = "AndroidRoomConventionPlugin"
+        }
+
+        register("jvmLibrary") {
+            id = "shopy.jvm.library"
+            implementationClass = "JvmLibraryConventionPlugin"
+        }
+
     }
 }

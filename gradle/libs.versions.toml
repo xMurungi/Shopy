@@ -112,6 +112,8 @@ shopy-android-application-compose = { id = "shopy.android.application.compose", 
 shopy-android-library = { id = "shopy.android.library", version = "unspecified" }
 shopy-android-library-compose = { id = "shopy.android.library.compose", version = "unspecified" }
 shopy-android-feature-ui = { id = "shopy.android.feature.ui", version = "unspecified" }
+shopy-android-room = { id = "shopy.android.room", version = "unspecified" }
+shopy-jvm-library = { id = "shopy.jvm.library", version = "unspecified" }
 
 [bundles]
 compose = [
