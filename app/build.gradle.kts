@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.shopy.android.application.compose)
+    alias(libs.plugins.shopy.jvm.ktor)
 }
 
 android {

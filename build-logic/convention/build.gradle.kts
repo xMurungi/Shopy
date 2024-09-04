@@ -47,5 +47,10 @@ gradlePlugin {
             implementationClass = "JvmLibraryConventionPlugin"
         }
 
+        register("jvmKtor") {
+            id = "shopy.jvm.ktor"
+            implementationClass = "JvmKtorConventionPlugin"
+        }
+
     }
 }
