@@ -1,4 +1,4 @@
-package com.ag_apps.shopy.ui.theme
+package com.ag_apps.core.presentation.designsystem
 
 import androidx.compose.ui.graphics.Color
 
