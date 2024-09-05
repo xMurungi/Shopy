@@ -14,11 +14,13 @@ fun Scaffold(
     modifier: Modifier = Modifier,
     withGradient: Boolean = true,
     topAppBar: @Composable () -> Unit = {},
+    bottomAppBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
         topBar = topAppBar,
+        bottomBar = bottomAppBar,
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = FabPosition.Center,
         modifier = modifier

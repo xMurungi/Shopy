@@ -51,7 +51,7 @@ fun Toolbar(
         modifier = modifier,
         scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background
+            containerColor = Color.Transparent
         ),
         title = {
             Text(
@@ -101,8 +101,8 @@ fun LargeToolbar(
         modifier = modifier,
         scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.largeTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background,
-            scrolledContainerColor = MaterialTheme.colorScheme.background
+            containerColor = Color.Transparent,
+            scrolledContainerColor = Color.Transparent
         ),
         title = {
             Text(

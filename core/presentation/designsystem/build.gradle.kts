@@ -12,6 +12,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.navigation.compose)
 
     api(libs.androidx.material.icons.extended)
     api(libs.androidx.compose.material3)
