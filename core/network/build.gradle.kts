@@ -7,7 +7,9 @@ android {
 }
 
 dependencies {
-    implementation(libs.org.mongodb.bson)
+
+    implementation (libs.firebase.auth.ktx)
+    implementation (libs.play.services.auth)
 
     implementation(projects.core.domain)
 }

@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
             ShopyTheme {
                 NavigationRoot(
                     modifier = Modifier,
-                    isLoggedIn = true
+                    isLoggedIn = false
                 )
             }
         }

@@ -56,15 +56,20 @@ val Typography = Typography(
         fontSize = 14.sp,
         lineHeight = 24.sp,
     ),
+    headlineSmall = TextStyle(
+        fontFamily = Poppins,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 28.sp
+    ),
     headlineMedium = TextStyle(
         fontFamily = Poppins,
         fontWeight = FontWeight.SemiBold,
         fontSize = 37.sp
     ),
-    headlineSmall = TextStyle(
+    headlineLarge = TextStyle(
         fontFamily = Poppins,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 28.sp
+        fontSize = 44.sp
     ),
     titleLarge = TextStyle(
         fontFamily = Poppins,

@@ -43,10 +43,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ag_apps.core.presentation.designsystem.R
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
+
 /**
  * @author Ahmed Guedmioui
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PasswordTextField(
     modifier: Modifier = Modifier,
@@ -64,8 +64,7 @@ fun PasswordTextField(
         modifier = modifier
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             if (title != null) {
@@ -89,24 +88,14 @@ fun PasswordTextField(
             ),
             cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
             modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
-                .background(
-                    if (isFocused) {
-                        MaterialTheme.colorScheme.primary.copy(0.05f)
-                    } else {
-                        MaterialTheme.colorScheme.surface
-                    }
-                )
+                .clip(RoundedCornerShape(10.dp))
                 .border(
-                    width = 1.dp,
-                    color = if (isFocused) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        Color.Transparent
-                    },
-                    shape = RoundedCornerShape(16.dp)
+                    width = 1.5.dp,
+                    color = MaterialTheme.colorScheme.primary.copy(0.6f),
+                    shape = RoundedCornerShape(10.dp)
                 )
                 .padding(start = 12.dp)
+                .padding(vertical = 7.dp)
                 .onFocusChanged {
                     isFocused = it.isFocused
                 },
@@ -125,7 +114,7 @@ fun PasswordTextField(
                     Box(
                         modifier = Modifier.weight(1f)
                     ) {
-                        if (textFieldState.text.isEmpty() && !isFocused) {
+                        if (textFieldState.text.isEmpty()) {
                             Text(
                                 text = hint,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
@@ -162,7 +151,6 @@ fun PasswordTextField(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Preview
 @Composable
 private fun PasswordTextFieldPreview() {

@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +25,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.ag_apps.auth.presentation.login.LoginScreenCore
+import com.ag_apps.core.presentation.designsystem.components.Background
+import com.ag_apps.core.presentation.designsystem.components.Button
 import com.ag_apps.core.presentation.designsystem.components.BottomBar
 import com.ag_apps.core.presentation.designsystem.components.Scaffold
 import com.ag_apps.core.presentation.designsystem.components.bottomBarItems
@@ -39,12 +42,14 @@ fun NavigationRoot(
     isLoggedIn: Boolean,
 ) {
 
+    Background()
+
     val navController = rememberNavController()
 
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = if (isLoggedIn) Screen.Main else Screen.Login,
+        startDestination = if (isLoggedIn) Screen.Main else Screen.Main,
         enterTransition = { slideInHorizontally { it } },
         exitTransition = { slideOutHorizontally { -it } },
         popEnterTransition = { slideInHorizontally { -it } },
@@ -61,22 +66,24 @@ fun NavigationRoot(
             }
         }
 
-        composable<Screen.Login>  {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "login")
-            }
+        composable<Screen.Login> {
+            LoginScreenCore(
+                onLoginSuccess = {
+                    navController.navigate(Screen.Main)
+                },
+                inSignUpClick = {
+                    navController.navigate(Screen.Register)
+                }
+            )
         }
 
         // main ------------------------------------------------------------------------------
-        composable<Screen.Main>  {
-            mainBottomBar(navController = navController)
+        composable<Screen.Main> {
+            MainBottomBar(navController = navController)
         }
 
         // product ------------------------------------------------------------------------------
-        composable<Screen.ProductDetails>  {
+        composable<Screen.ProductDetails> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -86,7 +93,7 @@ fun NavigationRoot(
         }
 
         // search ------------------------------------------------------------------------------
-        composable<Screen.Search>  {
+        composable<Screen.Search> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -96,7 +103,7 @@ fun NavigationRoot(
         }
 
         // category ------------------------------------------------------------------------------
-        composable<Screen.CategoryDetails>  {
+        composable<Screen.CategoryDetails> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -106,7 +113,7 @@ fun NavigationRoot(
         }
 
         // checkout ------------------------------------------------------------------------------
-        composable<Screen.Checkout>  {
+        composable<Screen.Checkout> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -115,7 +122,7 @@ fun NavigationRoot(
             }
         }
 
-        composable<Screen.Success>  {
+        composable<Screen.Success> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -125,7 +132,7 @@ fun NavigationRoot(
         }
 
         // order ------------------------------------------------------------------------------
-        composable<Screen.OrderOverview>  {
+        composable<Screen.OrderOverview> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -134,7 +141,7 @@ fun NavigationRoot(
             }
         }
 
-        composable<Screen.OrderDetails>  {
+        composable<Screen.OrderDetails> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -146,7 +153,7 @@ fun NavigationRoot(
 }
 
 @Composable
-private fun mainBottomBar(
+private fun MainBottomBar(
     navController: NavHostController
 ) {
     val bottomBarNavController = rememberNavController()
@@ -182,9 +189,9 @@ private fun mainBottomBar(
                 }
             )
         }
-    ) {
-
+    ) { paddingValues ->
         NavHost(
+            modifier = Modifier.padding(paddingValues),
             navController = bottomBarNavController,
             startDestination = BottomBarScreen.ProductOverview,
             enterTransition = { fadeIn(initialAlpha = 1f) },
@@ -204,11 +211,12 @@ private fun mainBottomBar(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    Button(onClick = {
-                        navController.navigate(Screen.ProductDetails)
-                    }) {
-                        Text(text = "go to product details")
-                    }
+                    Button(
+                        onClick = {
+                            navController.navigate(Screen.ProductDetails)
+                        },
+                        text = "go to product details"
+                    )
                 }
             }
 

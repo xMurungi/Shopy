@@ -2,24 +2,26 @@
 agp = "8.2.2"
 androidTools = "31.6.0"
 core = "1.10.3"
+firebaseAuthKtx = "23.0.0"
+playServicesAuth = "21.2.0"
 playCore = "1.10.3"
 coreSplashscreen = "1.0.1"
 coilCompose = "2.6.0"
 composeCompiler = "1.5.9"
-desugar_jdk_libs = "2.1.1"
+desugar_jdk_libs = "2.1.2"
 kotlin = "1.9.22"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-activityCompose = "1.9.1"
+activityCompose = "1.9.2"
 ktor = "2.3.12"
 ktorClientLogging = "2.3.12"
 koin = "3.5.3"
-lifecycleRuntimeKtx = "2.8.4"
-composeBom = "2024.08.00"
-materialIconsExtended = "1.6.8"
-navigationCompose = "2.8.0-rc01"
+lifecycleRuntimeKtx = "2.8.5"
+composeBom = "2024.09.01"
+materialIconsExtended = "1.7.1"
+navigationCompose = "2.8.0"
 securityCryptoKtx = "1.1.0-alpha06"
 timber = "5.0.1"
 ksp = "1.9.22-1.0.17"
@@ -52,6 +54,8 @@ androidx-security-crypto-ktx = { module = "androidx.security:security-crypto-ktx
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 core = { module = "com.google.android.play:core", version.ref = "playCore" }
 core-testing = { module = "com.google.android.play:core-testing", version.ref = "playCore" }
+firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }

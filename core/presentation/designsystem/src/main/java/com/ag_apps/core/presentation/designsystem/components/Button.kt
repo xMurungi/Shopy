@@ -20,12 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 /**
  * @author Ahmed Guedmioui
  */
 @Composable
-fun ActionButton(
+fun Button(
     modifier: Modifier = Modifier,
     text: String,
     isLoading: Boolean = false,
@@ -41,13 +42,9 @@ fun ActionButton(
         ),
         shape = RoundedCornerShape(100f),
         modifier = modifier
-            .height(IntrinsicSize.Min)
-            .alpha(if (!enabled) 0.5f else 1f)
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
+            modifier = Modifier.padding(vertical = 8.dp),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(
@@ -59,9 +56,10 @@ fun ActionButton(
             )
             Text(
                 text = text,
-                modifier = Modifier
-                    .alpha(if (isLoading) 0f else 1f),
-                fontWeight = FontWeight.Medium
+                modifier = Modifier.alpha(if (isLoading) 0f else 1f),
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
     }
@@ -88,12 +86,9 @@ fun OutlinedActionButton(
         ),
         shape = RoundedCornerShape(100f),
         modifier = modifier
-            .height(IntrinsicSize.Min)
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
+            modifier = Modifier.padding(vertical = 8.dp),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(

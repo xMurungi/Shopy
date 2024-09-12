@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/build-logic" name="build-logic">
+                <projects>
+                  <project path="$PROJECT_DIR$/build-logic" />
+                  <project path="$PROJECT_DIR$/build-logic/convention" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/auth" />
+            <option value="$PROJECT_DIR$/auth/data" />
+            <option value="$PROJECT_DIR$/auth/domain" />
+            <option value="$PROJECT_DIR$/auth/presentation" />
+            <option value="$PROJECT_DIR$/build-logic" />
+            <option value="$PROJECT_DIR$/build-logic/convention" />
+            <option value="$PROJECT_DIR$/cart" />
+            <option value="$PROJECT_DIR$/cart/data" />
+            <option value="$PROJECT_DIR$/cart/domain" />
+            <option value="$PROJECT_DIR$/cart/presentation" />
+            <option value="$PROJECT_DIR$/category" />
+            <option value="$PROJECT_DIR$/category/data" />
+            <option value="$PROJECT_DIR$/category/domain" />
+            <option value="$PROJECT_DIR$/category/presentation" />
+            <option value="$PROJECT_DIR$/checkout" />
+            <option value="$PROJECT_DIR$/checkout/data" />
+            <option value="$PROJECT_DIR$/checkout/domain" />
+            <option value="$PROJECT_DIR$/checkout/payment" />
+            <option value="$PROJECT_DIR$/checkout/presentation" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core/data" />
+            <option value="$PROJECT_DIR$/core/domain" />
+            <option value="$PROJECT_DIR$/core/network" />
+            <option value="$PROJECT_DIR$/core/presentation" />
+            <option value="$PROJECT_DIR$/core/presentation/designsystem" />
+            <option value="$PROJECT_DIR$/core/presentation/ui" />
+            <option value="$PROJECT_DIR$/core/product_data" />
+            <option value="$PROJECT_DIR$/order" />
+            <option value="$PROJECT_DIR$/order/data" />
+            <option value="$PROJECT_DIR$/order/domain" />
+            <option value="$PROJECT_DIR$/order/presentation" />
+            <option value="$PROJECT_DIR$/product" />
+            <option value="$PROJECT_DIR$/product/data" />
+            <option value="$PROJECT_DIR$/product/domain" />
+            <option value="$PROJECT_DIR$/product/presentation" />
+            <option value="$PROJECT_DIR$/profile" />
+            <option value="$PROJECT_DIR$/profile/data" />
+            <option value="$PROJECT_DIR$/profile/domain" />
+            <option value="$PROJECT_DIR$/profile/presentation" />
+            <option value="$PROJECT_DIR$/search" />
+            <option value="$PROJECT_DIR$/search/data" />
+            <option value="$PROJECT_DIR$/search/domain" />
+            <option value="$PROJECT_DIR$/search/presentation" />
+            <option value="$PROJECT_DIR$/wishlist" />
+            <option value="$PROJECT_DIR$/wishlist/data" />
+            <option value="$PROJECT_DIR$/wishlist/domain" />
+            <option value="$PROJECT_DIR$/wishlist/presentation" />
+          </set>
+        </option>
+        <option name="resolveExternalAnnotations" value="false" />
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

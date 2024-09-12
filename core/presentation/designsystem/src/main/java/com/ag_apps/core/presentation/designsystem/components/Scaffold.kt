@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 @Composable
 fun Scaffold(
     modifier: Modifier = Modifier,
-    withGradient: Boolean = true,
     topAppBar: @Composable () -> Unit = {},
     bottomAppBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
@@ -25,13 +24,8 @@ fun Scaffold(
         floatingActionButtonPosition = FabPosition.Center,
         modifier = modifier
     ) { paddingValues ->
-        if (withGradient) {
-            Background {
-                content(paddingValues)
-            }
-        } else {
-            content(paddingValues)
-        }
+        Background()
+        content(paddingValues)
     }
 }
 
