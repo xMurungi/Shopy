@@ -6,6 +6,8 @@
     <string name="error_unknown">An unknown error occurred</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
+    <string name="google_login">Login with google</string>
+    <string name="or_login_with_google">Or login with Google</string>
     <string name="create_account">Create Account</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="example_email">example@test.com</string>
@@ -21,4 +23,5 @@
     <string name="don_t_have_na_account">Don\'t have na account?</string>
     <string name="you_re_logged_in">You\'re logged in</string>
     <string name="error_email_password_incorrect">Email or password is incorrect.</string>
+    <string name="error_google_login">Google login failed, try a different account.</string>
 </resources>

@@ -23,16 +23,17 @@ internal fun Project.configureBuildTypes(
         }
 
         val baseUrl = gradleLocalProperties(rootDir).getProperty("BASE_URL")
+        val firebaseWebClientId = gradleLocalProperties(rootDir).getProperty("FIREBASE_WEB_CLIENT_ID")
 
         when (extensionType) {
             ExtensionType.APPLICATION -> {
                 extensions.configure<ApplicationExtension>() {
                     buildTypes {
                         debug {
-                            configureDebugBuildType(baseUrl)
+                            configureDebugBuildType(baseUrl, firebaseWebClientId)
                         }
                         release {
-                            configureReleaseBuildType(commonExtension, baseUrl)
+                            configureReleaseBuildType(commonExtension, baseUrl, firebaseWebClientId)
                         }
                     }
                 }
@@ -42,10 +43,10 @@ internal fun Project.configureBuildTypes(
                 extensions.configure<LibraryExtension>() {
                     buildTypes {
                         debug {
-                            configureDebugBuildType(baseUrl)
+                            configureDebugBuildType(baseUrl, firebaseWebClientId)
                         }
                         release {
-                            configureReleaseBuildType(commonExtension, baseUrl)
+                            configureReleaseBuildType(commonExtension, baseUrl, firebaseWebClientId)
                         }
                     }
                 }
@@ -54,15 +55,20 @@ internal fun Project.configureBuildTypes(
     }
 }
 
-private fun BuildType.configureDebugBuildType(baseUrl: String) {
+private fun BuildType.configureDebugBuildType(
+    baseUrl: String,
+    firebaseWebClientId: String
+) {
     buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+    buildConfigField("String", "FIREBASE_WEB_CLIENT_ID", "\"$firebaseWebClientId\"")
 }
 
 private fun BuildType.configureReleaseBuildType(
     commonExtension: CommonExtension<*, *, *, *, *>,
-    baseUrl: String
+    baseUrl: String,
+    firebaseWebClientId: String
 ) {
-    buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+    buildConfigField("String", "FIREBASE_WEB_CLIENT_ID", "\"$baseUrl\"")
 
     isMinifyEnabled = true
     proguardFiles(

@@ -49,7 +49,7 @@ fun NavigationRoot(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = if (isLoggedIn) Screen.Main else Screen.Main,
+        startDestination = if (isLoggedIn) Screen.Main else Screen.Login,
         enterTransition = { slideInHorizontally { it } },
         exitTransition = { slideOutHorizontally { -it } },
         popEnterTransition = { slideInHorizontally { -it } },

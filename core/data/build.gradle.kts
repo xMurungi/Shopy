@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.shopy.android.library)
-    alias(libs.plugins.shopy.jvm.ktor)
+    alias(libs.plugins.shopy.kotlinx.serialization)
 }
 
 android {
@@ -9,7 +9,7 @@ android {
 
 dependencies {
     implementation(libs.timber)
-    implementation(libs.koin.android.workmanager)
+    implementation(libs.bundles.koin)
 
     implementation(projects.core.domain)
 }

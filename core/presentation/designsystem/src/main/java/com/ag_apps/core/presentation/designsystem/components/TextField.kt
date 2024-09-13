@@ -103,12 +103,12 @@ fun TextField(
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
                 .border(
-                    width = 1.5.dp,
+                    width = 1.dp,
                     color = MaterialTheme.colorScheme.primary.copy(0.6f),
                     shape = RoundedCornerShape(10.dp)
                 )
                 .padding(12.dp)
-                .padding(vertical = 7.dp)
+                .padding(vertical = 4.dp)
                 .onFocusChanged {
                     isFocused = it.isFocused
                 },

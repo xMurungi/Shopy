@@ -1,23 +1,21 @@
 package com.ag_apps.auth.presentation.login
 
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ag_apps.core.domain.util.Result
-import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.auth.domain.AuthRepository
 import com.ag_apps.auth.domain.UserDataValidator
 import com.ag_apps.auth.presentation.R
+import com.ag_apps.core.domain.util.DataError
+import com.ag_apps.core.domain.util.Result
 import com.ag_apps.core.presentation.ui.UiText
 import com.ag_apps.core.presentation.ui.asUiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
@@ -29,6 +27,8 @@ class LoginViewModel(
     private val userDataValidator: UserDataValidator
 ) : ViewModel() {
 
+    private val TAG = "LoginViewModel"
+
     var state by mutableStateOf(LoginState())
         private set
 
@@ -39,17 +39,19 @@ class LoginViewModel(
         viewModelScope.launch {
             snapshotFlow { state.email.text }
                 .collectLatest { email ->
-                    println("viewModelScope email: $email")
+                    println("$TAG email: $email")
                     state = state.copy(
                         canLogin = userDataValidator.isValidEmail(
                             email.toString().trim()
                         ) && state.password.text.isNotEmpty()
                     )
                 }
+        }
 
+        viewModelScope.launch {
             snapshotFlow { state.password.text }
                 .collectLatest { password ->
-                    println("viewModelScope password: $password")
+                    println("$TAG password: $password")
                     state = state.copy(
                         canLogin = userDataValidator.isValidEmail(
                             state.email.text.toString().trim()
@@ -69,7 +71,35 @@ class LoginViewModel(
                 )
             }
 
+            LoginAction.OnGoogleLoginClick -> googleLogin()
+
             else -> Unit
+        }
+    }
+
+    private fun googleLogin() {
+        viewModelScope.launch {
+            state = state.copy(isLoggingIn = true)
+
+            when (val result = authRepository.googleLogin()) {
+                is Result.Error -> {
+                    if (result.error == DataError.Network.UNAUTHORIZED) {
+                        eventChannel.send(
+                            LoginEvent.Error(
+                                UiText.StringResource(R.string.error_google_login)
+                            )
+                        )
+                    } else {
+                        eventChannel.send(LoginEvent.Error(result.error.asUiText()))
+                    }
+                }
+
+                is Result.Success -> {
+                    eventChannel.send(LoginEvent.LoginSuccess)
+                }
+            }
+
+            state = state.copy(isLoggingIn = false)
         }
     }
 
@@ -79,10 +109,8 @@ class LoginViewModel(
 
             val result = authRepository.login(
                 email = state.email.text.toString().trim(),
-                password = state.password.text.toString()
+                password = state.password.text.toString(),
             )
-
-            state = state.copy(isLoggingIn = false)
 
             when (result) {
                 is Result.Error -> {
@@ -101,6 +129,8 @@ class LoginViewModel(
                     eventChannel.send(LoginEvent.LoginSuccess)
                 }
             }
+
+            state = state.copy(isLoggingIn = false)
         }
     }
 

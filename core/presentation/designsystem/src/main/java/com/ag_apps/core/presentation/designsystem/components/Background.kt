@@ -23,7 +23,7 @@ fun Background(
             .background(
                 brush = Brush.verticalGradient(
                     listOf(
-                        MaterialTheme.colorScheme.primary.copy(0.1f),
+                        MaterialTheme.colorScheme.primary.copy(0.03f),
                         MaterialTheme.colorScheme.background
                     )
                 )

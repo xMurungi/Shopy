@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.shopy.android.library)
+    alias(libs.plugins.shopy.jvm.ktor)
 }
 
 android {
@@ -7,9 +8,7 @@ android {
 }
 
 dependencies {
-
-    implementation (libs.firebase.auth.ktx)
-    implementation (libs.play.services.auth)
-
     implementation(projects.core.domain)
+    implementation(libs.bundles.koin)
+    implementation(libs.timber)
 }

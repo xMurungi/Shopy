@@ -1,6 +1,7 @@
 package com.ag_apps.auth.presentation.login
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -34,6 +36,7 @@ import com.ag_apps.core.presentation.designsystem.Poppins
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.Background
 import com.ag_apps.core.presentation.designsystem.components.Button
+import com.ag_apps.core.presentation.designsystem.components.OutlinedButton
 import com.ag_apps.core.presentation.designsystem.components.PasswordTextField
 import com.ag_apps.core.presentation.designsystem.components.TextField
 import com.ag_apps.core.presentation.ui.ObserveAsEvents
@@ -168,9 +171,38 @@ private fun LoginScreen(
             text = stringResource(R.string.login),
             isLoading = state.isLoggingIn,
             enabled = state.canLogin && !state.isLoggingIn,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            onClick = {
+                onAction(LoginAction.OnLoginClick)
+            }
+        )
+
+        Spacer(modifier = Modifier.height(62.dp))
+
+        Text(
+            text = stringResource(R.string.or_login_with_google),
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+
+        Spacer(modifier = Modifier.height(22.dp))
+
+        OutlinedButton(
+            isLoading = state.isLoggingIn,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            onClick = {
+                onAction(LoginAction.OnGoogleLoginClick)
+            }
         ) {
-            onAction(LoginAction.OnLoginClick)
+            Image(
+                painter = painterResource(R.drawable.google),
+                contentDescription = stringResource(R.string.google_login),
+                modifier = Modifier.size(27.dp)
+            )
         }
 
     }

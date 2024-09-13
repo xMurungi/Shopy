@@ -2,8 +2,10 @@
 agp = "8.2.2"
 androidTools = "31.6.0"
 core = "1.10.3"
-firebaseAuthKtx = "23.0.0"
-playServicesAuth = "21.2.0"
+credentialsPlayServicesAuth = "1.5.0-alpha05"
+firebaseBom = "33.3.0"
+gmsGoogleServices = "4.4.2"
+googleid = "1.1.1"
 playCore = "1.10.3"
 coreSplashscreen = "1.0.1"
 coilCompose = "2.6.0"
@@ -46,6 +48,11 @@ projectCompileSdkVersion = "35"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentialsPlayServicesAuth" }
+androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
+googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
@@ -54,8 +61,6 @@ androidx-security-crypto-ktx = { module = "androidx.security:security-crypto-ktx
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 core = { module = "com.google.android.play:core", version.ref = "playCore" }
 core-testing = { module = "com.google.android.play:core-testing", version.ref = "playCore" }
-firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
-play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
@@ -107,6 +112,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 room = { id = "androidx.room", version.ref = "room" }
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
+gms-google-services = { id = "com.google.gms.google-services", version.ref = "gmsGoogleServices" }
 
 shopy-android-application = { id = "shopy.android.application", version = "unspecified" }
 shopy-android-application-compose = { id = "shopy.android.application.compose", version = "unspecified" }
@@ -116,6 +122,8 @@ shopy-android-feature-ui = { id = "shopy.android.feature.ui", version = "unspeci
 shopy-android-room = { id = "shopy.android.room", version = "unspecified" }
 shopy-jvm-library = { id = "shopy.jvm.library", version = "unspecified" }
 shopy-jvm-ktor = { id = "shopy.jvm.ktor", version = "unspecified" }
+shopy-kotlinx-serialization = { id = "shopy.kotlinx.serialization", version = "unspecified" }
+shopy-firebase = { id = "shopy.firebase", version = "unspecified" }
 
 [bundles]
 compose = [

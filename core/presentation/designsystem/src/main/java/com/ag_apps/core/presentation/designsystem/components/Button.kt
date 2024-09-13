@@ -2,9 +2,6 @@ package com.ag_apps.core.presentation.designsystem.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,10 +25,11 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun Button(
     modifier: Modifier = Modifier,
-    text: String,
+    text: String? = null,
     isLoading: Boolean = false,
     enabled: Boolean = true,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    content: @Composable () -> Unit = {}
 ) {
     Button(
         onClick = onClick,
@@ -44,7 +42,7 @@ fun Button(
         modifier = modifier
     ) {
         Box(
-            modifier = Modifier.padding(vertical = 8.dp),
+            modifier = Modifier.padding(vertical = 6.dp),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(
@@ -54,25 +52,31 @@ fun Button(
                 strokeWidth = 1.5.dp,
                 color = MaterialTheme.colorScheme.onPrimary
             )
-            Text(
-                text = text,
-                modifier = Modifier.alpha(if (isLoading) 0f else 1f),
-                fontWeight = FontWeight.Medium,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
+
+            if (text != null) {
+                Text(
+                    text = text,
+                    modifier = Modifier.alpha(if (isLoading) 0f else 1f),
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            } else {
+                content()
+            }
         }
     }
 }
 
 
 @Composable
-fun OutlinedActionButton(
+fun OutlinedButton(
     modifier: Modifier = Modifier,
-    text: String,
+    text: String? = null,
     isLoading: Boolean = false,
     enabled: Boolean = true,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    content: @Composable () -> Unit = {}
 ) {
     OutlinedButton(
         onClick = onClick,
@@ -82,13 +86,13 @@ fun OutlinedActionButton(
         ),
         border = BorderStroke(
             width = 0.5.dp,
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.primary
         ),
         shape = RoundedCornerShape(100f),
         modifier = modifier
     ) {
         Box(
-            modifier = Modifier.padding(vertical = 8.dp),
+            modifier = Modifier.padding(vertical = 6.dp),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(
@@ -98,12 +102,16 @@ fun OutlinedActionButton(
                 strokeWidth = 1.5.dp,
                 color = MaterialTheme.colorScheme.onPrimary
             )
-            Text(
-                text = text,
-                modifier = Modifier
-                    .alpha(if (isLoading) 0f else 1f),
-                fontWeight = FontWeight.Medium
-            )
+
+            if (text != null) {
+                Text(
+                    text = text,
+                    modifier = Modifier.alpha(if (isLoading) 0f else 1f),
+                    fontWeight = FontWeight.Medium
+                )
+            } else {
+                content()
+            }
         }
     }
 }

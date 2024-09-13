@@ -20,6 +20,9 @@ val LightBackground = Color(0xFFFAF5F3)
 val DarkSurface = Color(0xFF220700)
 val LightSurface = Color(0xFFF7F0ED)
 
+val DarkSurfaceContainer = Color(0xFF380C00)
+val LightSurfaceContainer = Color(0xFFFFEBE3)
+
 val DarkSurfaceVariant = Color(0xFF5A1200)
 val LightSurfaceVariant = Color(0xFFEBCCBC)
 

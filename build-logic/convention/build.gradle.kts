@@ -52,5 +52,15 @@ gradlePlugin {
             implementationClass = "JvmKtorConventionPlugin"
         }
 
+        register("KotlinxSerialization") {
+            id = "shopy.kotlinx.serialization"
+            implementationClass = "KotlinxSerializationConventionPlugin"
+        }
+
+        register("Firebase") {
+            id = "shopy.firebase"
+            implementationClass = "FirebaseConventionPlugin"
+        }
+
     }
 }
