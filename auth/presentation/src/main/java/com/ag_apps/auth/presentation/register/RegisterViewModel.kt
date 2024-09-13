@@ -1,0 +1,177 @@
+package com.ag_apps.auth.presentation.register
+
+import RegisterEvent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ag_apps.auth.domain.AuthRepository
+import com.ag_apps.auth.domain.UserDataValidator
+import com.ag_apps.auth.presentation.R
+import com.ag_apps.auth.presentation.login.LoginEvent
+import com.ag_apps.core.domain.util.DataError
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import com.ag_apps.core.domain.util.Result
+import com.ag_apps.core.presentation.ui.UiText
+import com.ag_apps.core.presentation.ui.asUiText
+
+/**
+ * @author Ahmed Guedmioui
+ */
+class RegisterViewModel(
+    private val userDataValidator: UserDataValidator,
+    private val authRepository: AuthRepository
+) : ViewModel() {
+    var state by mutableStateOf(RegisterState())
+        private set
+
+    private val eventChannel = Channel<RegisterEvent>()
+    val events = eventChannel.receiveAsFlow()
+
+    init {
+        viewModelScope.launch {
+            snapshotFlow { state.email.text }
+                .collectLatest { email ->
+                    val isValidEmail = userDataValidator.isValidEmail(email.toString())
+
+                    val canRegister = isValidEmail
+                            && state.isNameValid
+                            && state.passwordValidationState.isValidPassword
+                            && !state.isRegistering
+
+                    state = state.copy(
+                        isEmailValid = isValidEmail,
+                        canRegister = canRegister
+                    )
+                }
+        }
+
+        viewModelScope.launch {
+            snapshotFlow { state.name.text }
+                .collectLatest { name ->
+                    val isValidName = userDataValidator.isValidName(name.toString())
+
+                    val canRegister = isValidName
+                            && state.isEmailValid
+                            && state.passwordValidationState.isValidPassword
+                            && !state.isRegistering
+
+                    state = state.copy(
+                        isNameValid = isValidName,
+                        canRegister = canRegister
+                    )
+                }
+        }
+
+        viewModelScope.launch {
+            snapshotFlow { state.password.text }
+                .collectLatest { password ->
+                    val passwordValidationState = userDataValidator.isValidPassword(password.toString())
+
+                    val canRegister = passwordValidationState.isValidPassword
+                            && state.isEmailValid
+                            && state.isNameValid
+                            && !state.isRegistering
+
+                    state = state.copy(
+                        passwordValidationState = passwordValidationState,
+                        canRegister = canRegister
+                    )
+                }
+        }
+    }
+
+    fun onAction(action: RegisterAction) {
+        when (action) {
+            RegisterAction.ObRegisterClick -> register()
+
+            RegisterAction.OnTogglePasswordVisibilityClick -> {
+                state = state.copy(
+                    isPasswordVisible = !state.isPasswordVisible
+                )
+            }
+
+            RegisterAction.OnLoginClick -> Unit
+            RegisterAction.OnGoogleRegisterClick -> googleRegister()
+        }
+    }
+
+    private fun googleRegister() {
+        viewModelScope.launch {
+            state = state.copy(isRegistering = true)
+
+            when (val result = authRepository.googleLogin()) {
+                is Result.Error -> {
+                    if (result.error == DataError.Network.UNAUTHORIZED) {
+                        eventChannel.send(
+                            RegisterEvent.Error(
+                                UiText.StringResource(R.string.error_google_login)
+                            )
+                        )
+                    } else {
+                        eventChannel.send(RegisterEvent.Error(result.error.asUiText()))
+                    }
+                }
+
+                is Result.Success -> {
+                    eventChannel.send(RegisterEvent.RegistrationSuccess)
+                }
+            }
+
+            state = state.copy(isRegistering = false)
+        }
+    }
+
+    private fun register() {
+        viewModelScope.launch {
+            state = state.copy(isRegistering = true)
+            val result = authRepository.register(
+                email = state.email.text.toString().trim(),
+                name = state.name.text.toString(),
+                password = state.password.text.toString()
+            )
+            state = state.copy(isRegistering = false)
+
+            when (result) {
+                is Result.Error -> {
+                    if (result.error == DataError.Network.CONFLICT) {
+                        eventChannel.send(
+                            RegisterEvent.Error(UiText.StringResource(R.string.error_email_exists))
+                        )
+                    } else {
+                        eventChannel.send(RegisterEvent.Error(result.error.asUiText()))
+                    }
+                }
+
+                is Result.Success -> {
+                    eventChannel.send(RegisterEvent.RegistrationSuccess)
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

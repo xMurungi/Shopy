@@ -65,7 +65,8 @@ class GoogleAuthClient(
                         return Result.Success(
                             User(
                                 name = tokenCredential.displayName ?: "",
-                                id = tokenCredential.id,
+                                email = tokenCredential.id,
+                                id = "",
                                 profilePicture = tokenCredential.profilePictureUri.toString()
                             )
                         )

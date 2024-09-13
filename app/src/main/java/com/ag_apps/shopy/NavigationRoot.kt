@@ -26,6 +26,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ag_apps.auth.presentation.login.LoginScreenCore
+import com.ag_apps.auth.presentation.register.RegisterScreenCore
 import com.ag_apps.core.presentation.designsystem.components.Background
 import com.ag_apps.core.presentation.designsystem.components.Button
 import com.ag_apps.core.presentation.designsystem.components.BottomBar
@@ -58,12 +59,14 @@ fun NavigationRoot(
 
         // auth ------------------------------------------------------------------------------
         composable<Screen.Register> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "register")
-            }
+            RegisterScreenCore(
+                onSuccessfulRegistration = {
+                    navController.navigate(Screen.Main)
+                },
+                onLoginClick = {
+                    navController.navigate(Screen.Login)
+                }
+            )
         }
 
         composable<Screen.Login> {

@@ -15,6 +15,7 @@ class FirebaseConventionPlugin : Plugin<Project> {
             dependencies {
                 "implementation"(platform(libs.findLibrary("firebase.bom").get()))
                 "implementation"(libs.findLibrary("firebase.auth").get())
+                "implementation"(libs.findLibrary("firebase.firestore").get())
                 "implementation"(libs.findLibrary("androidx.credentials.play.services.auth").get())
                 "implementation"(libs.findLibrary("androidx.credentials").get())
                 "implementation"(libs.findLibrary("googleid").get())

@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -37,12 +36,17 @@ class AuthRepositoryImpl(
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             setUser(
-                                User(name = name, id = email, profilePicture = "")
+                                User(
+                                    name = name,
+                                    email = email,
+                                    id = "",
+                                    profilePicture = ""
+                                )
                             )
                             continuation.resume(Result.Success(Unit))
                         } else {
                             task.exception?.printStackTrace()
-                            continuation.resume(Result.Error(DataError.Network.UNAUTHORIZED))
+                            continuation.resume(Result.Error(DataError.Network.CONFLICT))
                         }
                     }
             }
@@ -50,7 +54,7 @@ class AuthRepositoryImpl(
         } catch (e: Exception) {
             e.printStackTrace()
             if (e is CancellationException) throw e
-            return Result.Error(DataError.Network.UNAUTHORIZED)
+            return Result.Error(DataError.Network.UNKNOWN)
         }
     }
 
@@ -64,7 +68,8 @@ class AuthRepositoryImpl(
                         setUser(
                             User(
                                 name = task.result.additionalUserInfo?.username ?: "",
-                                id = email,
+                                email = email,
+                                id = "",
                                 profilePicture = task.result.user?.photoUrl.toString(),
                             )
                         )
@@ -80,7 +85,7 @@ class AuthRepositoryImpl(
         } catch (e: Exception) {
             e.printStackTrace()
             if (e is CancellationException) throw e
-            return Result.Error(DataError.Network.UNAUTHORIZED)
+            return Result.Error(DataError.Network.UNKNOWN)
         }
     }
 
@@ -93,13 +98,7 @@ class AuthRepositoryImpl(
     override suspend fun googleLogin(): EmptyResult<DataError.Network> {
         val result = googleAuthClient.logIn()
         if (result is Result.Success) {
-            sessionStorage.set(
-                User(
-                    name = result.data.name,
-                    id = result.data.id,
-                    profilePicture = result.data.profilePicture
-                )
-            )
+            sessionStorage.set(result.data)
         }
 
         return result.asEmptyDataResult()

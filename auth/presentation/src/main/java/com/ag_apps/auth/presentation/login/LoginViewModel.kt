@@ -39,7 +39,6 @@ class LoginViewModel(
         viewModelScope.launch {
             snapshotFlow { state.email.text }
                 .collectLatest { email ->
-                    println("$TAG email: $email")
                     state = state.copy(
                         canLogin = userDataValidator.isValidEmail(
                             email.toString().trim()
@@ -51,7 +50,6 @@ class LoginViewModel(
         viewModelScope.launch {
             snapshotFlow { state.password.text }
                 .collectLatest { password ->
-                    println("$TAG password: $password")
                     state = state.copy(
                         canLogin = userDataValidator.isValidEmail(
                             state.email.text.toString().trim()
@@ -73,7 +71,7 @@ class LoginViewModel(
 
             LoginAction.OnGoogleLoginClick -> googleLogin()
 
-            else -> Unit
+            LoginAction.ObRegisterClick -> Unit
         }
     }
 

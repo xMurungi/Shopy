@@ -10,6 +10,7 @@ import com.ag_apps.core.domain.User
 fun User.toUserSerializable(): UserSerializable {
     return UserSerializable(
         name = name,
+        email = email,
         id = id,
         profilePicture = profilePicture
     )
@@ -17,6 +18,7 @@ fun User.toUserSerializable(): UserSerializable {
 fun UserSerializable.toUser(): User {
     return User(
         name = name,
+        email = email,
         id = id,
         profilePicture = profilePicture
     )

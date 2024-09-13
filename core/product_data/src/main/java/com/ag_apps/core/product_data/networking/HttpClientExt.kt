@@ -1,8 +1,8 @@
-package com.ag_apps.core.network.networking
+package com.ag_apps.core.product_data.networking
 
-import com.ag_apps.core.network.BuildConfig
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
+import  com.ag_apps.core.product_data.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete

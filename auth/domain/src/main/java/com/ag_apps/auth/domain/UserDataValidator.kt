@@ -11,6 +11,10 @@ class UserDataValidator(
         return patternValidator.matches(email.trim())
     }
 
+    fun isValidName(name: String): Boolean {
+        return name.length in 4..50
+    }
+
     fun isValidPassword(password: String): PasswordValidationState {
         val hasMinimumLength = password.length >= MIN_PASSWORD_LENGTH
         val hasDigit = password.any { it.isDigit() }

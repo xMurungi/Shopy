@@ -1,4 +1,4 @@
-package com.ag_apps.core.network.networking
+package com.ag_apps.core.product_data.networking
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android

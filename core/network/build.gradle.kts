@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.shopy.android.library)
-    alias(libs.plugins.shopy.jvm.ktor)
+    alias(libs.plugins.shopy.firebase)
 }
 
 android {
