@@ -11,13 +11,13 @@ import kotlinx.coroutines.flow.Flow
 interface AuthRepository {
     suspend fun register(
         email: String, name: String, password: String
-    ): EmptyResult<DataError.Network>
+    ): Flow<EmptyResult<DataError.Network>>
 
     suspend fun login(
         email: String, password: String
-    ): EmptyResult<DataError.Network>
+    ): Flow<EmptyResult<DataError.Network>>
 
-    suspend fun googleLogin(): EmptyResult<DataError.Network>
+    suspend fun googleSignIn(): Flow<EmptyResult<DataError.Network>>
 }
 
 

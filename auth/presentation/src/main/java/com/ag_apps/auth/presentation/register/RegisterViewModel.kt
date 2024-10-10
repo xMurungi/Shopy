@@ -1,6 +1,7 @@
 package com.ag_apps.auth.presentation.register
 
 import RegisterEvent
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import com.ag_apps.auth.domain.AuthRepository
 import com.ag_apps.auth.domain.UserDataValidator
 import com.ag_apps.auth.presentation.R
-import com.ag_apps.auth.presentation.login.LoginEvent
 import com.ag_apps.core.domain.util.DataError
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
@@ -34,6 +34,13 @@ class RegisterViewModel(
     val events = eventChannel.receiveAsFlow()
 
     init {
+
+        state = state.copy(
+            email = TextFieldState("ahmed@gmail.com"),
+            name = TextFieldState("Ahmed"),
+            password = TextFieldState("Ahmed12345")
+        )
+
         viewModelScope.launch {
             snapshotFlow { state.email.text }
                 .collectLatest { email ->
@@ -96,8 +103,9 @@ class RegisterViewModel(
                 )
             }
 
-            RegisterAction.OnLoginClick -> Unit
             RegisterAction.OnGoogleRegisterClick -> googleRegister()
+
+            RegisterAction.OnLoginClick -> Unit
         }
     }
 
@@ -105,51 +113,67 @@ class RegisterViewModel(
         viewModelScope.launch {
             state = state.copy(isRegistering = true)
 
-            when (val result = authRepository.googleLogin()) {
-                is Result.Error -> {
-                    if (result.error == DataError.Network.UNAUTHORIZED) {
-                        eventChannel.send(
-                            RegisterEvent.Error(
-                                UiText.StringResource(R.string.error_google_login)
-                            )
-                        )
-                    } else {
-                        eventChannel.send(RegisterEvent.Error(result.error.asUiText()))
+            authRepository.googleSignIn().collect { result ->
+                state = state.copy(isRegistering = false)
+
+                when (result) {
+                    is Result.Error -> {
+                        when (result.error) {
+                            DataError.Network.UNAUTHORIZED -> {
+                                eventChannel.send(
+                                    RegisterEvent.Error(
+                                        UiText.StringResource(R.string.error_google_login)
+                                    )
+                                )
+                            }
+
+                            DataError.Network.NO_GOOGLE_ACCOUNT -> {
+                                eventChannel.send(
+                                    RegisterEvent.Error(
+                                        UiText.StringResource(R.string.no_google_account)
+                                    )
+                                )
+                            }
+
+                            else -> {
+                                eventChannel.send(RegisterEvent.Error(result.error.asUiText()))
+                            }
+                        }
+                    }
+
+                    is Result.Success -> {
+                        eventChannel.send(RegisterEvent.RegistrationSuccess)
                     }
                 }
-
-                is Result.Success -> {
-                    eventChannel.send(RegisterEvent.RegistrationSuccess)
-                }
             }
-
-            state = state.copy(isRegistering = false)
         }
     }
 
     private fun register() {
         viewModelScope.launch {
             state = state.copy(isRegistering = true)
-            val result = authRepository.register(
+
+            authRepository.register(
                 email = state.email.text.toString().trim(),
                 name = state.name.text.toString(),
                 password = state.password.text.toString()
-            )
-            state = state.copy(isRegistering = false)
+            ).collect { result ->
+                state = state.copy(isRegistering = false)
 
-            when (result) {
-                is Result.Error -> {
-                    if (result.error == DataError.Network.CONFLICT) {
-                        eventChannel.send(
-                            RegisterEvent.Error(UiText.StringResource(R.string.error_email_exists))
-                        )
-                    } else {
-                        eventChannel.send(RegisterEvent.Error(result.error.asUiText()))
+                when (result) {
+                    is Result.Error -> {
+                        if (result.error == DataError.Network.CONFLICT) {
+                            eventChannel.send(
+                                RegisterEvent.Error(UiText.StringResource(R.string.error_email_exists))
+                            )
+                        } else {
+                            eventChannel.send(RegisterEvent.Error(result.error.asUiText()))
+                        }
                     }
-                }
 
-                is Result.Success -> {
-                    eventChannel.send(RegisterEvent.RegistrationSuccess)
+                    is Result.Success -> {
+                        eventChannel.send(RegisterEvent.RegistrationSuccess)
+                    }
                 }
             }
         }

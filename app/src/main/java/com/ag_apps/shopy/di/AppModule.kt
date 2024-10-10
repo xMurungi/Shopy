@@ -15,15 +15,6 @@ import org.koin.dsl.module
  */
 
 val appModule = module {
-    single<SharedPreferences> {
-        EncryptedSharedPreferences(
-            androidApplication(),
-            "shopy_prefs",
-            MasterKey(androidApplication()),
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
-    }
     single<CoroutineScope> {
         (androidApplication() as ShopyApp).applicationScope
     }

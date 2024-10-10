@@ -62,7 +62,7 @@ dependencies {
     implementation(libs.timber)
 
     implementation(projects.core.data)
-    implementation(projects.core.network)
+    implementation(projects.core.userData)
     implementation(projects.core.productData)
     implementation(projects.core.domain)
     implementation(projects.core.presentation.designsystem)

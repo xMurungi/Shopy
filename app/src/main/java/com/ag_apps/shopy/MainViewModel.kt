@@ -5,14 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ag_apps.core.domain.SessionStorage
+import com.ag_apps.core.domain.UserDataSource
 import kotlinx.coroutines.launch
 
 /**
  * @author Ahmed Guedmioui
  */
 class MainViewModel(
-    private val sessionStorage: SessionStorage
+    private val userDataSource: UserDataSource
 ) : ViewModel() {
 
     var state by mutableStateOf(MainState())
@@ -22,10 +22,8 @@ class MainViewModel(
         viewModelScope.launch {
             state = state.copy(isCheckingAuth = true)
 
-            val isLoggedIn = sessionStorage.get() != null
-
             state = state.copy(
-                isLoggedIn = isLoggedIn
+                isLoggedIn = userDataSource.isLoggedIn()
             )
 
             state = state.copy(isCheckingAuth = false)

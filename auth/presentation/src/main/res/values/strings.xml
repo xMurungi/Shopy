@@ -27,4 +27,5 @@
     <string name="error_email_password_incorrect">Email or password is incorrect.</string>
     <string name="error_google_login">Google login failed, try a different account.</string>
     <string name="error_google_register">Google registration failed, try a different account.</string>
+    <string name="no_google_account">No Google account found.</string>
 </resources>

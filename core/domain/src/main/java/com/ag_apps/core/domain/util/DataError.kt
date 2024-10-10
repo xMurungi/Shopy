@@ -13,6 +13,10 @@ sealed interface DataError: Error {
         PAYLOAD_TOO_LARGE,
         SERVER_ERROR,
         SERIALIZATION_ERROR,
+        PARSING_ERROR,
+        NOT_FOUND,
+        UNEXPECTED_TYPE,
+        NO_GOOGLE_ACCOUNT,
         UNKNOWN
     }
 

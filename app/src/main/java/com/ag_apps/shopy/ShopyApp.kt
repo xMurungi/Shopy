@@ -5,7 +5,7 @@ import android.content.Context
 import com.google.firebase.FirebaseApp
 import com.ag_apps.auth.data.di.authDataModule
 import com.ag_apps.auth.presentation.di.authPresentationModule
-import com.ag_apps.core.data.di.coreDataModule
+import com.ag_apps.core.network.di.coreNetworkModule
 import com.ag_apps.core.product_data.di.coreProductDataModule
 import com.ag_apps.shopy.di.appModule
 import com.google.android.play.core.splitcompat.SplitCompat
@@ -37,8 +37,8 @@ class ShopyApp: Application() {
             androidContext(this@ShopyApp)
             modules(
                 appModule,
-                coreDataModule,
                 coreProductDataModule,
+                coreNetworkModule,
                 authDataModule,
                 authPresentationModule
             )

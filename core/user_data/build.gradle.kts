@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ag_apps.core.network"
+    namespace = "com.ag_apps.core.user_data"
 }
 
 dependencies {

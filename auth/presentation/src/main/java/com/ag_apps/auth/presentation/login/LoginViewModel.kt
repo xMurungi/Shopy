@@ -27,8 +27,6 @@ class LoginViewModel(
     private val userDataValidator: UserDataValidator
 ) : ViewModel() {
 
-    private val TAG = "LoginViewModel"
-
     var state by mutableStateOf(LoginState())
         private set
 
@@ -36,6 +34,11 @@ class LoginViewModel(
     val events = eventChannel.receiveAsFlow()
 
     init {
+        state = state.copy(
+            email = TextFieldState("ahmed@gmail.com"),
+            password = TextFieldState("Ahmed12345")
+        )
+
         viewModelScope.launch {
             snapshotFlow { state.email.text }
                 .collectLatest { email ->
@@ -79,25 +82,39 @@ class LoginViewModel(
         viewModelScope.launch {
             state = state.copy(isLoggingIn = true)
 
-            when (val result = authRepository.googleLogin()) {
-                is Result.Error -> {
-                    if (result.error == DataError.Network.UNAUTHORIZED) {
-                        eventChannel.send(
-                            LoginEvent.Error(
-                                UiText.StringResource(R.string.error_google_login)
-                            )
-                        )
-                    } else {
-                        eventChannel.send(LoginEvent.Error(result.error.asUiText()))
+            authRepository.googleSignIn().collect { result ->
+                state = state.copy(isLoggingIn = false)
+
+                when (result) {
+                    is Result.Error -> {
+                        when (result.error) {
+                            DataError.Network.UNAUTHORIZED -> {
+                                eventChannel.send(
+                                    LoginEvent.Error(
+                                        UiText.StringResource(R.string.error_google_login)
+                                    )
+                                )
+                            }
+
+                            DataError.Network.NO_GOOGLE_ACCOUNT -> {
+                                eventChannel.send(
+                                    LoginEvent.Error(
+                                        UiText.StringResource(R.string.no_google_account)
+                                    )
+                                )
+                            }
+
+                            else -> {
+                                eventChannel.send(LoginEvent.Error(result.error.asUiText()))
+                            }
+                        }
+                    }
+
+                    is Result.Success -> {
+                        eventChannel.send(LoginEvent.LoginSuccess)
                     }
                 }
-
-                is Result.Success -> {
-                    eventChannel.send(LoginEvent.LoginSuccess)
-                }
             }
-
-            state = state.copy(isLoggingIn = false)
         }
     }
 
@@ -105,30 +122,30 @@ class LoginViewModel(
         viewModelScope.launch {
             state = state.copy(isLoggingIn = true)
 
-            val result = authRepository.login(
+            authRepository.login(
                 email = state.email.text.toString().trim(),
                 password = state.password.text.toString(),
-            )
+            ).collect { result ->
+                state = state.copy(isLoggingIn = false)
 
-            when (result) {
-                is Result.Error -> {
-                    if (result.error == DataError.Network.UNAUTHORIZED) {
-                        eventChannel.send(
-                            LoginEvent.Error(
-                                UiText.StringResource(R.string.error_email_password_incorrect)
+                when (result) {
+                    is Result.Error -> {
+                        if (result.error == DataError.Network.UNAUTHORIZED) {
+                            eventChannel.send(
+                                LoginEvent.Error(
+                                    UiText.StringResource(R.string.error_email_password_incorrect)
+                                )
                             )
-                        )
-                    } else {
-                        eventChannel.send(LoginEvent.Error(result.error.asUiText()))
+                        } else {
+                            eventChannel.send(LoginEvent.Error(result.error.asUiText()))
+                        }
+                    }
+
+                    is Result.Success -> {
+                        eventChannel.send(LoginEvent.LoginSuccess)
                     }
                 }
-
-                is Result.Success -> {
-                    eventChannel.send(LoginEvent.LoginSuccess)
-                }
             }
-
-            state = state.copy(isLoggingIn = false)
         }
     }
 
