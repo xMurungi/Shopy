@@ -16,7 +16,6 @@ sealed interface DataError: Error {
         PARSING_ERROR,
         NOT_FOUND,
         UNEXPECTED_TYPE,
-        NO_GOOGLE_ACCOUNT,
         UNKNOWN
     }
 

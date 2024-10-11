@@ -147,7 +147,7 @@ private fun LoginScreen(
         Button(
             text = stringResource(R.string.login),
             isLoading = state.isLoggingIn,
-            enabled = state.canLogin && !state.isLoggingIn,
+            enabled = state.canLogin,
             modifier = Modifier.fillMaxSize(),
             onClick = {
                 onAction(LoginAction.OnLoginClick)
@@ -166,6 +166,7 @@ private fun LoginScreen(
 
         OutlinedButton(
             isLoading = state.isLoggingIn,
+            enabled = !state.isLoggingIn,
             modifier = Modifier.fillMaxSize(),
             onClick = {
                 onAction(LoginAction.OnGoogleLoginClick)

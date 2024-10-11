@@ -49,7 +49,7 @@ class GoogleCredentialClient(
             e.printStackTrace()
             if (e is CancellationException) throw e
             Timber.tag(tag).d("getTokenCredentialException: ${e.message}")
-            return Result.Error(DataError.Network.NO_GOOGLE_ACCOUNT)
+            return Result.Error(DataError.Network.UNKNOWN)
         }
     }
 
@@ -67,9 +67,9 @@ class GoogleCredentialClient(
             try {
                 val tokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
 
-                Timber.tag(tag).d("login: ${tokenCredential.displayName}")
-                Timber.tag(tag).d("login: ${tokenCredential.id}")
-                Timber.tag(tag).d("login: ${tokenCredential.profilePictureUri}")
+                Timber.tag(tag).d("getCredential: ${tokenCredential.displayName}")
+                Timber.tag(tag).d("getCredential: ${tokenCredential.id}")
+                Timber.tag(tag).d("getCredential: ${tokenCredential.profilePictureUri}")
 
                 return Result.Success(tokenCredential)
 

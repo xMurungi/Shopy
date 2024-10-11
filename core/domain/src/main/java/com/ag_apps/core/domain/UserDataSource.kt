@@ -15,7 +15,7 @@ interface UserDataSource {
 
     suspend fun updateUser(user: User): Flow<Result<String, DataError.Network>>
 
-    suspend fun getUser(email: String): Flow<Result<User, DataError.Network>>
+    suspend fun getUser(email: String?): Flow<Result<User, DataError.Network>>
 
     fun isLoggedIn(): Boolean
 

@@ -33,7 +33,7 @@ class FirestoreClient(
                         // Update the user in firestore with the id field
                         // because when we insert a new user, the id field is empty
                         updateUser(user.copy(id = document.id)).collect { updateResult ->
-                            when(updateResult) {
+                            when (updateResult) {
                                 is Result.Success -> trySend(Result.Success(document.id))
                                 is Result.Error -> trySend(Result.Error(updateResult.error))
                             }
@@ -79,13 +79,13 @@ class FirestoreClient(
                     for (document in result) {
                         if (document.data["email"] == email) {
                             user = document.data.toUser()
-                            println(tag + "user found: ${user.email}")
+                            Timber.tag(tag).d("user found: ${user.email}")
                             trySend(Result.Success(user))
                         }
                     }
 
                     if (user == null) {
-                        println(tag + "user not found: $email")
+                        Timber.tag(tag).d("user not found: $email")
                         trySend(Result.Error(DataError.Network.NOT_FOUND))
                     }
                 }

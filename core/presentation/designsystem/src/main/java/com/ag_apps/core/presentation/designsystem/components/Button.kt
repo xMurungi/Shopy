@@ -87,7 +87,8 @@ fun OutlinedButton(
         ),
         border = BorderStroke(
             width = 0.5.dp,
-            color = MaterialTheme.colorScheme.primary
+            color = if (enabled) MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.primary.copy(0.3f)
         ),
         shape = RoundedCornerShape(100.dp),
         modifier = modifier
@@ -96,23 +97,24 @@ fun OutlinedButton(
             modifier = Modifier.padding(vertical = 6.dp),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .size(15.dp)
-                    .alpha(if (isLoading) 1f else 0f),
-                strokeWidth = 1.5.dp,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-
             if (text != null) {
                 Text(
                     text = text,
+                    fontWeight = FontWeight.Medium,
                     modifier = Modifier.alpha(if (isLoading) 0f else 1f),
-                    fontWeight = FontWeight.Medium
                 )
             } else {
-                content()
+                Box(modifier = Modifier.alpha(if (isLoading) 0f else 1f)) {
+                    content()
+                }
             }
+
+            CircularProgressIndicator(
+                strokeWidth = 1.5.dp,
+                modifier = Modifier
+                    .size(15.dp)
+                    .alpha(if (isLoading) 1f else 0f)
+            )
         }
     }
 }

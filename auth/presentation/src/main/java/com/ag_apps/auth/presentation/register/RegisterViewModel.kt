@@ -27,6 +27,7 @@ class RegisterViewModel(
     private val userDataValidator: UserDataValidator,
     private val authRepository: AuthRepository
 ) : ViewModel() {
+
     var state by mutableStateOf(RegisterState())
         private set
 
@@ -111,13 +112,12 @@ class RegisterViewModel(
 
     private fun googleRegister() {
         viewModelScope.launch {
-            state = state.copy(isRegistering = true)
+            state = state.copy(isRegistering = true, canRegister = false)
 
             authRepository.googleSignIn().collect { result ->
-                state = state.copy(isRegistering = false)
-
                 when (result) {
                     is Result.Error -> {
+                        state = state.copy(isRegistering = false, canRegister = true)
                         when (result.error) {
                             DataError.Network.UNAUTHORIZED -> {
                                 eventChannel.send(
@@ -127,10 +127,10 @@ class RegisterViewModel(
                                 )
                             }
 
-                            DataError.Network.NO_GOOGLE_ACCOUNT -> {
+                            DataError.Network.UNKNOWN -> {
                                 eventChannel.send(
                                     RegisterEvent.Error(
-                                        UiText.StringResource(R.string.no_google_account)
+                                        UiText.StringResource(R.string.error_unknown_try_again)
                                     )
                                 )
                             }
@@ -142,6 +142,7 @@ class RegisterViewModel(
                     }
 
                     is Result.Success -> {
+                        state = state.copy(isRegistering = false, canRegister = true)
                         eventChannel.send(RegisterEvent.RegistrationSuccess)
                     }
                 }
@@ -158,10 +159,9 @@ class RegisterViewModel(
                 name = state.name.text.toString(),
                 password = state.password.text.toString()
             ).collect { result ->
-                state = state.copy(isRegistering = false)
-
                 when (result) {
                     is Result.Error -> {
+                        state = state.copy(isRegistering = false)
                         if (result.error == DataError.Network.CONFLICT) {
                             eventChannel.send(
                                 RegisterEvent.Error(UiText.StringResource(R.string.error_email_exists))
@@ -172,6 +172,7 @@ class RegisterViewModel(
                     }
 
                     is Result.Success -> {
+                        state = state.copy(isRegistering = false)
                         eventChannel.send(RegisterEvent.RegistrationSuccess)
                     }
                 }

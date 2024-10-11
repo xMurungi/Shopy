@@ -214,6 +214,7 @@ private fun RegisterScreen(
 
         OutlinedButton(
             isLoading = state.isRegistering,
+            enabled = !state.isRegistering,
             modifier = Modifier.fillMaxSize(),
             onClick = {
                 onAction(RegisterAction.OnGoogleRegisterClick)

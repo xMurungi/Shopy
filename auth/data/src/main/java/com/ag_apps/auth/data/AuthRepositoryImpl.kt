@@ -3,6 +3,7 @@ package com.ag_apps.auth.data
 import com.ag_apps.auth.domain.AuthRepository
 import com.ag_apps.core.domain.User
 import com.ag_apps.core.domain.UserDataSource
+import com.ag_apps.core.domain.EmptyFieldsUser
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.EmptyResult
 import com.ag_apps.core.domain.util.Result
@@ -40,7 +41,7 @@ class AuthRepositoryImpl(
                         Timber.tag(tag).d("user registered successfully")
 
                         applicationScope.launch {
-                            val user = User(
+                            val user = EmptyFieldsUser.copy(
                                 name = name, email = email, id = ""
                             )
                             insertUser(user).collect {
@@ -106,18 +107,21 @@ class AuthRepositoryImpl(
                 if (authResult.user != null) {
                     Timber.tag(tag).d("user google signed in successfully")
 
-                    // when user does not exit in the data store (Result.Error),
-                    // then they are registering and we need to insert them
-                    userDataSource.getUser(credential.id).collect { userResult ->
+                    // - when user does not already exit in the data store (Result.Error),
+                    //   then they are registering with google sign in and we need to insert them.
+                    // - use pass null for email since user logged in and already
+                    //   exits in firebaseAuth by now
+                    userDataSource.getUser(null).collect { userResult ->
                         when (userResult) {
                             is Result.Error -> {
-                                val user = User(
+                                val user = EmptyFieldsUser.copy(
                                     name = credential.displayName ?: "",
                                     email = credential.id,
                                     id = ""
                                 )
                                 insertUser(user).collect { trySend(it) }
                             }
+
                             is Result.Success -> {
                                 trySend(Result.Success(Unit))
                             }

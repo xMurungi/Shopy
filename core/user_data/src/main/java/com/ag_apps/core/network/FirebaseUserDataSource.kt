@@ -44,9 +44,16 @@ class FirebaseUserDataSource(
         }
     }
 
-    override suspend fun getUser(email: String): Flow<Result<User, DataError.Network>> {
+    override suspend fun getUser(email: String?): Flow<Result<User, DataError.Network>> {
         return flow {
-            firestoreClient.getUser(email).collect {
+
+            val userEmail = email ?: firebaseAuth.currentUser?.email
+            if (userEmail == null) {
+                emit(Result.Error(DataError.Network.NOT_FOUND))
+                return@flow
+            }
+
+            firestoreClient.getUser(userEmail).collect {
                 Timber.tag(tag).d("getUser: ${it is Result.Success}")
                 emit(it)
             }
@@ -66,21 +73,5 @@ class FirebaseUserDataSource(
     override fun logout() {
         Timber.tag(tag).d("logout")
         firebaseAuth.signOut()
-    }
-
-    private fun User.toHashMap(): HashMap<String, Any> {
-        return hashMapOf(
-            "email" to email,
-            "id" to id,
-            "name" to name,
-        )
-    }
-
-    private fun Map<String, Any>.toUser(): User {
-        return User(
-            email = this["email"] as String,
-            id = this["id"] as String,
-            name = this["name"] as String
-        )
     }
 }

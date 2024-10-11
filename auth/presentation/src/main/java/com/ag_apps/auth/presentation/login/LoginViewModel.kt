@@ -45,7 +45,7 @@ class LoginViewModel(
                     state = state.copy(
                         canLogin = userDataValidator.isValidEmail(
                             email.toString().trim()
-                        ) && state.password.text.isNotEmpty()
+                        ) && state.password.text.isNotEmpty() && !state.isLoggingIn
                     )
                 }
         }
@@ -56,7 +56,7 @@ class LoginViewModel(
                     state = state.copy(
                         canLogin = userDataValidator.isValidEmail(
                             state.email.text.toString().trim()
-                        ) && password.isNotEmpty()
+                        ) && password.isNotEmpty() && !state.isLoggingIn
                     )
                 }
         }
@@ -80,13 +80,11 @@ class LoginViewModel(
 
     private fun googleLogin() {
         viewModelScope.launch {
-            state = state.copy(isLoggingIn = true)
-
+            state = state.copy(isLoggingIn = true, canLogin = false)
             authRepository.googleSignIn().collect { result ->
-                state = state.copy(isLoggingIn = false)
-
                 when (result) {
                     is Result.Error -> {
+                        state = state.copy(isLoggingIn = false, canLogin = true)
                         when (result.error) {
                             DataError.Network.UNAUTHORIZED -> {
                                 eventChannel.send(
@@ -96,10 +94,10 @@ class LoginViewModel(
                                 )
                             }
 
-                            DataError.Network.NO_GOOGLE_ACCOUNT -> {
+                            DataError.Network.UNKNOWN -> {
                                 eventChannel.send(
                                     LoginEvent.Error(
-                                        UiText.StringResource(R.string.no_google_account)
+                                        UiText.StringResource(R.string.error_unknown_try_again)
                                     )
                                 )
                             }
@@ -111,6 +109,7 @@ class LoginViewModel(
                     }
 
                     is Result.Success -> {
+                        state = state.copy(isLoggingIn = false, canLogin = true)
                         eventChannel.send(LoginEvent.LoginSuccess)
                     }
                 }
@@ -126,10 +125,9 @@ class LoginViewModel(
                 email = state.email.text.toString().trim(),
                 password = state.password.text.toString(),
             ).collect { result ->
-                state = state.copy(isLoggingIn = false)
-
                 when (result) {
                     is Result.Error -> {
+                        state = state.copy(isLoggingIn = false)
                         if (result.error == DataError.Network.UNAUTHORIZED) {
                             eventChannel.send(
                                 LoginEvent.Error(
@@ -142,6 +140,7 @@ class LoginViewModel(
                     }
 
                     is Result.Success -> {
+                        state = state.copy(isLoggingIn = false)
                         eventChannel.send(LoginEvent.LoginSuccess)
                     }
                 }
