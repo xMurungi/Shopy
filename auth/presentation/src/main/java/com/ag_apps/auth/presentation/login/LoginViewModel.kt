@@ -31,7 +31,7 @@ class LoginViewModel(
         private set
 
     private val eventChannel = Channel<LoginEvent>()
-    val events = eventChannel.receiveAsFlow()
+    val event = eventChannel.receiveAsFlow()
 
     init {
         state = state.copy(

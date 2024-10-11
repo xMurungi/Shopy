@@ -32,7 +32,7 @@ class RegisterViewModel(
         private set
 
     private val eventChannel = Channel<RegisterEvent>()
-    val events = eventChannel.receiveAsFlow()
+    val event = eventChannel.receiveAsFlow()
 
     init {
 

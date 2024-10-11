@@ -61,9 +61,11 @@ fun NavigationRoot(
         composable<Screen.Register> {
             RegisterScreenCore(
                 onSuccessfulRegistration = {
+                    navController.popBackStack()
                     navController.navigate(Screen.Main)
                 },
                 onLoginClick = {
+                    navController.popBackStack()
                     navController.navigate(Screen.Login)
                 }
             )
@@ -72,9 +74,11 @@ fun NavigationRoot(
         composable<Screen.Login> {
             LoginScreenCore(
                 onLoginSuccess = {
+                    navController.popBackStack()
                     navController.navigate(Screen.Main)
                 },
                 inSignUpClick = {
+                    navController.popBackStack()
                     navController.navigate(Screen.Register)
                 }
             )

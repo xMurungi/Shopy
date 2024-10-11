@@ -63,7 +63,7 @@ fun RegisterScreenCore(
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    ObserveAsEvent(flow = viewModel.events) { event ->
+    ObserveAsEvent(flow = viewModel.event) { event ->
         when (event) {
             is RegisterEvent.Error -> {
                 keyboardController?.hide()

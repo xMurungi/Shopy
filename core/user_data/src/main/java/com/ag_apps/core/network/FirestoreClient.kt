@@ -1,5 +1,7 @@
 package com.ag_apps.core.network
 
+import com.ag_apps.core.domain.Address
+import com.ag_apps.core.domain.Card
 import com.ag_apps.core.domain.User
 import com.ag_apps.core.domain.UserDataSource
 import com.ag_apps.core.domain.util.DataError
@@ -99,18 +101,51 @@ class FirestoreClient(
     }
 
     private fun User.toHashMap(): HashMap<String, Any> {
-        return hashMapOf(
+        val userMap = hashMapOf(
             "email" to email,
             "id" to id,
             "name" to name,
+            "card" to mapOf(
+                "nameOnCard" to (card?.nameOnCard ?: ""),
+                "cardNumber" to (card?.cardNumber ?: ""),
+                "expireDate" to (card?.expireDate ?: ""),
+                "cvv" to (card?.cvv ?: "")
+            ),
+            "address" to mapOf(
+                "address" to (address?.address ?: ""),
+                "city" to (address?.city ?: ""),
+                "region" to (address?.region ?: ""),
+                "zipCode" to (address?.zipCode ?: ""),
+                "country" to (address?.country ?: "")
+            )
         )
+
+        return userMap
     }
 
     private fun Map<String, Any>.toUser(): User {
+
         return User(
             email = this["email"] as String,
             id = this["id"] as String,
-            name = this["name"] as String
+            name = this["name"] as String,
+            card = (this["card"] as? Map<String, Any>).let {
+                Card(
+                    nameOnCard = it?.get("nameOnCard") as String,
+                    cardNumber = it["cardNumber"] as String,
+                    expireDate = it["expireDate"] as String,
+                    cvv = it["cvv"] as String
+                )
+            },
+            address = (this["address"] as? Map<String, Any>).let {
+                Address(
+                    address = it?.get("address") as String,
+                    city = it["city"] as String,
+                    region = it["region"] as String,
+                    zipCode = it["zipCode"] as String,
+                    country = it["country"] as String
+                )
+            },
         )
     }
 }

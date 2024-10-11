@@ -56,7 +56,7 @@ fun LoginScreenCore(
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    ObserveAsEvent(viewModel.events) { event ->
+    ObserveAsEvent(viewModel.event) { event ->
         when (event) {
             is LoginEvent.Error -> {
                 keyboardController?.hide()

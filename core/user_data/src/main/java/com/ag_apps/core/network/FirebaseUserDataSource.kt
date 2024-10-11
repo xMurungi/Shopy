@@ -35,8 +35,12 @@ class FirebaseUserDataSource(
         }
     }
 
-    override suspend fun updateUser(user: User): Flow<Result<String, DataError.Network>> {
+    override suspend fun updateUser(user: User?): Flow<Result<String, DataError.Network>> {
         return flow {
+            if (user == null) {
+                emit(Result.Error(DataError.Network.UNKNOWN))
+                return@flow
+            }
             firestoreClient.updateUser(user).collect {
                 Timber.tag(tag).d("updateUser: ${it is Result.Success}")
                 emit(it)
@@ -44,10 +48,10 @@ class FirebaseUserDataSource(
         }
     }
 
-    override suspend fun getUser(email: String?): Flow<Result<User, DataError.Network>> {
+    override suspend fun getUser(): Flow<Result<User, DataError.Network>> {
         return flow {
 
-            val userEmail = email ?: firebaseAuth.currentUser?.email
+            val userEmail = firebaseAuth.currentUser?.email
             if (userEmail == null) {
                 emit(Result.Error(DataError.Network.NOT_FOUND))
                 return@flow

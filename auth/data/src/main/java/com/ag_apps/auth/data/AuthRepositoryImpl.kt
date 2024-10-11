@@ -109,9 +109,7 @@ class AuthRepositoryImpl(
 
                     // - when user does not already exit in the data store (Result.Error),
                     //   then they are registering with google sign in and we need to insert them.
-                    // - use pass null for email since user logged in and already
-                    //   exits in firebaseAuth by now
-                    userDataSource.getUser(null).collect { userResult ->
+                    userDataSource.getUser().collect { userResult ->
                         when (userResult) {
                             is Result.Error -> {
                                 val user = EmptyFieldsUser.copy(
