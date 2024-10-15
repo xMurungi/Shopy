@@ -34,11 +34,10 @@ import androidx.compose.ui.unit.dp
 import com.ag_apps.auth.presentation.R
 import com.ag_apps.core.presentation.designsystem.Poppins
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
-import com.ag_apps.core.presentation.designsystem.components.Background
-import com.ag_apps.core.presentation.designsystem.components.Button
+import com.ag_apps.core.presentation.designsystem.components.ShopyButton
 import com.ag_apps.core.presentation.designsystem.components.OutlinedButton
-import com.ag_apps.core.presentation.designsystem.components.PasswordTextField
-import com.ag_apps.core.presentation.designsystem.components.TextField
+import com.ag_apps.core.presentation.designsystem.components.ShopyPasswordTextField
+import com.ag_apps.core.presentation.designsystem.components.ShopyTextField
 import com.ag_apps.core.presentation.ui.ObserveAsEvent
 import org.koin.androidx.compose.koinViewModel
 
@@ -99,7 +98,6 @@ private fun LoginScreen(
     state: LoginState,
     onAction: (LoginAction) -> Unit
 ) {
-    Background()
 
     Column(
         modifier = Modifier
@@ -107,7 +105,7 @@ private fun LoginScreen(
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp)
     ) {
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(52.dp))
 
         Text(
             text = stringResource(R.string.login),
@@ -119,10 +117,9 @@ private fun LoginScreen(
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        TextField(
+        ShopyTextField(
             textFieldState = state.email,
             startIcon = Icons.Outlined.Email,
-            endIcon = null,
             keyBoardType = KeyboardType.Email,
             hint = stringResource(R.string.example_email),
             title = stringResource(R.string.email),
@@ -131,7 +128,7 @@ private fun LoginScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        PasswordTextField(
+        ShopyPasswordTextField(
             textFieldState = state.password,
             isPasswordVisible = state.isPasswordVisible,
             onTogglePasswordVisibility = {
@@ -144,7 +141,7 @@ private fun LoginScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Button(
+        ShopyButton(
             text = stringResource(R.string.login),
             isLoading = state.isLoggingIn,
             enabled = state.canLogin,

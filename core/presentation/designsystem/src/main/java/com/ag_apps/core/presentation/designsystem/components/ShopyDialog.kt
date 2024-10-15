@@ -19,20 +19,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 
 /**
  * @author Ahmed Guedmioui
  */
 @Composable
-fun Dialog(
+fun ShopyDialog(
     modifier: Modifier = Modifier,
     title: String,
     description: String,
-    onDismiss: () -> Unit,
-    primaryButton: @Composable RowScope.() -> Unit,
+    descriptionTextAlign: TextAlign = TextAlign.Center,
+    onDismiss: () -> Unit = {},
+    properties: DialogProperties = DialogProperties(),
+    primaryButton: @Composable RowScope.() -> Unit = {},
     secondaryButton: @Composable RowScope.() -> Unit = {},
 ) {
-    Dialog(onDismissRequest = onDismiss) {
+    Dialog(
+        properties = properties,
+        onDismissRequest = onDismiss
+    ) {
         Column(
             modifier = modifier
                 .clip(RoundedCornerShape(15.dp))
@@ -45,13 +51,14 @@ fun Dialog(
                 text = title,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
+                fontSize = 19.sp,
                 color = MaterialTheme.colorScheme.onSurface
             )
 
             Text(
                 text = description,
-                textAlign = TextAlign.Center,
-                fontSize = 12.sp,
+                textAlign = descriptionTextAlign,
+                fontSize = 15.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 

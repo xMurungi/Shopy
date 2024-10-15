@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,11 +29,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ag_apps.auth.presentation.login.LoginScreenCore
 import com.ag_apps.auth.presentation.register.RegisterScreenCore
-import com.ag_apps.core.presentation.designsystem.components.Background
-import com.ag_apps.core.presentation.designsystem.components.Button
-import com.ag_apps.core.presentation.designsystem.components.BottomBar
-import com.ag_apps.core.presentation.designsystem.components.Scaffold
+import com.ag_apps.core.presentation.designsystem.components.ShopyBottomBar
+import com.ag_apps.core.presentation.designsystem.components.ShopyButton
 import com.ag_apps.core.presentation.designsystem.components.bottomBarItems
+import com.ag_apps.profile.presentation.ProfileScreenCore
 
 /**
  * @author Ahmed Guedmioui
@@ -39,16 +40,12 @@ import com.ag_apps.core.presentation.designsystem.components.bottomBarItems
 
 @Composable
 fun NavigationRoot(
-    modifier: Modifier = Modifier,
     isLoggedIn: Boolean,
 ) {
-
-    Background()
 
     val navController = rememberNavController()
 
     NavHost(
-        modifier = modifier,
         navController = navController,
         startDestination = if (isLoggedIn) Screen.Main else Screen.Login,
         enterTransition = { slideInHorizontally { it } },
@@ -170,8 +167,9 @@ private fun MainBottomBar(
     }
 
     Scaffold(
-        bottomAppBar = {
-            BottomBar(
+        contentWindowInsets = WindowInsets(top = 0.dp),
+        bottomBar = {
+            ShopyBottomBar(
                 items = bottomBarItems,
                 selectedItem = selectedItem,
                 onItemClick = { index ->
@@ -218,7 +216,7 @@ private fun MainBottomBar(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    Button(
+                    ShopyButton(
                         onClick = {
                             navController.navigate(Screen.ProductDetails)
                         },
@@ -259,12 +257,15 @@ private fun MainBottomBar(
 
             // profile ----------------------------------------------------------------------------
             composable<BottomBarScreen.Profile> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "profile")
-                }
+                ProfileScreenCore(
+                    onOrdersClick = {
+                        navController.navigate(Screen.OrderOverview)
+                    },
+                    onLogoutClick = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.Login)
+                    }
+                )
             }
 
         }

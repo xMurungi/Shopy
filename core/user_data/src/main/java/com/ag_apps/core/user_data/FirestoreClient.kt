@@ -1,9 +1,8 @@
-package com.ag_apps.core.network
+package com.ag_apps.core.user_data
 
 import com.ag_apps.core.domain.Address
 import com.ag_apps.core.domain.Card
 import com.ag_apps.core.domain.User
-import com.ag_apps.core.domain.UserDataSource
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
 import com.google.firebase.firestore.FirebaseFirestore
@@ -105,6 +104,7 @@ class FirestoreClient(
             "email" to email,
             "id" to id,
             "name" to name,
+            "image" to image,
             "card" to mapOf(
                 "nameOnCard" to (card?.nameOnCard ?: ""),
                 "cardNumber" to (card?.cardNumber ?: ""),
@@ -112,7 +112,7 @@ class FirestoreClient(
                 "cvv" to (card?.cvv ?: "")
             ),
             "address" to mapOf(
-                "address" to (address?.address ?: ""),
+                "street" to (address?.street ?: ""),
                 "city" to (address?.city ?: ""),
                 "region" to (address?.region ?: ""),
                 "zipCode" to (address?.zipCode ?: ""),
@@ -124,11 +124,11 @@ class FirestoreClient(
     }
 
     private fun Map<String, Any>.toUser(): User {
-
         return User(
             email = this["email"] as String,
             id = this["id"] as String,
             name = this["name"] as String,
+            image = this["image"] as String,
             card = (this["card"] as? Map<String, Any>).let {
                 Card(
                     nameOnCard = it?.get("nameOnCard") as String,
@@ -139,13 +139,13 @@ class FirestoreClient(
             },
             address = (this["address"] as? Map<String, Any>).let {
                 Address(
-                    address = it?.get("address") as String,
+                    street = it?.get("street") as String,
                     city = it["city"] as String,
                     region = it["region"] as String,
                     zipCode = it["zipCode"] as String,
                     country = it["country"] as String
                 )
-            },
+            }
         )
     }
 }

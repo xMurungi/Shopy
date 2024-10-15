@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -24,7 +23,7 @@ import androidx.compose.ui.unit.sp
  * @author Ahmed Guedmioui
  */
 @Composable
-fun Button(
+fun ShopyButton(
     modifier: Modifier = Modifier,
     text: String? = null,
     isLoading: Boolean = false,

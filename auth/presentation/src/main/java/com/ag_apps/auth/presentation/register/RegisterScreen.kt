@@ -42,11 +42,10 @@ import com.ag_apps.auth.domain.UserDataValidator
 import com.ag_apps.auth.presentation.R
 import com.ag_apps.core.presentation.designsystem.Poppins
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
-import com.ag_apps.core.presentation.designsystem.components.Background
-import com.ag_apps.core.presentation.designsystem.components.Button
+import com.ag_apps.core.presentation.designsystem.components.ShopyButton
 import com.ag_apps.core.presentation.designsystem.components.OutlinedButton
-import com.ag_apps.core.presentation.designsystem.components.PasswordTextField
-import com.ag_apps.core.presentation.designsystem.components.TextField
+import com.ag_apps.core.presentation.designsystem.components.ShopyPasswordTextField
+import com.ag_apps.core.presentation.designsystem.components.ShopyTextField
 import com.ag_apps.core.presentation.ui.ObserveAsEvent
 import org.koin.androidx.compose.koinViewModel
 
@@ -108,8 +107,6 @@ private fun RegisterScreen(
     state: RegisterState,
     onAction: (RegisterAction) -> Unit
 ) {
-    Background()
-
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -128,7 +125,7 @@ private fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        TextField(
+        ShopyTextField(
             textFieldState = state.email,
             startIcon = Icons.Outlined.Email,
             endIcon = if (state.isEmailValid) Icons.Outlined.Check else null,
@@ -140,7 +137,7 @@ private fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        TextField(
+        ShopyTextField(
             textFieldState = state.name,
             startIcon = Icons.Outlined.PersonOutline,
             endIcon = if (state.isNameValid) Icons.Outlined.Check else null,
@@ -152,7 +149,7 @@ private fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        PasswordTextField(
+        ShopyPasswordTextField(
             textFieldState = state.password,
             isPasswordVisible = state.isPasswordVisible,
             onTogglePasswordVisibility = {
@@ -192,7 +189,7 @@ private fun RegisterScreen(
         )
         Spacer(modifier = Modifier.height(22.dp))
 
-        Button(
+        ShopyButton(
             text = stringResource(R.string.register),
             isLoading = state.isRegistering,
             enabled = state.canRegister,

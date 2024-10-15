@@ -22,8 +22,6 @@ android {
 }
 
 dependencies {
-    // Coil
-    implementation(libs.coil.compose)
 
     // Compose
     implementation(libs.androidx.activity.compose)

@@ -9,4 +9,7 @@
     <string name="error_serialization_error">Oops, couldn\'t pars data</string>
     <string name="error_unknown">An unknown error occurred</string>
     <string name="error_email_password_incorrect">Email or password is incorrect.</string>
+    <string name="disclaimer_address_info">This is a personal project made by Ahmed Guedmioui.\nPlease note that for your security, we recommend entering a fake address.\nWhile you may enter your real address, it will only be stored in our database for demonstration purposes.\nAdditionally, NO real transactions will occur, NO funds will be withdrawn from your bank account. And you will NOT receive any products from any simulated purchases.\n\nThank you for your understanding and cooperation.</string>
+    <string name="disclaimer_card_info">This is a personal project made by Ahmed Guedmioui.\nPlease note that for your security, do NOT enter your real card details.\nThe card details will only be stored in our database for demonstration purposes.\nAdditionally, NO real transactions will occur, NO funds will be withdrawn from your bank account. And you will NOT receive any products from any simulated purchases.\n\nThank you for your understanding and cooperation.</string>
+    <string name="disclaimer">Disclaimer</string>
 </resources>

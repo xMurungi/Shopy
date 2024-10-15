@@ -115,6 +115,7 @@ class AuthRepositoryImpl(
                                 val user = EmptyFieldsUser.copy(
                                     name = credential.displayName ?: "",
                                     email = credential.id,
+                                    image = credential.profilePictureUri.toString(),
                                     id = ""
                                 )
                                 insertUser(user).collect { trySend(it) }

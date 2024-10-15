@@ -34,10 +34,6 @@ class LoginViewModel(
     val event = eventChannel.receiveAsFlow()
 
     init {
-        state = state.copy(
-            email = TextFieldState("ahmed@gmail.com"),
-            password = TextFieldState("Ahmed12345")
-        )
 
         viewModelScope.launch {
             snapshotFlow { state.email.text }

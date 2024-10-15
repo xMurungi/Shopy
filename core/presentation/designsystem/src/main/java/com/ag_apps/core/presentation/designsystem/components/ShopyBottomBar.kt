@@ -20,9 +20,6 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -37,7 +34,7 @@ import com.ag_apps.core.presentation.designsystem.ShopyTheme
  */
 
 @Composable
-fun BottomBar(
+fun ShopyBottomBar(
     modifier: Modifier = Modifier,
     items: List<BottomNavigationItem> = bottomBarItems,
     selectedItem: Int,
@@ -45,6 +42,7 @@ fun BottomBar(
 ) {
 
     NavigationBar(
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         modifier = modifier
     ) {
         Row(
@@ -107,7 +105,7 @@ data class BottomNavigationItem(
 @Composable
 private fun BottomPreview() {
     ShopyTheme {
-        BottomBar(
+        ShopyBottomBar(
             items = bottomBarItems,
             selectedItem = 0,
             onItemClick = { index -> }

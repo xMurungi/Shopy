@@ -4,4 +4,38 @@
     <string name="address_not_saved">Couldn\'t save address</string>
     <string name="card_saved">New card is saved</string>
     <string name="card_not_saved">Couldn\'t save card</string>
+    <string name="you_are_logged_out">You are logged out</string>
+    <string name="my_profile">My Profile</string>
+    <string name="my_orders">My Orders</string>
+    <string name="my_address">My Address</string>
+    <string name="my_payment_card">My Payment Card</string>
+    <string name="log_out">Log Out</string>
+    <string name="disclaimer">Disclaimer</string>
+
+    <string name="shipping_address">Shipping Address</string>
+    <string name="address">Address</string>
+    <string name="street">Street</string>
+    <string name="city">City</string>
+    <string name="state_province_region">State/Province/Region</string>
+    <string name="zip_code_postal_code">Zip Code (Postal Code)</string>
+    <string name="country">Country</string>
+    <string name="street_hint">3 Newbridge Court</string>
+    <string name="city_hint">Chino Hills</string>
+    <string name="state_province_region_hint">California</string>
+    <string name="zip_code_postal_code_hint">91709</string>
+    <string name="country_hint">United States</string>
+    <string name="save_address">Save Address</string>
+
+
+    <string name="payment_card">Payment Card</string>
+    <string name="card_holder_name">Card Holder Name</string>
+    <string name="card_number">Card Number</string>
+    <string name="expire_date">Expire Date</string>
+    <string name="cvv">CVV</string>
+    <string name="card_holder_name_hint">Ahmed Guedmioui</string>
+    <string name="card_number_hint">1234 5678 9012 3456</string>
+    <string name="expire_date_hint">05/26</string>
+    <string name="cvv_hint">567</string>
+    <string name="save_card">Save Card</string>
+
 </resources>

@@ -1,6 +1,6 @@
 package com.ag_apps.core.presentation.designsystem.components
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -20,15 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.ag_apps.core.presentation.designsystem.Poppins
 import com.ag_apps.core.presentation.designsystem.R
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 
@@ -37,19 +30,21 @@ import com.ag_apps.core.presentation.designsystem.ShopyTheme
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Toolbar(
+fun ShopyTopBar(
     modifier: Modifier = Modifier,
     title: String,
     navigationIcon: ImageVector? = null,
     actionIcon: ImageVector? = null,
     onNavigationClick: () -> Unit = {},
     onActionClick: () -> Unit = {},
+    windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
 ) {
 
     TopAppBar(
         modifier = modifier,
         scrollBehavior = scrollBehavior,
+        windowInsets = windowInsets,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent
         ),
@@ -87,19 +82,21 @@ fun Toolbar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LargeToolbar(
+fun ShopyLargeTopBar(
     modifier: Modifier = Modifier,
     title: String,
     navigationIcon: ImageVector? = null,
     actionIcon: ImageVector? = null,
     onNavigationClick: () -> Unit = {},
     onActionClick: () -> Unit = {},
+    windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
 ) {
 
     LargeTopAppBar(
         modifier = modifier,
         scrollBehavior = scrollBehavior,
+        windowInsets = windowInsets,
         colors = TopAppBarDefaults.largeTopAppBarColors(
             containerColor = Color.Transparent,
             scrolledContainerColor = Color.Transparent
@@ -142,7 +139,7 @@ fun LargeToolbar(
 @Composable
 private fun ToolbarPreview() {
     ShopyTheme {
-        Toolbar(
+        ShopyTopBar(
             modifier = Modifier.fillMaxWidth(),
             navigationIcon = Icons.Outlined.ArrowBackIosNew,
             actionIcon = Icons.Outlined.Search,
@@ -156,7 +153,7 @@ private fun ToolbarPreview() {
 @Composable
 private fun LargeToolbarPreview() {
     ShopyTheme {
-        LargeToolbar(
+        ShopyLargeTopBar(
             modifier = Modifier.fillMaxWidth(),
             navigationIcon = Icons.Outlined.ArrowBackIosNew,
             actionIcon = Icons.Outlined.Search,

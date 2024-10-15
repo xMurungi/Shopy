@@ -5,7 +5,7 @@ package com.ag_apps.core.domain
  * @author Ahmed Guedmioui
  */
 data class Address(
-    val address: String,
+    val street: String,
     val city: String,
     val region: String,
     val zipCode: String,
@@ -13,7 +13,7 @@ data class Address(
 )
 
 val EmptyFieldsAddress = Address(
-    address = "",
+    street = "",
     city = "",
     region = "",
     zipCode = "",

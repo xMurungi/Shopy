@@ -4,11 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
-import com.ag_apps.core.presentation.designsystem.components.Scaffold
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -28,12 +25,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             ShopyTheme {
                 if (!viewModel.state.isCheckingAuth) {
-                    Scaffold { paddingValues ->
-                        NavigationRoot(
-                            modifier = Modifier.padding(paddingValues),
-                            isLoggedIn = viewModel.state.isLoggedIn
-                        )
-                    }
+                    NavigationRoot(
+                        isLoggedIn = viewModel.state.isLoggedIn
+                    )
                 }
             }
         }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -23,14 +24,8 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -44,35 +39,52 @@ import com.ag_apps.core.presentation.designsystem.ShopyTheme
  * @author Ahmed Guedmioui
  */
 @Composable
-fun TextField(
+fun ShopyTextField(
     modifier: Modifier = Modifier,
     textFieldState: TextFieldState,
-    startIcon: ImageVector?,
-    endIcon: ImageVector?,
+    startIcon: ImageVector? = null,
+    endIcon: ImageVector? = null,
+    endIconTint: Color = Color.Green,
     hint: String,
-    title: String?,
+    title: String? = null,
     error: String? = null,
     keyBoardType: KeyboardType = KeyboardType.Text,
     additionalInfo: String? = null
 ) {
-    var isFocused by remember {
-        mutableStateOf(false)
-    }
+
 
     Column(
         modifier = modifier
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.inversePrimary,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .padding(bottom = 16.dp, top = 8.dp)
+            .padding(horizontal = 16.dp)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (title != null) {
-                Text(
-                    text = title,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (startIcon != null) {
+                        Icon(
+                            imageVector = startIcon,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f),
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                    }
+                    Text(
+                        text = title,
+                        fontSize = 13.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f)
+                    )
+                }
             }
             if (error != null) {
                 Text(
@@ -88,42 +100,25 @@ fun TextField(
                 )
             }
         }
-        Spacer(modifier = Modifier.height(4.dp))
+
+        Spacer(Modifier.height(4.dp))
+
         BasicTextField(
             state = textFieldState,
             textStyle = LocalTextStyle.current.copy(
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
+                fontSize = 18.sp
             ),
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyBoardType
             ),
             lineLimits = TextFieldLineLimits.SingleLine,
             cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
-            modifier = Modifier
-                .clip(RoundedCornerShape(10.dp))
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.primary.copy(0.6f),
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(12.dp)
-                .padding(vertical = 4.dp)
-                .onFocusChanged {
-                    isFocused = it.isFocused
-                },
             decorator = { innerBox ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    if (startIcon != null) {
-                        Icon(
-                            imageVector = startIcon,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Spacer(modifier = Modifier.width(16.dp))
-                    }
 
                     Box(
                         modifier = Modifier.weight(1f)
@@ -131,11 +126,9 @@ fun TextField(
                         if (textFieldState.text.isEmpty()) {
                             Text(
                                 text = hint,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                    alpha = 0.4f
-                                ),
-                                modifier = Modifier
-                                    .fillMaxWidth()
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f),
+                                fontSize = 18.sp,
+                                modifier = Modifier.fillMaxWidth()
                             )
                         }
                         innerBox()
@@ -145,7 +138,7 @@ fun TextField(
                         Icon(
                             imageVector = endIcon,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            tint = endIconTint,
                             modifier = Modifier.padding(end = 4.dp)
                         )
                     }
@@ -155,12 +148,12 @@ fun TextField(
     }
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 private fun TextFieldPreview() {
     ShopyTheme {
-        TextField(
-            textFieldState = TextFieldState(),
+        ShopyTextField(
+            textFieldState = TextFieldState("ahmed"),
             startIcon = Icons.Outlined.Email,
             endIcon = Icons.Outlined.Check,
             hint = "Email",

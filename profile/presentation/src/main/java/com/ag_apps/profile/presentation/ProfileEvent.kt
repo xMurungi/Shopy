@@ -4,6 +4,7 @@ package com.ag_apps.profile.presentation
  * @author Ahmed Guedmioui
  */
 sealed interface ProfileEvent {
-    data class OnAddressSave(val isSaved: Boolean): ProfileEvent
-    data class OnCardSave(val isSaved: Boolean): ProfileEvent
+    data class AddressSave(val isSaved: Boolean): ProfileEvent
+    data class CardSave(val isSaved: Boolean): ProfileEvent
+    data object Logout: ProfileEvent
 }

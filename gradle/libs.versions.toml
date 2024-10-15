@@ -36,6 +36,8 @@ bson = "4.11.1"
 work = "2.9.1"
 kotlinx-serialization = "1.6.3"
 annotation = "1.8.2"
+kotlinReflect = "1.9.23"
+
 
 # Project versions
 projectApplicationId = "com.ag_apps.shopy"
@@ -46,6 +48,7 @@ projectTargetSdkVersion = "35"
 projectCompileSdkVersion = "35"
 
 [libraries]
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlinReflect" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }

@@ -1,18 +1,12 @@
-package com.ag_apps.core.network
+package com.ag_apps.core.user_data
 
 import com.ag_apps.core.domain.User
 import com.ag_apps.core.domain.UserDataSource
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
