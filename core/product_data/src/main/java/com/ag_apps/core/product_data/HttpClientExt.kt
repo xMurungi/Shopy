@@ -1,11 +1,12 @@
-package com.ag_apps.core.product_data.networking
+package com.ag_apps.core.product_data
 
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
-import  com.ag_apps.core.product_data.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 import io.ktor.utils.io.CancellationException
 import kotlinx.serialization.SerializationException
@@ -16,10 +17,16 @@ import java.nio.channels.UnresolvedAddressException
  */
 
 suspend inline fun <reified Response : Any> HttpClient.get(
-    path: String,
+    route: String,
+    queryParameters: Map<String, Any?> = mapOf()
 ): Result<Response, DataError.Network> {
     return safeCall {
-        get(BuildConfig.BASE_URL + "/" + path)
+        get {
+            url(BuildConfig.BASE_URL + route)
+            queryParameters.forEach { (key, value) ->
+                parameter(key, value)
+            }
+        }
     }
 }
 

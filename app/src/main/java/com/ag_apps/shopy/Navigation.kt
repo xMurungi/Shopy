@@ -39,7 +39,7 @@ import com.ag_apps.profile.presentation.ProfileScreenCore
  */
 
 @Composable
-fun NavigationRoot(
+fun Navigation(
     isLoggedIn: Boolean,
 ) {
 

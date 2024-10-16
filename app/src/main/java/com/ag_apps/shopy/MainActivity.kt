@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ShopyTheme {
                 if (!viewModel.state.isCheckingAuth) {
-                    NavigationRoot(
+                    Navigation(
                         isLoggedIn = viewModel.state.isLoggedIn
                     )
                 }
