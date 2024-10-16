@@ -7,8 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ag_apps.core.domain.UserDataSource
 import com.ag_apps.core.domain.util.Result
+import com.ag_apps.profile.domain.ProfileRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
  * @author Ahmed Guedmioui
  */
 class ProfileViewModel(
-    private val userDataSource: UserDataSource
+    private val profileRepository: ProfileRepository
 ) : ViewModel() {
 
     var state by mutableStateOf(ProfileState())
@@ -54,7 +54,7 @@ class ProfileViewModel(
 
             ProfileAction.OnLogoutClick -> {
                 viewModelScope.launch {
-                    userDataSource.logout()
+                    profileRepository.logout()
                     eventChannel.send(ProfileEvent.Logout)
                 }
             }
@@ -73,7 +73,7 @@ class ProfileViewModel(
     private fun loadUser() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
-            userDataSource.getUser().collect { userResult ->
+            profileRepository.getUser().collect { userResult ->
                 when (userResult) {
                     is Result.Error -> {
                         state = state.copy(isLoading = false)
@@ -104,7 +104,7 @@ class ProfileViewModel(
             )
         }
 
-        val card = state.user?.card
+        val card = state.card
         card?.let {
             val cardNumber = if (card.cardNumber.isNotBlank()) {
                 "...." + card.cardNumber.takeLast(4)
@@ -135,7 +135,7 @@ class ProfileViewModel(
 
         viewModelScope.launch {
             state = state.copy(isSavingAddress = true)
-            userDataSource.updateUser(state.user).collect { updateResult ->
+            profileRepository.updateUser(state.user).collect { updateResult ->
                 when (updateResult) {
                     is Result.Error -> {
                         state = state.copy(isSavingAddress = false)
@@ -156,19 +156,17 @@ class ProfileViewModel(
 
     private fun saveCard() {
         state = state.copy(
-            user = state.user?.copy(
-                card = state.user?.card?.copy(
-                    nameOnCard = state.nameOnCardTextState.text.toString(),
-                    cardNumber = state.cardNumberTextState.text.toString(),
-                    expireDate = state.expireDateTextState.text.toString(),
-                    cvv = state.cvvTextState.text.toString()
-                )
+            card = state.card?.copy(
+                nameOnCard = state.nameOnCardTextState.text.toString(),
+                cardNumber = state.cardNumberTextState.text.toString(),
+                expireDate = state.expireDateTextState.text.toString(),
+                cvv = state.cvvTextState.text.toString()
             )
         )
 
         viewModelScope.launch {
             state = state.copy(isSavingCard = true)
-            userDataSource.updateUser(state.user).collect { updateResult ->
+            profileRepository.updateUser(state.user).collect { updateResult ->
                 when (updateResult) {
                     is Result.Error -> {
                         state = state.copy(isSavingCard = false)

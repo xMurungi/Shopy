@@ -13,7 +13,7 @@ interface UserDataSource {
 
     suspend fun insertUser(user: User): Flow<Result<String, DataError.Network>>
 
-    suspend fun updateUser(user: User?): Flow<Result<String, DataError.Network>>
+    suspend fun updateUser(user: User): Flow<Result<String, DataError.Network>>
 
     suspend fun getUser(): Flow<Result<User, DataError.Network>>
 

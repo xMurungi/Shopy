@@ -1,6 +1,7 @@
 package com.ag_apps.profile.presentation
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -104,6 +105,7 @@ private fun ProfileScreen(
 ) {
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             ShopyLargeTopBar(
                 title = stringResource(R.string.my_profile),
@@ -131,11 +133,6 @@ private fun ProfileScreen(
             ProfileActionSection(
                 text = stringResource(R.string.my_address),
                 onClick = { onAction(ProfileAction.OnAddressToggle) }
-            )
-
-            ProfileActionSection(
-                text = stringResource(R.string.my_payment_card),
-                onClick = { onAction(ProfileAction.OnCardToggle) }
             )
 
             ProfileActionSection(
@@ -257,7 +254,6 @@ private fun ProfileScreenPreview() {
                     image = "",
                     email = "ahmed@gmail.com",
                     id = "",
-                    card = null,
                     address = null
                 ),
                 isEditeAddressShowing = true

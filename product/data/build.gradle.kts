@@ -10,4 +10,6 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.userData)
     implementation(projects.product.domain)
+
+    implementation(libs.bundles.koin)
 }

@@ -24,7 +24,7 @@ class RemoteProductDataSource(
     private var currentOffset = 0
 
     override suspend fun getProducts(
-        refresh: Boolean
+        refresh: Boolean, minPrice: Int?, maxPrice: Int?,
     ): Result<List<Product>, DataError.Network> {
 
         if (refresh) {
@@ -33,12 +33,50 @@ class RemoteProductDataSource(
             currentOffset += 10
         }
 
-        return httpClient.get<ProductsDto>(
-            route = "/products",
-            queryParameters = mapOf(
+        val queryParameters = if (minPrice != null && maxPrice != null) {
+            mapOf(
+                "price_min" to minPrice,
+                "price_max" to maxPrice,
+                "offset" to currentOffset,
+                "limit" to 10,
+        } else {
+            mapOf(
                 "offset" to currentOffset,
                 "limit" to 10,
             )
+        }
+
+        return httpClient.get<ProductsDto>(
+            route = "/products",
+            queryParameters = queryParameters
+        ).map { productsDto ->
+            productsDto.map { it.toProduct() }
+        }
+    }
+
+    override suspend fun searchProducts(
+        query: String,
+        minPrice: Int?,
+        maxPrice: Int?
+    ): Result<List<Product>, DataError.Network> {
+        val queryParameters = if (minPrice != null && maxPrice != null) {
+            mapOf(
+                "title" to query,
+                "price_min" to minPrice,
+                "price_max" to maxPrice,
+                "offset" to currentOffset,
+                "limit" to 10,
+        } else {
+            mapOf(
+                "title" to query,
+                "offset" to currentOffset,
+                "limit" to 10,
+            )
+        }
+
+        return httpClient.get<ProductsDto>(
+            route = "/products",
+            queryParameters = queryParameters
         ).map { productsDto ->
             productsDto.map { it.toProduct() }
         }
@@ -68,7 +106,7 @@ class RemoteProductDataSource(
         return httpClient.get<CategoryDto>(
             route = "/categories/$id"
         ).map { categoryDto ->
-           categoryDto.toCategory()
+            categoryDto.toCategory()
         }
     }
 

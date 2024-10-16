@@ -9,8 +9,9 @@ data class User(
     val id: String,
     val name: String,
     val image: String,
-    val card: Card?,
     val address: Address?,
+    val wishlist: List<String>,
+    val cart: List<String>,
 )
 
 val EmptyFieldsUser = User(
@@ -18,6 +19,7 @@ val EmptyFieldsUser = User(
     id = "",
     name = "",
     image = "",
-    card = EmptyFieldsCard,
-    address = EmptyFieldsAddress
+    address = EmptyFieldsAddress,
+    wishlist = emptyList(),
+    cart = emptyList()
 )

@@ -1,6 +1,7 @@
 package com.ag_apps.profile.presentation
 
 import androidx.compose.foundation.text.input.TextFieldState
+import com.ag_apps.core.domain.Card
 import com.ag_apps.core.domain.User
 
 /**
@@ -8,6 +9,7 @@ import com.ag_apps.core.domain.User
  */
 data class ProfileState(
     val user: User? = null,
+    val card: Card? = null,
     val isLoading: Boolean = false,
     val isEditeAddressShowing: Boolean = false,
     val isSavingAddress: Boolean = false,

@@ -154,7 +154,6 @@ private fun ProfileScreenPreview() {
                     image = "",
                     email = "ahmed@gmail.com",
                     id = "",
-                    card = null,
                     address = null
                 ),
                 isEditeCardShowing = true

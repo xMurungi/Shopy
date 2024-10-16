@@ -2,11 +2,13 @@ package com.ag_apps.auth.presentation.login
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,8 +19,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowRightAlt
 import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,6 +40,7 @@ import com.ag_apps.core.presentation.designsystem.Poppins
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyButton
 import com.ag_apps.core.presentation.designsystem.components.OutlinedButton
+import com.ag_apps.core.presentation.designsystem.components.ShopyLargeTopBar
 import com.ag_apps.core.presentation.designsystem.components.ShopyPasswordTextField
 import com.ag_apps.core.presentation.designsystem.components.ShopyTextField
 import com.ag_apps.core.presentation.ui.ObserveAsEvent
@@ -93,113 +98,115 @@ fun LoginScreenCore(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun LoginScreen(
     state: LoginState,
     onAction: (LoginAction) -> Unit
 ) {
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp)
-    ) {
-        Spacer(modifier = Modifier.height(52.dp))
-
-        Text(
-            text = stringResource(R.string.login),
-            fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(start = 8.dp)
-        )
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        ShopyTextField(
-            textFieldState = state.email,
-            startIcon = Icons.Outlined.Email,
-            keyBoardType = KeyboardType.Email,
-            hint = stringResource(R.string.example_email),
-            title = stringResource(R.string.email),
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        ShopyPasswordTextField(
-            textFieldState = state.password,
-            isPasswordVisible = state.isPasswordVisible,
-            onTogglePasswordVisibility = {
-                onAction(LoginAction.OnTogglePasswordVisibilityClick)
-            },
-            hint = stringResource(R.string.password),
-            title = stringResource(R.string.password),
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        ShopyButton(
-            text = stringResource(R.string.login),
-            isLoading = state.isLoggingIn,
-            enabled = state.canLogin,
-            modifier = Modifier.fillMaxSize(),
-            onClick = {
-                onAction(LoginAction.OnLoginClick)
-            }
-        )
-
-        Spacer(modifier = Modifier.height(42.dp))
-
-        Text(
-            text = stringResource(R.string.or_login_with_google),
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedButton(
-            isLoading = state.isLoggingIn,
-            enabled = !state.isLoggingIn,
-            modifier = Modifier.fillMaxSize(),
-            onClick = {
-                onAction(LoginAction.OnGoogleLoginClick)
-            }
-        ) {
-            Image(
-                painter = painterResource(R.drawable.google),
-                contentDescription = stringResource(R.string.google_login),
-                modifier = Modifier.size(27.dp)
+    Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
+        topBar = {
+            ShopyLargeTopBar(
+                title = stringResource(R.string.login),
+                windowInsets = WindowInsets(top = 0.dp)
             )
         }
+    ) { paddingValues ->
 
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Row(
+        Column(
             modifier = Modifier
-                .align(Alignment.End)
-                .clickable { onAction(LoginAction.ObRegisterClick) }
-                .padding(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically
+                .verticalScroll(rememberScrollState())
+                .padding(paddingValues)
+                .padding(16.dp)
+                .fillMaxSize()
         ) {
-            Text(
-                text = stringResource(R.string.don_t_have_na_account) + " ",
-                fontFamily = Poppins,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Icon(
-                imageVector = Icons.AutoMirrored.Outlined.ArrowRightAlt,
-                contentDescription = stringResource(R.string.register),
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .size(30.dp)
-            )
-        }
 
+            ShopyTextField(
+                textFieldState = state.email,
+                startIcon = Icons.Outlined.Email,
+                keyBoardType = KeyboardType.Email,
+                hint = stringResource(R.string.example_email),
+                title = stringResource(R.string.email),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            ShopyPasswordTextField(
+                textFieldState = state.password,
+                isPasswordVisible = state.isPasswordVisible,
+                onTogglePasswordVisibility = {
+                    onAction(LoginAction.OnTogglePasswordVisibilityClick)
+                },
+                hint = stringResource(R.string.password),
+                title = stringResource(R.string.password),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            ShopyButton(
+                text = stringResource(R.string.login),
+                isLoading = state.isLoggingIn,
+                enabled = state.canLogin,
+                modifier = Modifier.fillMaxSize(),
+                onClick = {
+                    onAction(LoginAction.OnLoginClick)
+                }
+            )
+
+            Spacer(modifier = Modifier.height(42.dp))
+
+            Text(
+                text = stringResource(R.string.or_login_with_google),
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedButton(
+                isLoading = state.isLoggingIn,
+                enabled = !state.isLoggingIn,
+                modifier = Modifier.fillMaxSize(),
+                onClick = {
+                    onAction(LoginAction.OnGoogleLoginClick)
+                }
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.google),
+                    contentDescription = stringResource(R.string.google_login),
+                    modifier = Modifier.size(27.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Row(
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .clickable { onAction(LoginAction.ObRegisterClick) }
+                    .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.don_t_have_na_account) + " ",
+                    fontFamily = Poppins,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Icon(
+                    imageVector = Icons.AutoMirrored.Outlined.ArrowRightAlt,
+                    contentDescription = stringResource(R.string.register),
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .size(30.dp)
+                )
+            }
+
+        }
     }
 
 }

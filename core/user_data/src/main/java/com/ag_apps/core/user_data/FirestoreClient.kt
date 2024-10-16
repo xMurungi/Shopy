@@ -100,52 +100,46 @@ class FirestoreClient(
     }
 
     private fun User.toHashMap(): HashMap<String, Any> {
+        val address = mapOf(
+            "street" to (address?.street ?: ""),
+            "city" to (address?.city ?: ""),
+            "region" to (address?.region ?: ""),
+            "zipCode" to (address?.zipCode ?: ""),
+            "country" to (address?.country ?: "")
+        )
+
         val userMap = hashMapOf(
             "email" to email,
             "id" to id,
             "name" to name,
             "image" to image,
-            "card" to mapOf(
-                "nameOnCard" to (card?.nameOnCard ?: ""),
-                "cardNumber" to (card?.cardNumber ?: ""),
-                "expireDate" to (card?.expireDate ?: ""),
-                "cvv" to (card?.cvv ?: "")
-            ),
-            "address" to mapOf(
-                "street" to (address?.street ?: ""),
-                "city" to (address?.city ?: ""),
-                "region" to (address?.region ?: ""),
-                "zipCode" to (address?.zipCode ?: ""),
-                "country" to (address?.country ?: "")
-            )
+            "address" to address,
+            "wishlist" to wishlist,
+            "cart" to cart,
         )
 
         return userMap
     }
 
     private fun Map<String, Any>.toUser(): User {
+        val address = (this["address"] as? Map<*, *>)?.let {
+            Address(
+                street = it["street"] as String,
+                city = it["city"] as String,
+                region = it["region"] as String,
+                zipCode = it["zipCode"] as String,
+                country = it["country"] as String
+            )
+        }
+
         return User(
             email = this["email"] as String,
             id = this["id"] as String,
             name = this["name"] as String,
             image = this["image"] as String,
-            card = (this["card"] as? Map<String, Any>).let {
-                Card(
-                    nameOnCard = it?.get("nameOnCard") as String,
-                    cardNumber = it["cardNumber"] as String,
-                    expireDate = it["expireDate"] as String,
-                    cvv = it["cvv"] as String
-                )
-            },
-            address = (this["address"] as? Map<String, Any>).let {
-                Address(
-                    street = it?.get("street") as String,
-                    city = it["city"] as String,
-                    region = it["region"] as String,
-                    zipCode = it["zipCode"] as String,
-                    country = it["country"] as String
-                )
-            }
+            address = address,
+            wishlist = (this["wishlist"] as? List<*>)?.filterIsInstance<String>() ?: emptyList(),
+            cart = (this["cart"] as? List<*>)?.filterIsInstance<String>() ?: emptyList()
         )
     }
 }

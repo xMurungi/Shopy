@@ -11,7 +11,15 @@ import kotlinx.coroutines.flow.Flow
  */
 interface ProductDataSource {
 
-    suspend fun getProducts(refresh: Boolean): Result<List<Product>, DataError.Network>
+    suspend fun getProducts(
+        refresh: Boolean, minPrice: Int?, maxPrice: Int?,
+    ): Result<List<Product>, DataError.Network>
+
+
+    suspend fun searchProducts(
+        query: String, minPrice: Int?, maxPrice: Int?,
+    ): Result<List<Product>, DataError.Network>
+
 
     suspend fun getProduct(id: String): Result<Product, DataError.Network>
 

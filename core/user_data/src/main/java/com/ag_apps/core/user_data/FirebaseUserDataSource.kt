@@ -29,12 +29,8 @@ class FirebaseUserDataSource(
         }
     }
 
-    override suspend fun updateUser(user: User?): Flow<Result<String, DataError.Network>> {
+    override suspend fun updateUser(user: User): Flow<Result<String, DataError.Network>> {
         return flow {
-            if (user == null) {
-                emit(Result.Error(DataError.Network.UNKNOWN))
-                return@flow
-            }
             firestoreClient.updateUser(user).collect {
                 Timber.tag(tag).d("updateUser: ${it is Result.Success}")
                 emit(it)
