@@ -43,8 +43,7 @@ class RegisterViewModel(
         )
 
         viewModelScope.launch {
-            snapshotFlow { state.email.text }
-                .collectLatest { email ->
+            snapshotFlow { state.email.text }.collectLatest { email ->
                     val isValidEmail = userDataValidator.isValidEmail(email.toString())
 
                     val canRegister = isValidEmail
@@ -60,8 +59,7 @@ class RegisterViewModel(
         }
 
         viewModelScope.launch {
-            snapshotFlow { state.name.text }
-                .collectLatest { name ->
+            snapshotFlow { state.name.text }.collectLatest { name ->
                     val isValidName = userDataValidator.isValidName(name.toString())
 
                     val canRegister = isValidName
@@ -77,8 +75,7 @@ class RegisterViewModel(
         }
 
         viewModelScope.launch {
-            snapshotFlow { state.password.text }
-                .collectLatest { password ->
+            snapshotFlow { state.password.text }.collectLatest { password ->
                     val passwordValidationState = userDataValidator.isValidPassword(password.toString())
 
                     val canRegister = passwordValidationState.isValidPassword

@@ -17,6 +17,11 @@ interface UserDataSource {
 
     suspend fun getUser(): Flow<Result<User, DataError.Network>>
 
+
+    suspend fun addProductToWishlist(productId: String): Flow<Result<String, DataError.Network>>
+
+    suspend fun addProductToCart(productId: String): Flow<Result<String, DataError.Network>>
+
     fun isLoggedIn(): Boolean
 
     fun logout()

@@ -21,30 +21,26 @@ class RemoteProductDataSource(
     private val httpClient: HttpClient
 ) : ProductDataSource {
 
-    private var currentOffset = 0
-
     override suspend fun getProducts(
-        refresh: Boolean, minPrice: Int?, maxPrice: Int?,
+        offset: Int,
+        minPrice: Int?,
+        maxPrice: Int?,
     ): Result<List<Product>, DataError.Network> {
 
-        if (refresh) {
-            currentOffset = 0
-        } else {
-            currentOffset += 10
-        }
-
-        val queryParameters = if (minPrice != null && maxPrice != null) {
-            mapOf(
-                "price_min" to minPrice,
-                "price_max" to maxPrice,
-                "offset" to currentOffset,
-                "limit" to 10,
-        } else {
-            mapOf(
-                "offset" to currentOffset,
-                "limit" to 10,
-            )
-        }
+        val queryParameters =
+            if (minPrice != null && maxPrice != null) {
+                mapOf(
+                    "price_min" to minPrice,
+                    "price_max" to maxPrice,
+                    "offset" to offset,
+                    "limit" to 10
+                )
+            } else {
+                mapOf(
+                    "offset" to offset,
+                    "limit" to 10
+                )
+            }
 
         return httpClient.get<ProductsDto>(
             route = "/products",
@@ -56,23 +52,26 @@ class RemoteProductDataSource(
 
     override suspend fun searchProducts(
         query: String,
+        offset: Int,
         minPrice: Int?,
-        maxPrice: Int?
+        maxPrice: Int?,
     ): Result<List<Product>, DataError.Network> {
-        val queryParameters = if (minPrice != null && maxPrice != null) {
-            mapOf(
-                "title" to query,
-                "price_min" to minPrice,
-                "price_max" to maxPrice,
-                "offset" to currentOffset,
-                "limit" to 10,
-        } else {
-            mapOf(
-                "title" to query,
-                "offset" to currentOffset,
-                "limit" to 10,
-            )
-        }
+        val queryParameters =
+            if (minPrice != null && maxPrice != null) {
+                mapOf(
+                    "title" to query,
+                    "price_min" to minPrice,
+                    "price_max" to maxPrice,
+                    "offset" to offset,
+                    "limit" to 10
+                )
+            } else {
+                mapOf(
+                    "title" to query,
+                    "offset" to offset,
+                    "limit" to 10
+                )
+            }
 
         return httpClient.get<ProductsDto>(
             route = "/products",

@@ -21,17 +21,20 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.ag_apps.auth.presentation.login.LoginScreenCore
 import com.ag_apps.auth.presentation.register.RegisterScreenCore
 import com.ag_apps.core.presentation.designsystem.components.ShopyBottomBar
 import com.ag_apps.core.presentation.designsystem.components.ShopyButton
 import com.ag_apps.core.presentation.designsystem.components.bottomBarItems
+import com.ag_apps.product.presentation.product_overview.ProductOverviewScreenCore
 import com.ag_apps.profile.presentation.ProfileScreenCore
 
 /**
@@ -87,12 +90,16 @@ fun Navigation(
         }
 
         // product ------------------------------------------------------------------------------
-        composable<Screen.ProductDetails> {
+        composable<Screen.ProductDetails> { backStackEntry ->
+
+            val productDetails: Screen.ProductDetails = backStackEntry.toRoute()
+            val productId = productDetails.productId
+
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "product details")
+                Text(text = "product details: $productId")
             }
         }
 
@@ -207,22 +214,12 @@ private fun MainBottomBar(
 
             // product ----------------------------------------------------------------------------
             composable<BottomBarScreen.ProductOverview> {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(text = "product overview")
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    ShopyButton(
-                        onClick = {
-                            navController.navigate(Screen.ProductDetails)
-                        },
-                        text = "go to product details"
-                    )
-                }
+               ProductOverviewScreenCore(
+                   appName = stringResource(R.string.app_name),
+                   onSelectedProduct = { productId ->
+                       navController.navigate(Screen.ProductDetails(productId))
+                   }
+               )
             }
 
             // category ---------------------------------------------------------------------------
@@ -300,7 +297,7 @@ sealed interface Screen {
     data object Main : Screen
 
     @kotlinx.serialization.Serializable
-    data object ProductDetails : Screen
+    data class ProductDetails(val productId: Int) : Screen
 
     @kotlinx.serialization.Serializable
     data object CategoryDetails : Screen

@@ -6,7 +6,7 @@ package com.ag_apps.core.domain
  */
 data class User(
     val email: String,
-    val id: String,
+    val userId: String,
     val name: String,
     val image: String,
     val address: Address?,
@@ -16,7 +16,7 @@ data class User(
 
 val EmptyFieldsUser = User(
     email = "",
-    id = "",
+    userId = "",
     name = "",
     image = "",
     address = EmptyFieldsAddress,

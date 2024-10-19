@@ -12,12 +12,17 @@ import kotlinx.coroutines.flow.Flow
 interface ProductDataSource {
 
     suspend fun getProducts(
-        refresh: Boolean, minPrice: Int?, maxPrice: Int?,
+        offset: Int,
+        minPrice: Int?,
+        maxPrice: Int?,
     ): Result<List<Product>, DataError.Network>
 
 
     suspend fun searchProducts(
-        query: String, minPrice: Int?, maxPrice: Int?,
+        query: String,
+        offset: Int,
+        minPrice: Int?,
+        maxPrice: Int?,
     ): Result<List<Product>, DataError.Network>
 
 

@@ -54,6 +54,58 @@ class FirebaseUserDataSource(
         }
     }
 
+    override suspend fun addProductToWishlist(
+        productId: String
+    ): Flow<Result<String, DataError.Network>> {
+        return flow {
+            getUser().collect { userResult ->
+                when (userResult) {
+                    is Result.Error -> {
+                        emit(Result.Error(userResult.error))
+                    }
+
+                    is Result.Success -> {
+
+                        val wishlist = userResult.data.wishlist.toMutableList()
+                        wishlist.add(0, productId)
+                        val user = userResult.data.copy(
+                            wishlist = wishlist
+                        )
+                        updateUser(user).collect {
+                            emit(it)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override suspend fun addProductToCart(
+        productId: String
+    ): Flow<Result<String, DataError.Network>> {
+        return flow {
+            getUser().collect { userResult ->
+                when (userResult) {
+                    is Result.Error -> {
+                        emit(Result.Error(userResult.error))
+                    }
+
+                    is Result.Success -> {
+
+                        val cart = userResult.data.cart.toMutableList()
+                        cart.add(0, productId)
+                        val user = userResult.data.copy(
+                            cart = cart
+                        )
+                        updateUser(user).collect {
+                            emit(it)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     override fun isLoggedIn(): Boolean {
         if (firebaseAuth.currentUser != null) {
             Timber.tag(tag).d("Already logged in")

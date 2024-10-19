@@ -8,9 +8,9 @@ import com.ag_apps.core.domain.Product
  */
 
 fun ProductDto.toProduct(): Product = Product(
-    category = category.toCategory(),
+    categoryName = category.name,
     description = description,
-    id = id,
+    productId = id,
     images = images,
     price = price,
     title = title,

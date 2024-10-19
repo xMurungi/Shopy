@@ -42,7 +42,7 @@ class AuthRepositoryImpl(
 
                         applicationScope.launch {
                             val user = EmptyFieldsUser.copy(
-                                name = name, email = email, id = ""
+                                name = name, email = email, userId = ""
                             )
                             insertUser(user).collect {
                                 trySend(it)
@@ -116,7 +116,7 @@ class AuthRepositoryImpl(
                                     name = credential.displayName ?: "",
                                     email = credential.id,
                                     image = credential.profilePictureUri.toString(),
-                                    id = ""
+                                    userId = ""
                                 )
                                 insertUser(user).collect { trySend(it) }
                             }

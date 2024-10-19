@@ -11,7 +11,9 @@ import kotlinx.coroutines.flow.Flow
 interface ProductRepository {
 
     suspend fun getProducts(
-        refresh: Boolean, minPrice: Int?, maxPrice: Int?,
+        offset: Int,
+        minPrice: Int? = null,
+        maxPrice: Int? = null,
     ): Result<List<Product>, DataError.Network>
 
     suspend fun addProductToWishlist(

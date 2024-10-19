@@ -18,10 +18,13 @@ class ProductRepositoryImpl(
 ) : ProductRepository {
 
     override suspend fun getProducts(
-        refresh: Boolean, minPrice: Int?, maxPrice: Int?,
+        offset: Int,
+        minPrice: Int?,
+        maxPrice: Int?,
     ): Result<List<Product>, DataError.Network> {
+
         return productDataSource.getProducts(
-            refresh = refresh,
+            offset = offset,
             minPrice = minPrice,
             maxPrice = maxPrice
         )
@@ -30,54 +33,12 @@ class ProductRepositoryImpl(
     override suspend fun addProductToWishlist(
         productId: String
     ): Flow<Result<String, DataError.Network>> {
-        return flow {
-            userDataSource.getUser().collect { userResult ->
-                when (userResult) {
-                    is Result.Error -> {
-                        emit(Result.Error(userResult.error))
-                    }
-
-                    is Result.Success -> {
-
-                        val wishlist = userResult.data.wishlist.toMutableList()
-                        wishlist.add(0, productId)
-                        val user = userResult.data.copy(
-                            wishlist = wishlist
-                        )
-                        userDataSource.updateUser(user).collect {
-                            emit(it)
-                        }
-
-                    }
-                }
-            }
-        }
+        return userDataSource.addProductToWishlist(productId)
     }
 
     override suspend fun addProductToCart(
         productId: String
     ): Flow<Result<String, DataError.Network>> {
-        return flow {
-            userDataSource.getUser().collect { userResult ->
-                when (userResult) {
-                    is Result.Error -> {
-                        emit(Result.Error(userResult.error))
-                    }
-
-                    is Result.Success -> {
-
-                        val cart = userResult.data.cart.toMutableList()
-                        cart.add(0, productId)
-                        val user = userResult.data.copy(
-                            cart = cart
-                        )
-                        userDataSource.updateUser(user).collect {
-                            emit(it)
-                        }
-
-                    }
-                }
-            }
-        }
+        return userDataSource.addProductToCart(productId)
     }
 }

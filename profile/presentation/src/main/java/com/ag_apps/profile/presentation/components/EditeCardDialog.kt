@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Info
@@ -19,8 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,7 +36,6 @@ import com.ag_apps.core.presentation.designsystem.components.ShopyTextField
 import com.ag_apps.profile.presentation.ProfileAction
 import com.ag_apps.profile.presentation.ProfileState
 import com.ag_apps.profile.presentation.R
-import kotlinx.coroutines.flow.collectLatest
 
 /**
  * @author Ahmed Guedmioui
@@ -153,8 +149,10 @@ private fun ProfileScreenPreview() {
                     name = "Ahmed Guedmioui",
                     image = "",
                     email = "ahmed@gmail.com",
-                    id = "",
-                    address = null
+                    userId = "",
+                    address = null,
+                    cart = emptyList(),
+                    wishlist = emptyList(),
                 ),
                 isEditeCardShowing = true
             ),

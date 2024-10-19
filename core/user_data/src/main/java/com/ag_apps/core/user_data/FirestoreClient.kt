@@ -1,7 +1,6 @@
 package com.ag_apps.core.user_data
 
 import com.ag_apps.core.domain.Address
-import com.ag_apps.core.domain.Card
 import com.ag_apps.core.domain.User
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
@@ -33,7 +32,7 @@ class FirestoreClient(
                     applicationScope.launch {
                         // Update the user in firestore with the id field
                         // because when we insert a new user, the id field is empty
-                        updateUser(user.copy(id = document.id)).collect { updateResult ->
+                        updateUser(user.copy(userId = document.id)).collect { updateResult ->
                             when (updateResult) {
                                 is Result.Success -> trySend(Result.Success(document.id))
                                 is Result.Error -> trySend(Result.Error(updateResult.error))
@@ -54,11 +53,11 @@ class FirestoreClient(
     fun updateUser(user: User): Flow<Result<String, DataError.Network>> {
         return callbackFlow {
             firestore.collection("users")
-                .document(user.id)
+                .document(user.userId)
                 .set(user.toHashMap())
                 .addOnSuccessListener {
-                    Timber.tag(tag).d("updateUser with ID: ${user.id}")
-                    trySend(Result.Success(user.id))
+                    Timber.tag(tag).d("updateUser with ID: ${user.userId}")
+                    trySend(Result.Success(user.userId))
                 }
                 .addOnFailureListener { e ->
                     e.printStackTrace()
@@ -110,7 +109,7 @@ class FirestoreClient(
 
         val userMap = hashMapOf(
             "email" to email,
-            "id" to id,
+            "userId" to userId,
             "name" to name,
             "image" to image,
             "address" to address,
@@ -134,7 +133,7 @@ class FirestoreClient(
 
         return User(
             email = this["email"] as String,
-            id = this["id"] as String,
+            userId = this["userId"] as String,
             name = this["name"] as String,
             image = this["image"] as String,
             address = address,

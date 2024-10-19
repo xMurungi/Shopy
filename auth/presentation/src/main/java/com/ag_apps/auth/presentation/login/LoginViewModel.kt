@@ -35,19 +35,17 @@ class LoginViewModel(
     init {
 
         viewModelScope.launch {
-            snapshotFlow { state.email.text }
-                .collectLatest { email ->
-                    state = state.copy(
-                        canLogin = userDataValidator.isValidEmail(
-                            email.toString().trim()
-                        ) && state.password.text.isNotEmpty() && !state.isLoggingIn
-                    )
-                }
+            snapshotFlow { state.email.text }.collectLatest { email ->
+                state = state.copy(
+                    canLogin = userDataValidator.isValidEmail(
+                        email.toString().trim()
+                    ) && state.password.text.isNotEmpty() && !state.isLoggingIn
+                )
+            }
         }
 
         viewModelScope.launch {
-            snapshotFlow { state.password.text }
-                .collectLatest { password ->
+            snapshotFlow { state.password.text }.collectLatest { password ->
                     state = state.copy(
                         canLogin = userDataValidator.isValidEmail(
                             state.email.text.toString().trim()
