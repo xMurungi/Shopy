@@ -15,6 +15,8 @@ class ProductRepositoryImpl(
     private val userDataSource: UserDataSource
 ) : ProductRepository {
 
+    private val tag = "ProductRepository: "
+
     override suspend fun getProducts(
         offset: Int,
         minPrice: Int?,

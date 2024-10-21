@@ -101,15 +101,18 @@ private fun ProductOverviewScreen(
 
         if (state.products.isNotEmpty()) {
             ProductList(
-                modifier = Modifier
-                    .padding(top = padding.calculateTopPadding()),
-                isGridLayout = !state.isGridLayout,
+                modifier = Modifier.padding(top = padding.calculateTopPadding()),
                 products = state.products,
+                isGridLayout = state.isGridLayout,
+                isLoading = state.isLoading,
                 onToggleProductInWishlist = { index ->
                     onAction(ProductOverviewAction.ToggleProductInWishlist(index))
                 },
                 onToggleProductInCart = { index ->
                     onAction(ProductOverviewAction.ToggleProductInCart(index))
+                },
+                onPaginate = {
+                    onAction(ProductOverviewAction.Paginate)
                 },
                 onProductClick = { index ->
                     onAction(ProductOverviewAction.SelectProduct(index))

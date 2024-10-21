@@ -20,17 +20,21 @@ suspend inline fun <reified Response : Any> HttpClient.get(
     route: String,
     queryParameters: Map<String, Any?> = mapOf()
 ): Result<Response, DataError.Network> {
-    return safeCall {
-        get {
-            url(BuildConfig.BASE_URL + route)
-            queryParameters.forEach { (key, value) ->
-                parameter(key, value)
+    return safeCall(
+        execute = {
+            get {
+                url(BuildConfig.BASE_URL + route)
+                queryParameters.forEach { (key, value) ->
+                    parameter(key, value)
+                }
             }
         }
-    }
+    )
 }
 
-suspend inline fun <reified T> safeCall(execute: () -> HttpResponse): Result<T, DataError.Network> {
+suspend inline fun <reified T> safeCall(
+    execute: () -> HttpResponse
+): Result<T, DataError.Network> {
     val response = try {
         execute()
     } catch (e: UnresolvedAddressException) {

@@ -68,7 +68,7 @@ class ProductOverviewViewModel(
 
             ProductOverviewAction.Paginate -> {
                 state = state.copy(productsOffset = state.productsOffset + 10)
-                loadProducts()
+                loadProducts(true)
             }
 
             ProductOverviewAction.LoadProductsWithFilters -> {
@@ -96,7 +96,7 @@ class ProductOverviewViewModel(
         }
     }
 
-    private fun loadProducts() {
+    private fun loadProducts(paginate: Boolean = false) {
         viewModelScope.launch {
 
             state = state.copy(
@@ -121,10 +121,17 @@ class ProductOverviewViewModel(
                 }
 
                 is Result.Success -> {
+                    val products = if (paginate) {
+                        state.products + productsResult.data
+                    }
+                    else {
+                        productsResult.data
+                    }
+
                     state = state.copy(
                         isLoading = false,
                         isError = false,
-                        products = productsResult.data
+                        products = products
                     )
                 }
             }

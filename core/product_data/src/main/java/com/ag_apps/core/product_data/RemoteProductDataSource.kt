@@ -12,6 +12,7 @@ import com.ag_apps.core.product_data.dto.ProductDto
 import com.ag_apps.core.product_data.dto.toCategory
 import com.ag_apps.core.product_data.dto.toProduct
 import io.ktor.client.HttpClient
+import timber.log.Timber
 
 /**
  * @author Ahmed Guedmioui
@@ -20,11 +21,17 @@ class RemoteProductDataSource(
     private val httpClient: HttpClient
 ) : ProductDataSource {
 
+    private val tag = "ProductDataSource"
+
     override suspend fun getProducts(
         offset: Int,
         minPrice: Int?,
         maxPrice: Int?,
     ): Result<List<Product>, DataError.Network> {
+
+        Timber.tag(tag).d(
+            "getProducts: offset: $offset, minPrice: $minPrice, maxPrice: $maxPrice"
+        )
 
         val queryParameters =
             if (minPrice != null && maxPrice != null) {
@@ -41,10 +48,20 @@ class RemoteProductDataSource(
                 )
             }
 
-        return httpClient.get<List<ProductDto>>(
+        val productsResult = httpClient.get<List<ProductDto>>(
             route = "/products",
             queryParameters = queryParameters
-        ).map { productsDto ->
+        )
+
+        if (productsResult is Result.Success) {
+            Timber.tag(tag).d("getProducts: Success ${productsResult.data.size}")
+        }
+        if (productsResult is Result.Error) {
+            Timber.tag(tag).d("getProducts: Error ${productsResult.error}")
+        }
+
+
+        return productsResult.map { productsDto ->
             productsDto.map { it.toProduct() }
         }
     }
