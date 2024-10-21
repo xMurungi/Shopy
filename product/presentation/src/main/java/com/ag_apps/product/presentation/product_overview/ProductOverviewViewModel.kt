@@ -8,7 +8,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ag_apps.core.domain.util.Result
-import com.ag_apps.core.presentation.ui.asUiText
 import com.ag_apps.product.domain.ProductRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
@@ -71,8 +70,11 @@ class ProductOverviewViewModel(
                 loadProducts(true)
             }
 
-            ProductOverviewAction.LoadProductsWithFilters -> {
-                state = state.copy(productsOffset = 0)
+            ProductOverviewAction.ApplyFilter -> {
+                state = state.copy(
+                    productsOffset = 0,
+                    isApplyingFilter = true
+                )
                 loadProducts()
             }
 
@@ -92,7 +94,9 @@ class ProductOverviewViewModel(
                 toggleProductInCart(action.productIndex)
             }
 
-            is ProductOverviewAction.SelectProduct -> Unit
+            is ProductOverviewAction.ClickProduct -> Unit
+
+            ProductOverviewAction.Search -> Unit
         }
     }
 
@@ -116,6 +120,8 @@ class ProductOverviewViewModel(
                 is Result.Error -> {
                     state = state.copy(
                         isLoading = false,
+                        isApplyingFilter = false,
+                        isFilterOpen = false,
                         isError = true
                     )
                 }
@@ -123,13 +129,14 @@ class ProductOverviewViewModel(
                 is Result.Success -> {
                     val products = if (paginate) {
                         state.products + productsResult.data
-                    }
-                    else {
+                    } else {
                         productsResult.data
                     }
 
                     state = state.copy(
                         isLoading = false,
+                        isApplyingFilter = false,
+                        isFilterOpen = false,
                         isError = false,
                         products = products
                     )

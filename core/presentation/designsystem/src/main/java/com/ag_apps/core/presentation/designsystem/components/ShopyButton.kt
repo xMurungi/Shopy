@@ -42,7 +42,7 @@ fun ShopyButton(
         modifier = modifier
     ) {
         Box(
-            modifier = Modifier.padding(vertical = 6.dp),
+            modifier = Modifier.padding(vertical = 4.dp),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(
@@ -70,7 +70,7 @@ fun ShopyButton(
 
 
 @Composable
-fun OutlinedButton(
+fun ShopyOutlinedButton(
     modifier: Modifier = Modifier,
     text: String? = null,
     isLoading: Boolean = false,
@@ -93,7 +93,7 @@ fun OutlinedButton(
         modifier = modifier
     ) {
         Box(
-            modifier = Modifier.padding(vertical = 6.dp),
+            modifier = Modifier.padding(vertical = 4.dp),
             contentAlignment = Alignment.Center
         ) {
             if (text != null) {

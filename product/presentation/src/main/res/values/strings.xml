@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="can_t_load_products_right_now_please_try_again_later">Can\'t load products right now,\n please try again later.</string>
+    <string name="search_for_products">Search for products</string>
+    <string name="filter">Filter</string>
+    <string name="apply">Apply</string>
+    <string name="max_price">Max Price</string>
+    <string name="min_price">Min Price</string>
 </resources>

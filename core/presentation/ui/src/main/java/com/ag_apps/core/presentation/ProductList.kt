@@ -57,10 +57,7 @@ fun ProductList(
                 listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
             }
 
-            println("ProductList: lastVisibleIndex = $lastVisibleIndex, totalItems = $totalItems")
-
             lastVisibleIndex == totalItems - 1 && !isLoading
-
         }
     }
 

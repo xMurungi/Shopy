@@ -24,7 +24,7 @@
     <string name="state_province_region_hint">California</string>
     <string name="zip_code_postal_code_hint">91709</string>
     <string name="country_hint">United States</string>
-    <string name="save_address">Save Address</string>
+    <string name="save">Save</string>
 
 
     <string name="payment_card">Payment Card</string>
@@ -37,5 +37,6 @@
     <string name="expire_date_hint">05/26</string>
     <string name="cvv_hint">567</string>
     <string name="save_card">Save Card</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

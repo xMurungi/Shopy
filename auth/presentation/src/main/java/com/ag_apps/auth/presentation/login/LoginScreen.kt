@@ -2,7 +2,6 @@ package com.ag_apps.auth.presentation.login
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,7 +30,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,7 +37,7 @@ import com.ag_apps.auth.presentation.R
 import com.ag_apps.core.presentation.designsystem.Poppins
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyButton
-import com.ag_apps.core.presentation.designsystem.components.OutlinedButton
+import com.ag_apps.core.presentation.designsystem.components.ShopyOutlinedButton
 import com.ag_apps.core.presentation.designsystem.components.ShopyLargeTopBar
 import com.ag_apps.core.presentation.designsystem.components.ShopyPasswordTextField
 import com.ag_apps.core.presentation.designsystem.components.ShopyTextField
@@ -165,7 +163,7 @@ private fun LoginScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            OutlinedButton(
+            ShopyOutlinedButton(
                 isLoading = state.isLoggingIn,
                 enabled = !state.isLoggingIn,
                 modifier = Modifier.fillMaxSize(),

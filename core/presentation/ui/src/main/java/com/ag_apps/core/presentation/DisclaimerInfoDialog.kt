@@ -1,5 +1,6 @@
 package com.ag_apps.core.presentation
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyDialog
+import com.ag_apps.core.presentation.designsystem.components.ShopyOutlinedButton
 import com.ag_apps.core.presentation.ui.R
 
 /**
@@ -34,7 +36,14 @@ fun DisclaimerInfoDialog(
         description = description,
         descriptionTextAlign = TextAlign.Start,
         onDismiss = onDismiss,
-        properties = DialogProperties(usePlatformDefaultWidth = false)
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+        primaryButton = {
+            ShopyOutlinedButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.okay),
+                onClick = onDismiss
+            )
+        },
     )
 }
 

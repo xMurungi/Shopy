@@ -31,6 +31,8 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
@@ -48,11 +50,16 @@ fun ShopyTextField(
     hint: String,
     title: String? = null,
     error: String? = null,
+    applyTextWeight: Boolean = true,
+    textVerticalPadding: Dp = 16.dp,
+    textSize: TextUnit = 18.sp,
     keyBoardType: KeyboardType = KeyboardType.Text,
     additionalInfo: String? = null
 ) {
 
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -96,20 +103,21 @@ fun ShopyTextField(
         Spacer(Modifier.height(4.dp))
 
         Column(
-            modifier = modifier
+            modifier = Modifier
+                .fillMaxWidth()
                 .border(
                     width = 0.5.dp,
                     color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(8.dp)
                 )
-                .padding(16.dp)
+                .padding(horizontal = 16.dp, vertical = textVerticalPadding)
         ) {
 
             BasicTextField(
                 state = textFieldState,
                 textStyle = LocalTextStyle.current.copy(
                     color = MaterialTheme.colorScheme.onBackground,
-                    fontSize = 18.sp
+                    fontSize = textSize
                 ),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = keyBoardType
@@ -118,19 +126,17 @@ fun ShopyTextField(
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
                 decorator = { innerBox ->
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
                         Box(
-                            modifier = Modifier.weight(1f)
+                            modifier = if (applyTextWeight) Modifier.weight(1f) else Modifier
                         ) {
                             if (textFieldState.text.isEmpty()) {
                                 Text(
                                     text = hint,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f),
-                                    fontSize = 18.sp,
-                                    modifier = Modifier.fillMaxWidth()
+                                    fontSize = textSize,
                                 )
                             }
                             innerBox()

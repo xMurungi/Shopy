@@ -45,15 +45,17 @@ fun ShopyPasswordTextField(
     modifier: Modifier = Modifier,
     textFieldState: TextFieldState,
     isPasswordVisible: Boolean,
+    applyTextWeight: Boolean = true,
     onTogglePasswordVisibility: () -> Unit,
     hint: String,
     title: String?
 ) {
 
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(start = 4.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -78,7 +80,7 @@ fun ShopyPasswordTextField(
         Spacer(Modifier.height(4.dp))
 
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .border(
                     width = 0.5.dp,
                     color = MaterialTheme.colorScheme.primary,
@@ -102,11 +104,10 @@ fun ShopyPasswordTextField(
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
                 decorator = { innerBox ->
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Box(
-                            modifier = Modifier.weight(1f)
+                            modifier = if (applyTextWeight) Modifier.weight(1f) else Modifier
                         ) {
                             if (textFieldState.text.isEmpty()) {
                                 Text(

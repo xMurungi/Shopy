@@ -4,13 +4,9 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,7 +28,6 @@ import androidx.navigation.toRoute
 import com.ag_apps.auth.presentation.login.LoginScreenCore
 import com.ag_apps.auth.presentation.register.RegisterScreenCore
 import com.ag_apps.core.presentation.designsystem.components.ShopyBottomBar
-import com.ag_apps.core.presentation.designsystem.components.ShopyButton
 import com.ag_apps.core.presentation.designsystem.components.bottomBarItems
 import com.ag_apps.product.presentation.product_overview.ProductOverviewScreenCore
 import com.ag_apps.profile.presentation.ProfileScreenCore
@@ -206,18 +201,17 @@ private fun MainBottomBar(
             modifier = Modifier.padding(paddingValues),
             navController = bottomBarNavController,
             startDestination = BottomBarScreen.ProductOverview,
-            enterTransition = { fadeIn(initialAlpha = 1f) },
-            exitTransition = { fadeOut(targetAlpha = 0f) },
-            popEnterTransition = { fadeIn(initialAlpha = 1f) },
-            popExitTransition = { fadeOut(targetAlpha = 0f) }
         ) {
 
             // product ----------------------------------------------------------------------------
             composable<BottomBarScreen.ProductOverview> {
                ProductOverviewScreenCore(
                    appName = stringResource(R.string.app_name),
-                   onSelectedProduct = { productId ->
+                   onProductClick = { productId ->
                        navController.navigate(Screen.ProductDetails(productId))
+                   },
+                   onSearch = {
+                       navController.navigate(Screen.Search)
                    }
                )
             }

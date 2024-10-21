@@ -44,7 +44,7 @@ fun ShopyDialog(
                 .clip(RoundedCornerShape(15.dp))
                 .background(MaterialTheme.colorScheme.surface)
                 .padding(15.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(

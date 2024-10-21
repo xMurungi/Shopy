@@ -36,12 +36,6 @@ class RegisterViewModel(
 
     init {
 
-        state = state.copy(
-            email = TextFieldState("ahmed@gmail.com"),
-            name = TextFieldState("Ahmed"),
-            password = TextFieldState("Ahmed12345")
-        )
-
         viewModelScope.launch {
             snapshotFlow { state.email.text }.collectLatest { email ->
                     val isValidEmail = userDataValidator.isValidEmail(email.toString())

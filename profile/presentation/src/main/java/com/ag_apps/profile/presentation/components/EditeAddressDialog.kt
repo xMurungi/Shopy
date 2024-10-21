@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
@@ -24,11 +25,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyButton
+import com.ag_apps.core.presentation.designsystem.components.ShopyOutlinedButton
 import com.ag_apps.core.presentation.designsystem.components.ShopyTextField
 import com.ag_apps.profile.presentation.ProfileAction
 import com.ag_apps.profile.presentation.ProfileState
@@ -65,26 +69,16 @@ fun EditeAddressDialog(
         ) {
 
             Column(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Info,
-                        contentDescription = stringResource(R.string.disclaimer),
-                        modifier = Modifier
-                            .clickable { onDisclaimerClick() }
-                    )
-                    Icon(
-                        imageVector = Icons.Outlined.Close,
-                        contentDescription = stringResource(R.string.disclaimer),
-                        modifier = Modifier
-                            .size(25.dp)
-                            .clickable { onAction(ProfileAction.OnAddressToggle) }
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Outlined.Info,
+                    contentDescription = stringResource(R.string.disclaimer),
+                    modifier = Modifier
+                        .clickable { onDisclaimerClick() }
+                        .align(Alignment.End)
+                )
                 Text(
                     text = stringResource(R.string.shipping_address),
                     fontWeight = FontWeight.SemiBold,
@@ -127,14 +121,39 @@ fun EditeAddressDialog(
 
             Spacer(Modifier.height(0.dp))
 
-            ShopyButton(
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.save_address),
-                enabled = state.canSavingAddress,
-                onClick = { onAction(ProfileAction.OnSaveAddress) }
-            )
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                ShopyOutlinedButton(
+                    modifier = Modifier.weight(1f),
+                    text = stringResource(R.string.cancel),
+                    onClick = { onAction(ProfileAction.OnAddressToggle) }
+                )
+
+
+                ShopyButton(
+                    modifier = Modifier.weight(1f),
+                    text = stringResource(R.string.save),
+                    enabled = state.canSavingAddress,
+                    onClick = { onAction(ProfileAction.OnSaveAddress) }
+                )
+            }
+
 
         }
 
+    }
+}
+
+@Preview
+@Composable
+private fun EditeAddressDialogPreview() {
+    ShopyTheme {
+        EditeAddressDialog(
+            onAction = {},
+            state = ProfileState(),
+            onDisclaimerClick = {}
+        )
     }
 }

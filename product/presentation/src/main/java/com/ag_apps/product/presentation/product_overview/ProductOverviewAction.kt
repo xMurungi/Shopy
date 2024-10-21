@@ -6,10 +6,11 @@ package com.ag_apps.product.presentation.product_overview
 sealed interface ProductOverviewAction {
     data object Refresh : ProductOverviewAction
     data object Paginate : ProductOverviewAction
-    data object LoadProductsWithFilters : ProductOverviewAction
+    data object ApplyFilter : ProductOverviewAction
     data object ToggleFilter : ProductOverviewAction
     data object ToggleProductsLayout : ProductOverviewAction
     data class ToggleProductInWishlist(val productIndex: Int) : ProductOverviewAction
     data class ToggleProductInCart(val productIndex: Int) : ProductOverviewAction
-    data class SelectProduct(val productIndex: Int) : ProductOverviewAction
+    data class ClickProduct(val productIndex: Int) : ProductOverviewAction
+    data object Search : ProductOverviewAction
 }
