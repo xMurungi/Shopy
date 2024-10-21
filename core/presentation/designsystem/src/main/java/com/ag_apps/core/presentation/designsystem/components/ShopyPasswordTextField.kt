@@ -50,94 +50,96 @@ fun ShopyPasswordTextField(
     title: String?
 ) {
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        if (title != null) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Outlined.Lock,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = title,
-                    fontSize = 13.sp,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
-        }
-    }
-
-    Spacer(Modifier.height(4.dp))
-
-    Column(
-        modifier = modifier
-            .border(
-                width = 0.5.dp,
-                color = MaterialTheme.colorScheme.primary,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .padding(16.dp)
-    ) {
-
-        BasicSecureTextField(
-            state = textFieldState,
-            textObfuscationMode = if (isPasswordVisible) {
-                TextObfuscationMode.Visible
-            } else {
-                TextObfuscationMode.Hidden
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            textStyle = LocalTextStyle.current.copy(
-                color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 18.sp
-            ),
-            cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
-            decorator = { innerBox ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        if (textFieldState.text.isEmpty()) {
-                            Text(
-                                text = hint,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f),
-                                fontSize = 18.sp,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                        innerBox()
-                    }
-
-
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            if (title != null) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        modifier = Modifier
-                            .clickable { onTogglePasswordVisibility() },
-                        imageVector = if (isPasswordVisible) {
-                            Icons.Outlined.Visibility
-                        } else {
-                            Icons.Outlined.VisibilityOff
-                        },
-                        contentDescription = if (isPasswordVisible) {
-                            stringResource(R.string.show_password)
-                        } else {
-                            stringResource(R.string.hide_password)
-                        },
+                        imageVector = Icons.Outlined.Lock,
+                        contentDescription = null,
                         tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.size(18.dp)
                     )
-
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = title,
+                        fontSize = 13.sp,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
                 }
             }
-        )
+        }
+
+        Spacer(Modifier.height(4.dp))
+
+        Column(
+            modifier = modifier
+                .border(
+                    width = 0.5.dp,
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(16.dp)
+        ) {
+
+            BasicSecureTextField(
+                state = textFieldState,
+                textObfuscationMode = if (isPasswordVisible) {
+                    TextObfuscationMode.Visible
+                } else {
+                    TextObfuscationMode.Hidden
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                textStyle = LocalTextStyle.current.copy(
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 18.sp
+                ),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
+                decorator = { innerBox ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            if (textFieldState.text.isEmpty()) {
+                                Text(
+                                    text = hint,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f),
+                                    fontSize = 18.sp,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                            innerBox()
+                        }
+
+
+                        Icon(
+                            modifier = Modifier
+                                .clickable { onTogglePasswordVisibility() },
+                            imageVector = if (isPasswordVisible) {
+                                Icons.Outlined.Visibility
+                            } else {
+                                Icons.Outlined.VisibilityOff
+                            },
+                            contentDescription = if (isPasswordVisible) {
+                                stringResource(R.string.show_password)
+                            } else {
+                                stringResource(R.string.hide_password)
+                            },
+                            tint = MaterialTheme.colorScheme.onBackground,
+                        )
+
+                    }
+                }
+            )
+        }
     }
 }
 

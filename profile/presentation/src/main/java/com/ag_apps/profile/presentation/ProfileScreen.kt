@@ -217,7 +217,7 @@ fun ProfileActionSection(
     color: Color = MaterialTheme.colorScheme.onBackground,
     onClick: () -> Unit
 ) {
-    HorizontalDivider(modifier = Modifier.alpha(0.3f))
+    HorizontalDivider(modifier = Modifier.alpha(0.5f))
 
     Row(
         modifier = modifier

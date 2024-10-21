@@ -92,7 +92,7 @@ fun GridProductItem(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(20.dp))
-            .background(MaterialTheme.colorScheme.inversePrimary.copy(0.2f))
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
             .clickable { onClick() }
     ) {
         Box(
@@ -181,7 +181,7 @@ fun ColumnProductItem(
             Row(
                 modifier = modifier
                     .clip(RoundedCornerShape(20.dp))
-                    .background(MaterialTheme.colorScheme.inversePrimary.copy(0.2f))
+                    .background(MaterialTheme.colorScheme.surfaceContainerLowest)
                     .clickable { onClick() }
                     .padding(end = 7.dp)
             ) {

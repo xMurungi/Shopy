@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ag_apps.core.domain.Product
 import com.ag_apps.core.presentation.ProductItem
+import com.ag_apps.core.presentation.ProductList
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.ui.ObserveAsEvent
 import com.ag_apps.product.presentation.R
@@ -112,60 +113,21 @@ private fun ProductOverviewScreen(
         }
 
         if (state.products.isNotEmpty()) {
-            if (state.isGridLayout) {
-                LazyVerticalGrid(
-                    modifier = Modifier
-                        .padding(top = padding.calculateTopPadding())
-                        .padding(horizontal = 6.dp),
-                    columns = GridCells.Fixed(2),
-                ) {
-                    itemsIndexed(state.products) { index, product ->
-                        ProductItem(
-                            modifier = Modifier
-                                .padding(6.dp)
-                                .padding(top = if (index == 0 || index == 1) 8.dp else 0.dp),
-                            product = product,
-                            isGrid = true,
-                            onAddToWishlist = {
-                                onAction(ProductOverviewAction.ToggleProductInWishlist(index))
-                            },
-                            onAddToCart = {
-                                onAction(ProductOverviewAction.ToggleProductInCart(index))
-                            },
-                            onClick = {
-                                onAction(ProductOverviewAction.SelectProduct(index))
-                            }
-                        )
-                    }
+            ProductList(
+                modifier = Modifier
+                    .padding(top = padding.calculateTopPadding()),
+                isGridLayout = state.isGridLayout,
+                products = state.products,
+                toggleProductInWishlist = { index ->
+                    onAction(ProductOverviewAction.ToggleProductInWishlist(index))
+                },
+                toggleProductInCart = { index ->
+                    onAction(ProductOverviewAction.ToggleProductInCart(index))
+                },
+                selectProduct = { index ->
+                    onAction(ProductOverviewAction.SelectProduct(index))
                 }
-            } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .padding(padding)
-                        .padding(horizontal = 16.dp),
-                    contentPadding = PaddingValues(vertical = 8.dp)
-                ) {
-                    itemsIndexed(state.products) { index, product ->
-                        ProductItem(
-                            modifier = Modifier.height(120.dp),
-                            product = product,
-                            isGrid = false,
-                            imageWidth = 120.dp,
-                            onAddToWishlist = {
-                                onAction(ProductOverviewAction.ToggleProductInWishlist(index))
-                            },
-                            onAddToCart = {
-                                onAction(ProductOverviewAction.ToggleProductInCart(index))
-                            },
-                            onClick = {
-                                onAction(ProductOverviewAction.SelectProduct(index))
-                            }
-                        )
-
-                        Spacer(Modifier.height(12.dp))
-                    }
-                }
-            }
+            )
         }
     }
 }

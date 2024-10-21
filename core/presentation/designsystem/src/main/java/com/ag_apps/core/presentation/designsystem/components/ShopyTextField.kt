@@ -52,101 +52,102 @@ fun ShopyTextField(
     additionalInfo: String? = null
 ) {
 
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        if (title != null) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                if (startIcon != null) {
-                    Icon(
-                        imageVector = startIcon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(18.dp)
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if (title != null) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (startIcon != null) {
+                        Icon(
+                            imageVector = startIcon,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                    }
+                    Text(
+                        text = title,
+                        fontSize = 13.sp,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
                 }
+            }
+            if (error != null) {
                 Text(
-                    text = title,
-                    fontSize = 13.sp,
-                    color = MaterialTheme.colorScheme.onBackground
+                    text = error,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 12.sp
+                )
+            } else if (additionalInfo != null) {
+                Text(
+                    text = additionalInfo,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = 12.sp
                 )
             }
         }
-        if (error != null) {
-            Text(
-                text = error,
-                color = MaterialTheme.colorScheme.error,
-                fontSize = 12.sp
-            )
-        } else if (additionalInfo != null) {
-            Text(
-                text = additionalInfo,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 12.sp
-            )
-        }
-    }
 
-    Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(4.dp))
 
-    Column(
-        modifier = modifier
-            .border(
-                width = 0.5.dp,
-                color = MaterialTheme.colorScheme.primary,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .padding(16.dp)
-    ) {
+        Column(
+            modifier = modifier
+                .border(
+                    width = 0.5.dp,
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(16.dp)
+        ) {
 
-        BasicTextField(
-            state = textFieldState,
-            textStyle = LocalTextStyle.current.copy(
-                color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 18.sp
-            ),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = keyBoardType
-            ),
-            lineLimits = TextFieldLineLimits.SingleLine,
-            cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
-            decorator = { innerBox ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    Box(
-                        modifier = Modifier.weight(1f)
+            BasicTextField(
+                state = textFieldState,
+                textStyle = LocalTextStyle.current.copy(
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 18.sp
+                ),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = keyBoardType
+                ),
+                lineLimits = TextFieldLineLimits.SingleLine,
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
+                decorator = { innerBox ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        if (textFieldState.text.isEmpty()) {
-                            Text(
-                                text = hint,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f),
-                                fontSize = 18.sp,
-                                modifier = Modifier.fillMaxWidth()
+
+                        Box(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            if (textFieldState.text.isEmpty()) {
+                                Text(
+                                    text = hint,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f),
+                                    fontSize = 18.sp,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                            innerBox()
+                        }
+
+                        if (endIcon != null) {
+                            Icon(
+                                imageVector = endIcon,
+                                contentDescription = null,
+                                tint = endIconTint,
+                                modifier = Modifier.padding(end = 4.dp)
                             )
                         }
-                        innerBox()
-                    }
-
-                    if (endIcon != null) {
-                        Icon(
-                            imageVector = endIcon,
-                            contentDescription = null,
-                            tint = endIconTint,
-                            modifier = Modifier.padding(end = 4.dp)
-                        )
                     }
                 }
-            }
-        )
+            )
+        }
     }
 }
 
