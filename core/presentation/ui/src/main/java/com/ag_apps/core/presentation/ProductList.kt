@@ -22,9 +22,10 @@ fun ProductList(
     modifier: Modifier = Modifier,
     isGridLayout: Boolean,
     products: List<Product>,
-    toggleProductInWishlist: (Int) -> Unit,
-    toggleProductInCart: (Int) -> Unit,
-    selectProduct: (Int) -> Unit,
+    onToggleProductInWishlist: ((Int) -> Unit)? = null,
+    onToggleProductInCart: ((Int) -> Unit)? = null,
+    onRemove: ((Int) -> Unit)? = null,
+    onProductClick: (Int) -> Unit,
 ) {
     if (isGridLayout) {
         LazyVerticalGrid(
@@ -32,21 +33,17 @@ fun ProductList(
             columns = GridCells.Fixed(2),
         ) {
             itemsIndexed(products) { index, product ->
-                ProductItem(
+                Item(
                     modifier = Modifier
                         .padding(6.dp)
                         .padding(top = if (index == 0 || index == 1) 8.dp else 0.dp),
                     product = product,
-                    isGrid = true,
-                    onAddToWishlist = {
-                        toggleProductInWishlist(index)
-                    },
-                    onAddToCart = {
-                        toggleProductInCart(index)
-                    },
-                    onClick = {
-                        selectProduct(index)
-                    }
+                    index = index,
+                    isGridLayout = true,
+                    onToggleProductInWishlist = onToggleProductInWishlist,
+                    onToggleProductInCart = onToggleProductInCart,
+                    onRemove = onRemove,
+                    onProductClick = onProductClick
                 )
             }
         }
@@ -56,24 +53,55 @@ fun ProductList(
             contentPadding = PaddingValues(vertical = 8.dp)
         ) {
             itemsIndexed(products) { index, product ->
-                ProductItem(
+                Item(
                     modifier = Modifier.height(120.dp),
                     product = product,
-                    isGrid = false,
-                    imageWidth = 120.dp,
-                    onAddToWishlist = {
-                        toggleProductInWishlist(index)
-                    },
-                    onAddToCart = {
-                        toggleProductInCart(index)
-                    },
-                    onClick = {
-                        selectProduct(index)
-                    }
+                    index = index,
+                    isGridLayout = false,
+                    onToggleProductInWishlist = onToggleProductInWishlist,
+                    onToggleProductInCart = onToggleProductInCart,
+                    onRemove = onRemove,
+                    onProductClick = onProductClick
                 )
-
                 Spacer(Modifier.height(12.dp))
             }
         }
     }
+}
+
+@Composable
+private fun Item(
+    modifier: Modifier = Modifier,
+    product: Product,
+    index: Int,
+    isGridLayout: Boolean,
+    onToggleProductInWishlist: ((Int) -> Unit)? = null,
+    onToggleProductInCart: ((Int) -> Unit)? = null,
+    onRemove: ((Int) -> Unit)? = null,
+    onProductClick: (Int) -> Unit,
+) {
+    ProductItem(
+        modifier = modifier,
+        product = product,
+        isGrid = isGridLayout,
+        imageWidth = 120.dp,
+        onToggleInWishlist = if (onToggleProductInWishlist != null) {
+            { onToggleProductInWishlist(index) }
+        } else {
+            null
+        },
+        onToggleInCart = if (onToggleProductInCart != null) {
+            { onToggleProductInCart(index) }
+        } else {
+            null
+        },
+        onRemove = if (onRemove != null) {
+            { onRemove(index) }
+        } else {
+            null
+        },
+        onClick = {
+            onProductClick(index)
+        }
+    )
 }

@@ -1,6 +1,5 @@
 package com.ag_apps.core.presentation
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,12 +28,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,17 +50,17 @@ fun ProductItem(
     product: Product,
     isGrid: Boolean,
     imageWidth: Dp = 100.dp,
-    onAddToWishlist: (() -> Unit)? = null,
+    onToggleInWishlist: (() -> Unit)? = null,
+    onToggleInCart: (() -> Unit)? = null,
     onRemove: (() -> Unit)? = null,
-    onAddToCart: (() -> Unit)? = null,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     if (isGrid && onRemove == null) {
         GridProductItem(
             modifier = modifier,
             product = product,
-            onAddToWishlist = onAddToWishlist,
-            onAddToCart = onAddToCart,
+            onToggleProductInWishlist = onToggleInWishlist,
+            onToggleProductInCart = onToggleInCart,
             onClick = onClick
         )
     } else {
@@ -72,9 +68,9 @@ fun ProductItem(
             modifier = modifier,
             product = product,
             imageWidth = imageWidth,
-            onAddToWishlist = onAddToWishlist,
+            onToggleProductInWishlist = onToggleInWishlist,
+            onToggleProductInCart = onToggleInCart,
             onRemove = onRemove,
-            onAddToCart = onAddToCart,
             onClick = onClick
         )
     }
@@ -84,8 +80,8 @@ fun ProductItem(
 fun GridProductItem(
     modifier: Modifier = Modifier,
     product: Product,
-    onAddToWishlist: (() -> Unit)? = null,
-    onAddToCart: (() -> Unit)? = null,
+    onToggleProductInWishlist: (() -> Unit)? = null,
+    onToggleProductInCart: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
 
@@ -114,10 +110,10 @@ fun GridProductItem(
 
             ProductActionsSection(
                 product = product,
-                onAddToWishlist = onAddToWishlist,
-                onAddToCart = onAddToCart,
+                onAddToWishlist = onToggleProductInWishlist,
+                onAddToCart = onToggleProductInCart,
                 modifier = Modifier
-                    .padding(horizontal = 7.dp)
+                    .padding(horizontal = 2.dp)
                     .padding(bottom = 8.dp)
                     .align(Alignment.BottomEnd)
             )
@@ -165,9 +161,9 @@ fun GridProductItem(
 fun ColumnProductItem(
     modifier: Modifier = Modifier,
     product: Product,
-    onAddToWishlist: (() -> Unit)? = null,
+    onToggleProductInWishlist: (() -> Unit)? = null,
     onRemove: (() -> Unit)? = null,
-    onAddToCart: (() -> Unit)? = null,
+    onToggleProductInCart: (() -> Unit)? = null,
     onClick: () -> Unit,
     imageWidth: Dp = 100.dp,
 ) {
@@ -253,9 +249,10 @@ fun ColumnProductItem(
 
         ProductActionsSection(
             product = product,
-            onAddToWishlist = onAddToWishlist,
-            onAddToCart = onAddToCart,
+            onAddToWishlist = onToggleProductInWishlist,
+            onAddToCart = onToggleProductInCart,
             modifier = Modifier
+                .padding(horizontal = 2.dp)
                 .align(Alignment.BottomEnd)
         )
     }
@@ -365,8 +362,8 @@ private fun ProductItemPreview() {
             ),
             isGrid = true,
             onClick = {},
-            onAddToWishlist = {},
-            onAddToCart = {},
+            onToggleInWishlist = {},
+            onToggleInCart = {},
         )
     }
 }
