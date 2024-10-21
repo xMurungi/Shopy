@@ -9,7 +9,7 @@ sealed interface ProductOverviewAction {
     data object LoadProductsWithFilters : ProductOverviewAction
     data object ToggleFilter : ProductOverviewAction
     data object ToggleProductsLayout : ProductOverviewAction
-    data class AddProductToWishlist(val productId: Int) : ProductOverviewAction
-    data class AddProductToCart(val productId: Int) : ProductOverviewAction
-    data class SelectProduct(val productId: Int) : ProductOverviewAction
+    data class ToggleProductInWishlist(val productIndex: Int) : ProductOverviewAction
+    data class ToggleProductInCart(val productIndex: Int) : ProductOverviewAction
+    data class SelectProduct(val productIndex: Int) : ProductOverviewAction
 }

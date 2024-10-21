@@ -8,8 +8,11 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ag_apps.core.domain.util.Result
+import com.ag_apps.core.presentation.ui.asUiText
 import com.ag_apps.product.domain.ProductRepository
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -21,6 +24,9 @@ class ProductOverviewViewModel(
 
     var state by mutableStateOf(ProductOverviewState())
         private set
+
+    private val eventChannel = Channel<ProductOverviewEvent>()
+    val event = eventChannel.receiveAsFlow()
 
     init {
         state = state.copy(
@@ -78,12 +84,12 @@ class ProductOverviewViewModel(
                 state = state.copy(isGridLayout = !state.isGridLayout)
             }
 
-            is ProductOverviewAction.AddProductToWishlist -> {
-                addProductToWishlist(action.productId)
+            is ProductOverviewAction.ToggleProductInWishlist -> {
+                toggleProductInWishlist(action.productIndex)
             }
 
-            is ProductOverviewAction.AddProductToCart -> {
-                addProductToCart(action.productId)
+            is ProductOverviewAction.ToggleProductInCart -> {
+                toggleProductInCart(action.productIndex)
             }
 
             is ProductOverviewAction.SelectProduct -> Unit
@@ -125,33 +131,45 @@ class ProductOverviewViewModel(
         }
     }
 
-    private fun addProductToWishlist(productId: Int) {
+    private fun toggleProductInWishlist(index: Int) {
         viewModelScope.launch {
-            productRepository.addProductToWishlist(productId.toString())
+
             state = state.copy(
                 products = state.products.map { product ->
-                    if (product.productId == productId) {
-                        product.copy(isInWishList = true)
+                    if (product.productId == state.products[index].productId) {
+                        product.copy(isInWishList = !state.products[index].isInWishList)
                     } else {
                         product
                     }
                 }
             )
+
+            if (state.products[index].isInWishList) {
+                productRepository.addProductToWishlist(state.products[index].productId.toString())
+            } else {
+                productRepository.removeProductFromWishlist(state.products[index].productId.toString())
+            }
         }
     }
 
-    private fun addProductToCart(productId: Int) {
+    private fun toggleProductInCart(index: Int) {
         viewModelScope.launch {
-            productRepository.addProductToCart(productId.toString())
+
             state = state.copy(
                 products = state.products.map { product ->
-                    if (product.productId == productId) {
-                        product.copy(isInCartList = true)
+                    if (product.productId == state.products[index].productId) {
+                        product.copy(isInCartList = !state.products[index].isInCartList)
                     } else {
                         product
                     }
                 }
             )
+
+            if (state.products[index].isInCartList) {
+                productRepository.addProductToCart(state.products[index].productId.toString())
+            } else {
+                productRepository.removeProductFromCart(state.products[index].productId.toString())
+            }
         }
     }
 

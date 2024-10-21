@@ -9,7 +9,6 @@ import com.ag_apps.core.domain.util.map
 import com.ag_apps.core.product_data.dto.CategoriesDto
 import com.ag_apps.core.product_data.dto.CategoryDto
 import com.ag_apps.core.product_data.dto.ProductDto
-import com.ag_apps.core.product_data.dto.ProductsDto
 import com.ag_apps.core.product_data.dto.toCategory
 import com.ag_apps.core.product_data.dto.toProduct
 import io.ktor.client.HttpClient
@@ -42,7 +41,7 @@ class RemoteProductDataSource(
                 )
             }
 
-        return httpClient.get<ProductsDto>(
+        return httpClient.get<List<ProductDto>>(
             route = "/products",
             queryParameters = queryParameters
         ).map { productsDto ->
@@ -73,7 +72,7 @@ class RemoteProductDataSource(
                 )
             }
 
-        return httpClient.get<ProductsDto>(
+        return httpClient.get<List<ProductDto>>(
             route = "/products",
             queryParameters = queryParameters
         ).map { productsDto ->
@@ -112,7 +111,7 @@ class RemoteProductDataSource(
     override suspend fun getCategoryProducts(
         id: String
     ): Result<List<Product>, DataError.Network> {
-        return httpClient.get<ProductsDto>(
+        return httpClient.get<List<ProductDto>>(
             route = "/categories/$id/products"
         ).map { productsDto ->
             productsDto.map { it.toProduct() }

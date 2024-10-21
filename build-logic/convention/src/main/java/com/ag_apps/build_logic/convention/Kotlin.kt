@@ -44,6 +44,11 @@ internal fun Project.configureKotlinJvm() {
 
 private fun Project.configureKotlin() {
     tasks.withType<KotlinCompile>().configureEach {
+        compilerOptions {
+            moduleName.set(path.removePrefix(":").replace(":", "_"))
+        }
+    }
+    tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
             jvmTarget = JavaVersion.VERSION_11.toString()
         }

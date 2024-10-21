@@ -53,55 +53,57 @@ fun ShopyTextField(
 ) {
 
 
-    Column(
-        modifier = modifier
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.inversePrimary,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .padding(bottom = 16.dp, top = 8.dp)
-            .padding(horizontal = 16.dp)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            if (title != null) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (startIcon != null) {
-                        Icon(
-                            imageVector = startIcon,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f),
-                            modifier = Modifier.size(18.dp)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                    }
-                    Text(
-                        text = title,
-                        fontSize = 13.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f)
+        if (title != null) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                if (startIcon != null) {
+                    Icon(
+                        imageVector = startIcon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.size(18.dp)
                     )
+                    Spacer(modifier = Modifier.width(4.dp))
                 }
-            }
-            if (error != null) {
                 Text(
-                    text = error,
-                    color = MaterialTheme.colorScheme.error,
-                    fontSize = 12.sp
-                )
-            } else if (additionalInfo != null) {
-                Text(
-                    text = additionalInfo,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontSize = 12.sp
+                    text = title,
+                    fontSize = 13.sp,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }
+        if (error != null) {
+            Text(
+                text = error,
+                color = MaterialTheme.colorScheme.error,
+                fontSize = 12.sp
+            )
+        } else if (additionalInfo != null) {
+            Text(
+                text = additionalInfo,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontSize = 12.sp
+            )
+        }
+    }
 
-        Spacer(Modifier.height(4.dp))
+    Spacer(Modifier.height(4.dp))
+
+    Column(
+        modifier = modifier
+            .border(
+                width = 0.5.dp,
+                color = MaterialTheme.colorScheme.primary,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .padding(16.dp)
+    ) {
 
         BasicTextField(
             state = textFieldState,

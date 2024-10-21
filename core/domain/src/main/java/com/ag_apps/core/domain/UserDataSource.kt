@@ -11,16 +11,20 @@ import kotlinx.coroutines.flow.Flow
  */
 interface UserDataSource {
 
-    suspend fun insertUser(user: User): Flow<Result<String, DataError.Network>>
+    suspend fun insertUser(user: User): Result<String, DataError.Network>
 
-    suspend fun updateUser(user: User): Flow<Result<String, DataError.Network>>
+    suspend fun updateUser(user: User): Result<String, DataError.Network>
 
-    suspend fun getUser(): Flow<Result<User, DataError.Network>>
+    suspend fun getUser(): Result<User, DataError.Network>
 
+    suspend fun addProductToWishlist(productId: String): Result<Unit, DataError.Network>
 
-    suspend fun addProductToWishlist(productId: String): Flow<Result<String, DataError.Network>>
+    suspend fun removeProductToWishlist(productId: String): Result<Unit, DataError.Network>
 
-    suspend fun addProductToCart(productId: String): Flow<Result<String, DataError.Network>>
+    suspend fun addProductToCart(productId: String): Result<Unit, DataError.Network>
+
+    suspend fun removeProductToCart(productId: String): Result<Unit, DataError.Network>
+
 
     fun isLoggedIn(): Boolean
 

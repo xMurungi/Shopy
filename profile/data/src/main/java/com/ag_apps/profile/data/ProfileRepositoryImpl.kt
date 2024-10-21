@@ -17,16 +17,14 @@ class ProfileRepositoryImpl(
 
     override suspend fun updateUser(
         user: User?
-    ): Flow<Result<String, DataError.Network>> {
+    ): Result<String, DataError.Network> {
         if (user == null) {
-            return flow {
-                emit(Result.Error(DataError.Network.UNKNOWN))
-            }
+            return Result.Error(DataError.Network.UNKNOWN)
         }
         return userDataSource.updateUser(user)
     }
 
-    override suspend fun getUser(): Flow<Result<User, DataError.Network>> {
+    override suspend fun getUser(): Result<User, DataError.Network> {
         return userDataSource.getUser()
     }
 

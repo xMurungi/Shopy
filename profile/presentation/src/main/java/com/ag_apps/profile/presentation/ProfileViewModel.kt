@@ -73,20 +73,19 @@ class ProfileViewModel(
     private fun loadUser() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
-            profileRepository.getUser().collect { userResult ->
-                when (userResult) {
-                    is Result.Error -> {
-                        state = state.copy(isLoading = false)
-                    }
+            val userResult = profileRepository.getUser()
+            when (userResult) {
+                is Result.Error -> {
+                    state = state.copy(isLoading = false)
+                }
 
-                    is Result.Success -> {
-                        state = state.copy(
-                            isLoading = false,
-                            user = userResult.data
-                        )
+                is Result.Success -> {
+                    state = state.copy(
+                        isLoading = false,
+                        user = userResult.data
+                    )
 
-                        setDefaultAddressAndCardInfo()
-                    }
+                    setDefaultAddressAndCardInfo()
                 }
             }
         }
@@ -135,20 +134,19 @@ class ProfileViewModel(
 
         viewModelScope.launch {
             state = state.copy(isSavingAddress = true)
-            profileRepository.updateUser(state.user).collect { updateResult ->
-                when (updateResult) {
-                    is Result.Error -> {
-                        state = state.copy(isSavingAddress = false)
-                        eventChannel.send(ProfileEvent.AddressSave(false))
-                    }
+            val updateResult = profileRepository.updateUser(state.user)
+            when (updateResult) {
+                is Result.Error -> {
+                    state = state.copy(isSavingAddress = false)
+                    eventChannel.send(ProfileEvent.AddressSave(false))
+                }
 
-                    is Result.Success -> {
-                        state = state.copy(
-                            isSavingAddress = false,
-                            isEditeAddressShowing = false
-                        )
-                        eventChannel.send(ProfileEvent.AddressSave(true))
-                    }
+                is Result.Success -> {
+                    state = state.copy(
+                        isSavingAddress = false,
+                        isEditeAddressShowing = false
+                    )
+                    eventChannel.send(ProfileEvent.AddressSave(true))
                 }
             }
         }
@@ -166,20 +164,19 @@ class ProfileViewModel(
 
         viewModelScope.launch {
             state = state.copy(isSavingCard = true)
-            profileRepository.updateUser(state.user).collect { updateResult ->
-                when (updateResult) {
-                    is Result.Error -> {
-                        state = state.copy(isSavingCard = false)
-                        eventChannel.send(ProfileEvent.CardSave(false))
-                    }
+            val updateResult = profileRepository.updateUser(state.user)
+            when (updateResult) {
+                is Result.Error -> {
+                    state = state.copy(isSavingCard = false)
+                    eventChannel.send(ProfileEvent.CardSave(false))
+                }
 
-                    is Result.Success -> {
-                        state = state.copy(
-                            isSavingCard = false,
-                            isEditeCardShowing = false
-                        )
-                        eventChannel.send(ProfileEvent.CardSave(true))
-                    }
+                is Result.Success -> {
+                    state = state.copy(
+                        isSavingCard = false,
+                        isEditeCardShowing = false
+                    )
+                    eventChannel.send(ProfileEvent.CardSave(true))
                 }
             }
         }

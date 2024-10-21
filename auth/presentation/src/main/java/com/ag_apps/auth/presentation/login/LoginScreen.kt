@@ -65,9 +65,7 @@ fun LoginScreenCore(
             is LoginEvent.Error -> {
                 keyboardController?.hide()
                 Toast.makeText(
-                    context,
-                    event.error.asString(context),
-                    Toast.LENGTH_SHORT
+                    context, event.error.asString(context), Toast.LENGTH_SHORT
                 ).show()
             }
 

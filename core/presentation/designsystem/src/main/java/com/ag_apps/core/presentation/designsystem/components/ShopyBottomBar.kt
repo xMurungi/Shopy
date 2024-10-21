@@ -44,7 +44,7 @@ fun ShopyBottomBar(
 ) {
 
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(0.5f),
         modifier = modifier
     ) {
         Row(

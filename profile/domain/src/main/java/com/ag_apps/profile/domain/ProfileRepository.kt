@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.Flow
  */
 interface ProfileRepository {
 
-    suspend fun updateUser(user: User?): Flow<Result<String, DataError.Network>>
+    suspend fun updateUser(user: User?): Result<String, DataError.Network>
 
-    suspend fun getUser(): Flow<Result<User, DataError.Network>>
+    suspend fun getUser(): Result<User, DataError.Network>
 
     fun logout()
 

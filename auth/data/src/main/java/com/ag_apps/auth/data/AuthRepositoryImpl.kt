@@ -109,21 +109,20 @@ class AuthRepositoryImpl(
 
                     // - when user does not already exit in the data store (Result.Error),
                     //   then they are registering with google sign in and we need to insert them.
-                    userDataSource.getUser().collect { userResult ->
-                        when (userResult) {
-                            is Result.Error -> {
-                                val user = EmptyFieldsUser.copy(
-                                    name = credential.displayName ?: "",
-                                    email = credential.id,
-                                    image = credential.profilePictureUri.toString(),
-                                    userId = ""
-                                )
-                                insertUser(user).collect { trySend(it) }
-                            }
+                    val userResult = userDataSource.getUser()
+                    when (userResult) {
+                        is Result.Error -> {
+                            val user = EmptyFieldsUser.copy(
+                                name = credential.displayName ?: "",
+                                email = credential.id,
+                                image = credential.profilePictureUri.toString(),
+                                userId = ""
+                            )
+                            insertUser(user).collect { trySend(it) }
+                        }
 
-                            is Result.Success -> {
-                                trySend(Result.Success(Unit))
-                            }
+                        is Result.Success -> {
+                            trySend(Result.Success(Unit))
                         }
                     }
                 } else {
@@ -143,17 +142,16 @@ class AuthRepositoryImpl(
 
     private fun insertUser(user: User): Flow<EmptyResult<DataError.Network>> {
         return callbackFlow {
-            userDataSource.insertUser(user).collect { insertUserResult ->
+            val insertUserResult = userDataSource.insertUser(user)
 
-                if (insertUserResult is Result.Success) {
-                    Timber.tag(tag).d("user inserted to firestore successfully")
-                    trySend(Result.Success(Unit))
-                } else {
-                    Timber.tag(tag)
-                        .d("could not insert user ${(insertUserResult as Result.Error).error}")
-                    firebaseAuth.currentUser?.delete()
-                    trySend(insertUserResult as Result.Error)
-                }
+            if (insertUserResult is Result.Success) {
+                Timber.tag(tag).d("user inserted to firestore successfully")
+                trySend(Result.Success(Unit))
+            } else {
+                Timber.tag(tag)
+                    .d("could not insert user ${(insertUserResult as Result.Error).error}")
+                firebaseAuth.currentUser?.delete()
+                trySend(insertUserResult as Result.Error)
             }
 
             awaitClose { close() }

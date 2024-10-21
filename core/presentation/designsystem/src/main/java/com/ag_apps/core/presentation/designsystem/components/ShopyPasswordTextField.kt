@@ -50,39 +50,41 @@ fun ShopyPasswordTextField(
     title: String?
 ) {
 
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        if (title != null) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Outlined.Lock,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = title,
+                    fontSize = 13.sp,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
+        }
+    }
+
+    Spacer(Modifier.height(4.dp))
+
     Column(
         modifier = modifier
             .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.inversePrimary,
+                width = 0.5.dp,
+                color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(8.dp)
             )
-            .padding(bottom = 16.dp, top = 8.dp)
-            .padding(horizontal = 16.dp)
+            .padding(16.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            if (title != null) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Outlined.Lock,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f),
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = title,
-                        fontSize = 13.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.6f)
-                    )
-                }
-            }
-        }
-
-        Spacer(Modifier.height(4.dp))
 
         BasicSecureTextField(
             state = textFieldState,

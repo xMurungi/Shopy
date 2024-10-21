@@ -41,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.ag_apps.core.domain.Product
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 
@@ -91,14 +92,14 @@ fun GridProductItem(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(20.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+            .background(MaterialTheme.colorScheme.inversePrimary.copy(0.2f))
             .clickable { onClick() }
     ) {
         Box(
             modifier = Modifier
         ) {
-            Image(
-                painter = painterResource(com.ag_apps.core.presentation.designsystem.R.drawable.man),
+            AsyncImage(
+               model = if (product.images.isNotEmpty()) product.images[0] else "",
                 contentDescription = product.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -108,7 +109,7 @@ fun GridProductItem(
                     .clip(
                         RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
                     )
-                    .background(MaterialTheme.colorScheme.surfaceContainer)
+                    .background(MaterialTheme.colorScheme.onBackground.copy(0.1f))
             )
 
             ProductActionsSection(
@@ -128,31 +129,32 @@ fun GridProductItem(
                 lineHeight = 1.sp,
                 modifier = Modifier
                     .align(Alignment.BottomStart)
-                    .padding(start = 8.dp)
+                    .padding(start = 10.dp)
             )
         }
 
-        Spacer(Modifier.height(2.dp))
+        Spacer(Modifier.height(6.dp))
 
         Column(
             modifier = Modifier
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = 10.dp)
                 .padding(bottom = 8.dp)
         ) {
 
             Text(
                 text = product.title,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 15.sp,
-                maxLines = 1,
+                fontSize = 14.sp,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                lineHeight = 1.sp
+                lineHeight = 20.sp
             )
+
+            Spacer(Modifier.height(2.dp))
 
             Text(
                 text = "$${product.price}",
                 fontSize = 15.sp,
-                lineHeight = 1.sp
             )
         }
     }
@@ -179,13 +181,13 @@ fun ColumnProductItem(
             Row(
                 modifier = modifier
                     .clip(RoundedCornerShape(20.dp))
-                    .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                    .background(MaterialTheme.colorScheme.inversePrimary.copy(0.2f))
                     .clickable { onClick() }
                     .padding(end = 7.dp)
             ) {
 
-                Image(
-                    painter = painterResource(com.ag_apps.core.presentation.designsystem.R.drawable.man),
+                AsyncImage(
+                    model = if (product.images.isNotEmpty()) product.images[0] else "",
                     contentDescription = product.title,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -196,7 +198,7 @@ fun ColumnProductItem(
                                 bottomStart = 16.dp, topStart = 16.dp
                             )
                         )
-                        .background(MaterialTheme.colorScheme.surfaceContainer)
+                        .background(MaterialTheme.colorScheme.onBackground.copy(0.1f))
                 )
 
                 Box(
@@ -276,7 +278,8 @@ fun ProductActionsSection(
                     .size(35.dp)
                     .shadow(
                         elevation = 6.dp,
-                        shape = CircleShape
+                        shape = CircleShape,
+                        spotColor = MaterialTheme.colorScheme.onBackground,
                     )
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.background),
@@ -290,16 +293,15 @@ fun ProductActionsSection(
                     },
                     contentDescription = null,
                     tint = if (product.isInCartList) {
-                        Color.Red
+                        MaterialTheme.colorScheme.primary
                     } else {
-                        MaterialTheme.colorScheme.onBackground
+                        MaterialTheme.colorScheme.onBackground.copy(0.6f)
                     },
                     modifier = Modifier
                         .clickable { onAddToCart() }
                         .padding(6.dp)
                         .padding(bottom = 1.dp)
                         .fillMaxSize()
-                        .alpha(0.6f)
                 )
             }
         }
@@ -312,7 +314,8 @@ fun ProductActionsSection(
                     .size(35.dp)
                     .shadow(
                         elevation = 6.dp,
-                        shape = CircleShape
+                        shape = CircleShape,
+                        spotColor = MaterialTheme.colorScheme.onBackground,
                     )
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.background),
@@ -327,16 +330,15 @@ fun ProductActionsSection(
                     },
                     contentDescription = null,
                     tint = if (product.isInWishList) {
-                        Color.Red
+                        MaterialTheme.colorScheme.primary
                     } else {
-                        MaterialTheme.colorScheme.onBackground
+                        MaterialTheme.colorScheme.onBackground.copy(0.6f)
                     },
                     modifier = Modifier
                         .clickable { onAddToWishlist() }
                         .padding(6.dp)
                         .padding(top = 0.7.dp)
                         .fillMaxSize()
-                        .alpha(0.6f)
                 )
             }
         }
