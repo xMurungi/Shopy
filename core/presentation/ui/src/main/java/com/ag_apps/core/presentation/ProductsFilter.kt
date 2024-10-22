@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ag_apps.core.presentation.designsystem.components.ShopyTextField
@@ -42,32 +43,50 @@ fun ProductsFilter(
     applyFilter: () -> Unit
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
+
+        Icon(
+            imageVector = Icons.Rounded.FilterList,
+            contentDescription = stringResource(R.string.products_filter),
             modifier = Modifier
-                .padding(start = 16.dp)
-                .clickable { toggleFilter() },
+                .size(30.dp)
+                .clickable { toggleFilter() }
+        )
+
+        Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.Rounded.FilterList,
-                contentDescription = stringResource(R.string.products_filter),
-                modifier = Modifier
-                    .size(30.dp)
-            )
-
-            Spacer(Modifier.width(4.dp))
-
-            Text(stringResource(R.string.filter))
+            if (minPriceState.text.isNotEmpty()) {
+                Text(
+                    text = "$" + minPriceState.text.toString()
+                )
+            }
+            if (minPriceState.text.isNotEmpty() || maxPriceState.text.isNotEmpty()) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Rounded.ArrowRightAlt,
+                    tint = MaterialTheme.colorScheme.primary,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .size(28.dp)
+                )
+            }
+            if (maxPriceState.text.isNotEmpty()) {
+                Text(
+                    text = "$" + maxPriceState.text.toString()
+                )
+            }
         }
+
         Icon(
             imageVector = Icons.AutoMirrored.Rounded.FormatListBulleted,
             contentDescription = stringResource(R.string.change_products_layout),
             modifier = Modifier
-                .padding(horizontal = 16.dp)
                 .size(28.dp)
                 .clickable { toggleProductsLayout() }
         )
@@ -89,6 +108,7 @@ fun ProductsFilter(
                 applyTextWeight = false,
                 textVerticalPadding = 10.dp,
                 textSize = 15.sp,
+                keyBoardType = KeyboardType.Number,
                 modifier = Modifier.weight(1f)
             )
 
@@ -107,6 +127,7 @@ fun ProductsFilter(
                 applyTextWeight = false,
                 textVerticalPadding = 10.dp,
                 textSize = 15.sp,
+                keyBoardType = KeyboardType.Number,
                 modifier = Modifier.weight(1f)
             )
 

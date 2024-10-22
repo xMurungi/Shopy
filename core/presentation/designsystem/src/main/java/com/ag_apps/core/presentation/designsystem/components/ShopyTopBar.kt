@@ -34,7 +34,9 @@ fun ShopyTopBar(
     modifier: Modifier = Modifier,
     title: String,
     navigationIcon: ImageVector? = null,
+    navigationIconDescription: String? = null,
     actionIcon: ImageVector? = null,
+    actionIconDescription: String? = null,
     onNavigationClick: () -> Unit = {},
     onActionClick: () -> Unit = {},
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
@@ -46,7 +48,10 @@ fun ShopyTopBar(
         scrollBehavior = scrollBehavior,
         windowInsets = windowInsets,
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Transparent
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(0.6f),
+            scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(
+                0.6f
+            ),
         ),
         title = {
             Text(
@@ -59,7 +64,7 @@ fun ShopyTopBar(
                 IconButton(onClick = onNavigationClick) {
                     Icon(
                         imageVector = navigationIcon,
-                        contentDescription = stringResource(R.string.go_back),
+                        contentDescription = navigationIconDescription,
                         tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
@@ -70,7 +75,7 @@ fun ShopyTopBar(
                 IconButton(onClick = onActionClick) {
                     Icon(
                         imageVector = actionIcon,
-                        contentDescription = stringResource(R.string.go_back),
+                        contentDescription = actionIconDescription,
                         tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(30.dp)
                     )
@@ -86,7 +91,9 @@ fun ShopyLargeTopBar(
     modifier: Modifier = Modifier,
     title: String,
     navigationIcon: ImageVector? = null,
+    navigationIconDescription: String? = null,
     actionIcon: ImageVector? = null,
+    actionIconDescription: String? = null,
     onNavigationClick: () -> Unit = {},
     onActionClick: () -> Unit = {},
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
@@ -112,7 +119,7 @@ fun ShopyLargeTopBar(
                 IconButton(onClick = onNavigationClick) {
                     Icon(
                         imageVector = navigationIcon,
-                        contentDescription = stringResource(R.string.go_back),
+                        contentDescription = navigationIconDescription,
                         tint = MaterialTheme.colorScheme.onBackground,
                     )
                 }
@@ -123,7 +130,7 @@ fun ShopyLargeTopBar(
                 IconButton(onClick = onActionClick) {
                     Icon(
                         imageVector = actionIcon,
-                        contentDescription = stringResource(R.string.go_back),
+                        contentDescription = actionIconDescription,
                         tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(30.dp)
                     )
