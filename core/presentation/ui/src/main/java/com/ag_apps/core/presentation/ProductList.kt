@@ -18,7 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.ag_apps.core.domain.Product
+import com.ag_apps.core.presentation.model.ProductUI
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 
@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.filter
 @Composable
 fun ProductList(
     modifier: Modifier = Modifier,
-    products: List<Product>,
+    products: List<ProductUI>,
     isGridLayout: Boolean,
     isLoading: Boolean,
     onToggleProductInWishlist: ((Int) -> Unit)? = null,
@@ -75,7 +75,7 @@ fun ProductList(
             state = gridState
         ) {
             itemsIndexed(products) { index, product ->
-                Item(
+                ProductListItem(
                     modifier = Modifier
                         .padding(6.dp)
                         .padding(top = if (index == 0 || index == 1) 8.dp else 0.dp),
@@ -99,7 +99,7 @@ fun ProductList(
                 items = products,
                 key = { _, article -> article.productId }
             ) { index, product ->
-                Item(
+                ProductListItem(
                     modifier = Modifier.height(120.dp),
                     product = product,
                     index = index,
@@ -116,9 +116,9 @@ fun ProductList(
 }
 
 @Composable
-private fun Item(
+private fun ProductListItem(
     modifier: Modifier = Modifier,
-    product: Product,
+    product: ProductUI,
     index: Int,
     isGridLayout: Boolean,
     onToggleProductInWishlist: ((Int) -> Unit)? = null,

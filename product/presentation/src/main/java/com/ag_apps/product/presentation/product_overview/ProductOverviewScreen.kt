@@ -13,10 +13,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ag_apps.core.domain.Product
 import com.ag_apps.core.presentation.ProductList
 import com.ag_apps.core.presentation.ProductsScaffold
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
+import com.ag_apps.core.presentation.model.ProductUI
 import com.ag_apps.product.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -127,121 +127,121 @@ private fun ProductOverviewScreenPreview() {
 }
 
 val products = listOf(
-    Product(
+    ProductUI(
         productId = 1,
         title = "Product 1",
         description = "Product 1 description",
-        images = listOf(),
+        image = "",
         price = 100,
         categoryName = "Category 1",
         isInWishList = false,
         isInCartList = false
     ),
-    Product(
+    ProductUI(
         productId = 2,
         title = "Product 2",
         description = "Product 2 description",
-        images = listOf(),
+        image = "",
         price = 230,
         categoryName = "Category 2",
         isInWishList = true,
         isInCartList = false
     ),
-    Product(
+    ProductUI(
         productId = 1,
         title = "Product 1",
         description = "Product 1 description",
-        images = listOf(),
+        image = "",
         price = 100,
         categoryName = "Category 1",
         isInWishList = false,
         isInCartList = false
     ),
-    Product(
+    ProductUI(
         productId = 2,
         title = "Product 2",
         description = "Product 2 description",
-        images = listOf(),
+        image = "",
         price = 230,
         categoryName = "Category 2",
         isInWishList = true,
         isInCartList = false
     ),
-    Product(
+    ProductUI(
         productId = 1,
         title = "Product 1",
         description = "Product 1 description",
-        images = listOf(),
+        image = "",
         price = 100,
         categoryName = "Category 1",
         isInWishList = false,
         isInCartList = false
     ),
-    Product(
+    ProductUI(
         productId = 2,
         title = "Product 2",
         description = "Product 2 description",
-        images = listOf(),
+        image = "",
         price = 230,
         categoryName = "Category 2",
         isInWishList = true,
         isInCartList = false
     ),
-    Product(
+    ProductUI(
         productId = 1,
         title = "Product 1",
         description = "Product 1 description",
-        images = listOf(),
+        image = "",
         price = 100,
         categoryName = "Category 1",
         isInWishList = false,
         isInCartList = false
     ),
-    Product(
+    ProductUI(
         productId = 2,
         title = "Product 2",
         description = "Product 2 description",
-        images = listOf(),
+        image = "",
         price = 230,
         categoryName = "Category 2",
         isInWishList = true,
         isInCartList = false
     ),
-    Product(
+    ProductUI(
         productId = 1,
         title = "Product 1",
         description = "Product 1 description",
-        images = listOf(),
+        image = "",
         price = 100,
         categoryName = "Category 1",
         isInWishList = false,
         isInCartList = false
     ),
-    Product(
+    ProductUI(
         productId = 2,
         title = "Product 2",
         description = "Product 2 description",
-        images = listOf(),
+        image = "",
         price = 230,
         categoryName = "Category 2",
         isInWishList = true,
         isInCartList = false
     ),
-    Product(
+    ProductUI(
         productId = 1,
         title = "Product 1",
         description = "Product 1 description",
-        images = listOf(),
+        image = "",
         price = 100,
         categoryName = "Category 1",
         isInWishList = false,
         isInCartList = false
     ),
-    Product(
+    ProductUI(
         productId = 2,
         title = "Product 2",
         description = "Product 2 description",
-        images = listOf(),
+        image = "",
         price = 230,
         categoryName = "Category 2",
         isInWishList = true,

@@ -8,6 +8,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ag_apps.core.domain.util.Result
+import com.ag_apps.core.presentation.model.toProductUI
 import com.ag_apps.product.domain.ProductRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
@@ -128,9 +129,9 @@ class ProductOverviewViewModel(
 
                 is Result.Success -> {
                     val products = if (paginate) {
-                        state.products + productsResult.data
+                        state.products + productsResult.data.map { it.toProductUI() }
                     } else {
-                        productsResult.data
+                        productsResult.data.map { it.toProductUI() }
                     }
 
                     state = state.copy(

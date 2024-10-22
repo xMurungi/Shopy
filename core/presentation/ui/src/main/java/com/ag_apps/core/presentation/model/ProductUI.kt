@@ -1,12 +1,15 @@
-package com.ag_apps.core.domain
+package com.ag_apps.core.presentation.model
 
-data class Product(
+/**
+ * @author Ahmed Guedmioui
+ */
+data class ProductUI(
     val productId: Int,
     val title: String,
     val description: String,
-    val images: List<String>,
+    val image: String,
     val price: Int,
     val categoryName: String,
     val isInWishList: Boolean,
-    val isInCartList: Boolean
+    val isInCartList: Boolean,
 )

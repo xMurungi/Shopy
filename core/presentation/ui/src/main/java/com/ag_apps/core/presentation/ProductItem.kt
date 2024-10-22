@@ -38,8 +38,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.ag_apps.core.domain.Product
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
+import com.ag_apps.core.presentation.model.ProductUI
 
 /**
  * @author Ahmed Guedmioui
@@ -47,7 +47,7 @@ import com.ag_apps.core.presentation.designsystem.ShopyTheme
 @Composable
 fun ProductItem(
     modifier: Modifier = Modifier,
-    product: Product,
+    product: ProductUI,
     isGrid: Boolean,
     imageWidth: Dp = 100.dp,
     onToggleInWishlist: (() -> Unit)? = null,
@@ -79,7 +79,7 @@ fun ProductItem(
 @Composable
 fun GridProductItem(
     modifier: Modifier = Modifier,
-    product: Product,
+    product: ProductUI,
     onToggleProductInWishlist: (() -> Unit)? = null,
     onToggleProductInCart: (() -> Unit)? = null,
     onClick: () -> Unit,
@@ -95,7 +95,7 @@ fun GridProductItem(
             modifier = Modifier
         ) {
             AsyncImage(
-               model = if (product.images.isNotEmpty()) product.images[0] else "",
+                model = product.image,
                 contentDescription = product.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -160,7 +160,7 @@ fun GridProductItem(
 @Composable
 fun ColumnProductItem(
     modifier: Modifier = Modifier,
-    product: Product,
+    product: ProductUI,
     onToggleProductInWishlist: (() -> Unit)? = null,
     onRemove: (() -> Unit)? = null,
     onToggleProductInCart: (() -> Unit)? = null,
@@ -183,7 +183,7 @@ fun ColumnProductItem(
             ) {
 
                 AsyncImage(
-                    model = if (product.images.isNotEmpty()) product.images[0] else "",
+                    model = product.image,
                     contentDescription = product.title,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -261,7 +261,7 @@ fun ColumnProductItem(
 @Composable
 fun ProductActionsSection(
     modifier: Modifier = Modifier,
-    product: Product,
+    product: ProductUI,
     onAddToWishlist: (() -> Unit)? = null,
     onAddToCart: (() -> Unit)? = null,
 ) {
@@ -350,11 +350,11 @@ private fun ProductItemPreview() {
             modifier = Modifier
                 .width(220.dp),
             imageWidth = 120.dp,
-            product = Product(
+            product = ProductUI(
                 categoryName = "Category",
                 title = "Product Title Product",
                 description = "Product Description",
-                images = listOf("https://picsum.photos/200"),
+                image = "",
                 price = 100,
                 productId = 1,
                 isInWishList = false,
