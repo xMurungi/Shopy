@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ag_apps.core.domain.Product
 import com.ag_apps.core.presentation.ProductList
+import com.ag_apps.core.presentation.ProductsFilter
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyOutlinedButton
 import com.ag_apps.core.presentation.designsystem.components.ShopyTextField
@@ -104,7 +105,9 @@ private fun ProductOverviewScreen(
                 TopAppBar(
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(0.6f),
-                        scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(0.6f),
+                        scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(
+                            0.6f
+                        ),
                     ),
                     scrollBehavior = scrollBehavior,
                     title = { Text(appName) },
@@ -121,94 +124,14 @@ private fun ProductOverviewScreen(
                         )
                     }
                 )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .padding(start = 16.dp)
-                            .clickable {
-                                onAction(ProductOverviewAction.ToggleFilter)
-                            },
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.FilterList,
-                            contentDescription = stringResource(R.string.search_for_products),
-                            modifier = Modifier
-                                .size(30.dp)
-                        )
-
-                        Spacer(Modifier.width(4.dp))
-
-                        Text(stringResource(R.string.filter))
-                    }
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Rounded.FormatListBulleted,
-                        contentDescription = stringResource(R.string.search_for_products),
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .size(28.dp)
-                            .clickable {
-                                onAction(ProductOverviewAction.ToggleProductsLayout)
-                            }
-                    )
-                }
-
-                if (state.isFilterOpen) {
-
-                    Spacer(Modifier.height(8.dp))
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        ShopyTextField(
-                            textFieldState = state.minPriceState,
-                            hint = stringResource(R.string.min_price),
-                            applyTextWeight = false,
-                            textVerticalPadding = 10.dp,
-                            textSize = 15.sp,
-                            modifier = Modifier.weight(1f)
-                        )
-
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Rounded.ArrowRightAlt,
-                            tint = MaterialTheme.colorScheme.primary,
-                            contentDescription = stringResource(R.string.search_for_products),
-                            modifier = Modifier
-                                .padding(horizontal = 4.dp)
-                                .size(28.dp)
-                        )
-
-                        ShopyTextField(
-                            textFieldState = state.maxPriceState,
-                            hint = stringResource(R.string.max_price),
-                            applyTextWeight = false,
-                            textVerticalPadding = 10.dp,
-                            textSize = 15.sp,
-                            modifier = Modifier.weight(1f)
-                        )
-
-                        Spacer(Modifier.width(16.dp))
-
-                        Text(
-                            text = stringResource(R.string.apply),
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier
-                                .clickable {
-                                    onAction(ProductOverviewAction.ApplyFilter)
-                                }
-                        )
-                    }
-                }
-
+                ProductsFilter(
+                    isFilterOpen = state.isFilterOpen,
+                    minPriceState = state.minPriceState,
+                    maxPriceState = state.maxPriceState,
+                    toggleFilter = { onAction(ProductOverviewAction.ToggleFilter) },
+                    toggleProductsLayout = { onAction(ProductOverviewAction.ToggleProductsLayout) },
+                    applyFilter = { onAction(ProductOverviewAction.ApplyFilter) },
+                )
             }
         }
     ) { padding ->

@@ -13,4 +13,10 @@
     <string name="disclaimer_card_info">This is a personal project made by Ahmed Guedmioui.\n\nPlease note that for your security, do NOT enter your real card details.\nAnd even if you enter your real card details, NO real transactions will happen, NO funds will be withdrawn from your bank account. And you will NOT receive any products from any simulated purchases.\n\nThank you for your understanding and cooperation.</string>
     <string name="disclaimer">Disclaimer</string>
     <string name="okay">Okay</string>
+    <string name="products_filter">Products Filter</string>
+    <string name="filter">Filter</string>
+    <string name="change_products_layout">Change Products Layout</string>
+    <string name="min_price">Min Price</string>
+    <string name="max_price">Max Price</string>
+    <string name="apply">Apply</string>
 </resources>
