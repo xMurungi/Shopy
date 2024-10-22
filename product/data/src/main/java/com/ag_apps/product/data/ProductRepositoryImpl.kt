@@ -1,5 +1,6 @@
 package com.ag_apps.product.data
 
+import com.ag_apps.core.domain.Category
 import com.ag_apps.core.domain.Product
 import com.ag_apps.core.domain.ProductDataSource
 import com.ag_apps.core.domain.UserDataSource
@@ -14,8 +15,6 @@ class ProductRepositoryImpl(
     private val productDataSource: ProductDataSource,
     private val userDataSource: UserDataSource
 ) : ProductRepository {
-
-    private val tag = "ProductRepository: "
 
     override suspend fun getProducts(
         offset: Int,
@@ -71,5 +70,33 @@ class ProductRepositoryImpl(
         productId: String
     ): Result<Unit, DataError.Network> {
         return userDataSource.removeProductToCart(productId)
+    }
+
+    override suspend fun getRandomCategory(): Result<Category, DataError.Network> {
+        val categoriesResult = productDataSource.getCategories()
+
+        if (categoriesResult is Result.Error) {
+            return Result.Error(categoriesResult.error)
+        }
+
+        if (categoriesResult is Result.Success) {
+            val categories = categoriesResult.data.shuffled()
+            var randomCategory = categories.random()
+            for (category in categories) {
+                if (
+                    category.image.contains("png") ||
+                    category.image.contains("jpeg") ||
+                    category.image.contains("jpg")
+                ) {
+                    randomCategory = category
+                    break
+                }
+            }
+            return Result.Success(randomCategory)
+        }
+
+        // this should never happen
+        return Result.Error(DataError.Network.UNKNOWN)
+
     }
 }

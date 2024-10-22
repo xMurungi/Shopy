@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.rounded.ArrowRightAlt
 import androidx.compose.material.icons.automirrored.rounded.FormatListBulleted
 import androidx.compose.material.icons.rounded.FilterList
@@ -50,17 +51,28 @@ fun ProductsFilter(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        Icon(
-            imageVector = Icons.Rounded.FilterList,
-            contentDescription = stringResource(R.string.products_filter),
-            modifier = Modifier
-                .size(30.dp)
-                .clickable { toggleFilter() }
-        )
-
         Row(
+            modifier = Modifier.clickable { toggleFilter() },
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Icon(
+                imageVector = Icons.Rounded.FilterList,
+                contentDescription = stringResource(R.string.products_filter),
+                modifier = Modifier
+                    .size(30.dp)
+            )
+
+            Spacer(Modifier.width(4.dp))
+
+            Text(
+                text = stringResource(R.string.filter) +
+                        if (minPriceState.text.isNotEmpty() || maxPriceState.text.isNotEmpty()) ":"
+                        else "",
+                fontWeight = FontWeight.Medium
+            )
+
+            Spacer(Modifier.width(8.dp))
+
             if (minPriceState.text.isNotEmpty()) {
                 Text(
                     text = "$" + minPriceState.text.toString()
@@ -68,12 +80,12 @@ fun ProductsFilter(
             }
             if (minPriceState.text.isNotEmpty() || maxPriceState.text.isNotEmpty()) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowRightAlt,
+                    imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
                     tint = MaterialTheme.colorScheme.primary,
                     contentDescription = null,
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
-                        .size(28.dp)
+                        .size(16.dp)
                 )
             }
             if (maxPriceState.text.isNotEmpty()) {

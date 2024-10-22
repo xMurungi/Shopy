@@ -87,7 +87,7 @@ fun GridProductItem(
 
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(10.dp))
             .background(MaterialTheme.colorScheme.surfaceContainerLowest)
             .clickable { onClick() }
     ) {
@@ -102,9 +102,6 @@ fun GridProductItem(
                     .padding(bottom = 23.dp)
                     .fillMaxWidth()
                     .height(200.dp)
-                    .clip(
-                        RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
-                    )
                     .background(MaterialTheme.colorScheme.onBackground.copy(0.1f))
             )
 
@@ -176,7 +173,7 @@ fun ColumnProductItem(
         ) {
             Row(
                 modifier = modifier
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(10.dp))
                     .background(MaterialTheme.colorScheme.surfaceContainerLowest)
                     .clickable { onClick() }
                     .padding(end = 7.dp)
@@ -189,11 +186,6 @@ fun ColumnProductItem(
                     modifier = Modifier
                         .fillMaxHeight()
                         .width(imageWidth)
-                        .clip(
-                            RoundedCornerShape(
-                                bottomStart = 16.dp, topStart = 16.dp
-                            )
-                        )
                         .background(MaterialTheme.colorScheme.onBackground.copy(0.1f))
                 )
 
@@ -252,7 +244,7 @@ fun ColumnProductItem(
             onAddToWishlist = onToggleProductInWishlist,
             onAddToCart = onToggleProductInCart,
             modifier = Modifier
-                .padding(horizontal = 2.dp)
+                .padding(end = 18.dp)
                 .align(Alignment.BottomEnd)
         )
     }

@@ -6,7 +6,6 @@ import com.ag_apps.core.domain.ProductDataSource
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
 import com.ag_apps.core.domain.util.map
-import com.ag_apps.core.product_data.dto.CategoriesDto
 import com.ag_apps.core.product_data.dto.CategoryDto
 import com.ag_apps.core.product_data.dto.ProductDto
 import com.ag_apps.core.product_data.dto.toCategory
@@ -108,7 +107,7 @@ class RemoteProductDataSource(
     }
 
     override suspend fun getCategories(): Result<List<Category>, DataError.Network> {
-        return httpClient.get<CategoriesDto>(
+        return httpClient.get<List<CategoryDto>>(
             route = "/categories"
         ).map { categoriesDto ->
             categoriesDto.map { it.toCategory() }

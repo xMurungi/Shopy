@@ -1,5 +1,6 @@
 package com.ag_apps.product.domain
 
+import com.ag_apps.core.domain.Category
 import com.ag_apps.core.domain.Product
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
@@ -30,6 +31,8 @@ interface ProductRepository {
     suspend fun removeProductFromCart(
         productId: String
     ): Result<Unit, DataError.Network>
+
+    suspend fun getRandomCategory(): Result<Category, DataError.Network>
 
 
 }

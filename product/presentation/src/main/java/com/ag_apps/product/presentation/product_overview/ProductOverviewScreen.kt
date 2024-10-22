@@ -75,7 +75,7 @@ private fun ProductOverviewScreen(
                 .padding(horizontal = 16.dp),
             contentAlignment = Alignment.Center
         ) {
-            if (state.isApplyingFilter || state.isLoading && !state.isError) {
+            if (state.isApplyingFilter || state.isLoading && !state.isError && state.products.isEmpty()) {
                 CircularProgressIndicator()
             }
             if (state.isError && state.products.isEmpty()) {
@@ -93,6 +93,7 @@ private fun ProductOverviewScreen(
                 products = state.products,
                 isGridLayout = state.isGridLayout,
                 isLoading = state.isLoading,
+                category = state.category,
                 onToggleProductInWishlist = { index ->
                     onAction(ProductOverviewAction.ToggleProductInWishlist(index))
                 },

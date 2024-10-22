@@ -47,7 +47,7 @@ fun ProductsScaffold(
         topBar = {
             Column(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.surfaceContainerLow.copy(0.6f))
+                    .background(MaterialTheme.colorScheme.surfaceContainerLowest)
                     .padding(bottom = 8.dp)
             ) {
                 ShopyTopBar(

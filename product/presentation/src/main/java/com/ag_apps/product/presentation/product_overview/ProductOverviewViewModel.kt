@@ -108,13 +108,15 @@ class ProductOverviewViewModel(
                 isLoading = true, isError = false,
             )
 
+            loadRandomCategory()
+
             val minPrice = state.minPriceState.text.toString()
             val maxPrice = state.maxPriceState.text.toString()
 
             val productsResult = productRepository.getProducts(
                 offset = state.productsOffset,
-                minPrice = if (minPrice.isNotBlank()) minPrice.toIntOrNull() else null,
-                maxPrice = if (minPrice.isNotBlank()) maxPrice.toIntOrNull() else null
+                minPrice = if (minPrice.isNotBlank()) minPrice.toIntOrNull() else 1,
+                maxPrice = if (maxPrice.isNotBlank()) maxPrice.toIntOrNull() else null
             )
 
             when (productsResult) {
@@ -137,10 +139,21 @@ class ProductOverviewViewModel(
                     state = state.copy(
                         isLoading = false,
                         isApplyingFilter = false,
-                        isFilterOpen = false,
                         isError = false,
+                        isFilterOpen = false,
                         products = products
                     )
+                }
+            }
+        }
+    }
+
+    private fun loadRandomCategory() {
+        viewModelScope.launch {
+            when (val categoryResult = productRepository.getRandomCategory()) {
+                is Result.Error -> Unit
+                is Result.Success -> {
+                    state = state.copy(category = categoryResult.data)
                 }
             }
         }
