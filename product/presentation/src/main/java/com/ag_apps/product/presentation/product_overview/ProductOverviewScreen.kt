@@ -72,6 +72,7 @@ private fun ProductOverviewScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(padding)
                 .padding(horizontal = 16.dp),
             contentAlignment = Alignment.Center
         ) {

@@ -48,8 +48,8 @@ fun ShopyTopBar(
         scrollBehavior = scrollBehavior,
         windowInsets = windowInsets,
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-            scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(0.5f),
+            scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(0.5f),
         ),
         title = {
             Text(

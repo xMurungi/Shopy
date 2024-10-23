@@ -4,11 +4,8 @@ import com.ag_apps.core.domain.User
 import com.ag_apps.core.domain.UserDataSource
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
-import com.ag_apps.core.domain.util.map
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
 /**
@@ -32,10 +29,7 @@ class FirebaseUserDataSource(
 
     override suspend fun getUser(): Result<User, DataError.Network> {
         val userEmail = firebaseAuth.currentUser?.email
-
-        if (userEmail == null) {
-            return Result.Error(DataError.Network.NOT_FOUND)
-        }
+            ?: return Result.Error(DataError.Network.NOT_FOUND)
 
         return firestoreClient.getUser(userEmail).first()
 
@@ -45,100 +39,100 @@ class FirebaseUserDataSource(
         productId: String
     ): Result<Unit, DataError.Network> {
 
-        val userResult = getUser()
-        if (userResult is Result.Error) {
-            return Result.Error(userResult.error)
-        }
+        when (val userResult = getUser()) {
+            is Result.Success -> {
+                val wishlist = userResult.data.wishlist.toMutableList()
+                wishlist.add(0, productId)
+                val user = userResult.data.copy(
+                    wishlist = wishlist
+                )
 
-        if (userResult is Result.Success) {
-            val wishlist = userResult.data.wishlist.toMutableList()
-            wishlist.add(0, productId)
-            val user = userResult.data.copy(
-                wishlist = wishlist
-            )
+                val updateResult = updateUser(user)
+                if (updateResult is Result.Error) {
+                    return Result.Error(updateResult.error)
+                }
+                return Result.Success(Unit)
+            }
 
-            val updateResult = updateUser(user)
-            if (updateResult is Result.Error) {
-                return Result.Error(updateResult.error)
+            is Result.Error -> {
+                return Result.Error(userResult.error)
             }
         }
-
-        return Result.Success(Unit)
     }
 
     override suspend fun removeProductToWishlist(
         productId: String
     ): Result<Unit, DataError.Network> {
 
-        val userResult = getUser()
-        if (userResult is Result.Error) {
-            return Result.Error(userResult.error)
-        }
+        when (val userResult = getUser()) {
+            is Result.Success -> {
+                val wishlist = userResult.data.wishlist.toMutableList()
+                wishlist.remove(productId)
+                val user = userResult.data.copy(
+                    wishlist = wishlist
+                )
 
-        if (userResult is Result.Success) {
-            val wishlist = userResult.data.wishlist.toMutableList()
-            wishlist.remove(productId)
-            val user = userResult.data.copy(
-                wishlist = wishlist
-            )
+                val updateResult = updateUser(user)
+                if (updateResult is Result.Error) {
+                    return Result.Error(updateResult.error)
+                }
+                return Result.Success(Unit)
+            }
 
-            val updateResult = updateUser(user)
-            if (updateResult is Result.Error) {
-                return Result.Error(updateResult.error)
+            is Result.Error -> {
+                return Result.Error(userResult.error)
             }
         }
-
-        return Result.Success(Unit)
     }
 
     override suspend fun addProductToCart(
         productId: String
     ): Result<Unit, DataError.Network> {
 
-        val userResult = getUser()
-        if (userResult is Result.Error) {
-            return Result.Error(userResult.error)
-        }
+        when (val userResult = getUser()) {
+            is Result.Success -> {
+                val cart = userResult.data.cart.toMutableList()
+                cart.add(0, productId)
+                val user = userResult.data.copy(
+                    wishlist = cart
+                )
 
-        if (userResult is Result.Success) {
-            val cart = userResult.data.cart.toMutableList()
-            cart.add(0, productId)
-            val user = userResult.data.copy(
-                cart = cart
-            )
+                val updateResult = updateUser(user)
+                if (updateResult is Result.Error) {
+                    return Result.Error(updateResult.error)
+                }
+                return Result.Success(Unit)
+            }
 
-            val updateResult = updateUser(user)
-            if (updateResult is Result.Error) {
-                return Result.Error(updateResult.error)
+            is Result.Error -> {
+                return Result.Error(userResult.error)
             }
         }
-
-        return Result.Success(Unit)
     }
 
     override suspend fun removeProductToCart(
         productId: String
     ): Result<Unit, DataError.Network> {
 
-        val userResult = getUser()
-        if (userResult is Result.Error) {
-            return Result.Error(userResult.error)
-        }
+        when (val userResult = getUser()) {
+            is Result.Success -> {
+                val cart = userResult.data.cart.toMutableList()
+                cart.remove(productId)
+                val user = userResult.data.copy(
+                    wishlist = cart
+                )
 
-        if (userResult is Result.Success) {
-            val cart = userResult.data.cart.toMutableList()
-            cart.remove(productId)
-            val user = userResult.data.copy(
-                cart = cart
-            )
+                val updateResult = updateUser(user)
+                if (updateResult is Result.Error) {
+                    return Result.Error(updateResult.error)
+                }
+                return Result.Success(Unit)
+            }
 
-            val updateResult = updateUser(user)
-            if (updateResult is Result.Error) {
-                return Result.Error(updateResult.error)
+            is Result.Error -> {
+                return Result.Error(userResult.error)
             }
         }
-
-        return Result.Success(Unit)
     }
 
     override fun isLoggedIn(): Boolean {

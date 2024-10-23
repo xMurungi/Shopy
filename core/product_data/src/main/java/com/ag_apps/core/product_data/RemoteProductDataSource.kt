@@ -52,13 +52,14 @@ class RemoteProductDataSource(
             queryParameters = queryParameters
         )
 
-        if (productsResult is Result.Success) {
-            Timber.tag(tag).d("getProducts: Success ${productsResult.data.size}")
+        when(productsResult) {
+            is Result.Success -> {
+                Timber.tag(tag).d("getProducts: Success ${productsResult.data.size}")
+            }
+            is Result.Error -> {
+                Timber.tag(tag).d("getProducts: Error ${productsResult.error}")
+            }
         }
-        if (productsResult is Result.Error) {
-            Timber.tag(tag).d("getProducts: Error ${productsResult.error}")
-        }
-
 
         return productsResult.map { productsDto ->
             productsDto.map { it.toProduct() }

@@ -73,30 +73,27 @@ class ProductRepositoryImpl(
     }
 
     override suspend fun getRandomCategory(): Result<Category, DataError.Network> {
-        val categoriesResult = productDataSource.getCategories()
-
-        if (categoriesResult is Result.Error) {
-            return Result.Error(categoriesResult.error)
-        }
-
-        if (categoriesResult is Result.Success) {
-            val categories = categoriesResult.data.shuffled()
-            var randomCategory = categories.random()
-            for (category in categories) {
-                if (
-                    category.image.contains("png") ||
-                    category.image.contains("jpeg") ||
-                    category.image.contains("jpg")
-                ) {
-                    randomCategory = category
-                    break
-                }
+        when (val categoriesResult = productDataSource.getCategories()) {
+            is Result.Error -> {
+                return Result.Error(categoriesResult.error)
             }
-            return Result.Success(randomCategory)
-        }
 
-        // this should never happen
-        return Result.Error(DataError.Network.UNKNOWN)
+            is Result.Success -> {
+                val categories = categoriesResult.data.shuffled()
+                var randomCategory = categories.random()
+                for (category in categories) {
+                    if (
+                        category.image.contains("png") ||
+                        category.image.contains("jpeg") ||
+                        category.image.contains("jpg")
+                    ) {
+                        randomCategory = category
+                        break
+                    }
+                }
+                return Result.Success(randomCategory)
+            }
+        }
 
     }
 }
