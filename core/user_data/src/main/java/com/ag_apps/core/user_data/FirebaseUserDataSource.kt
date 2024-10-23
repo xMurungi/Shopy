@@ -36,7 +36,7 @@ class FirebaseUserDataSource(
     }
 
     override suspend fun addProductToWishlist(
-        productId: String
+        productId: Int
     ): Result<Unit, DataError.Network> {
 
         when (val userResult = getUser()) {
@@ -61,7 +61,7 @@ class FirebaseUserDataSource(
     }
 
     override suspend fun removeProductToWishlist(
-        productId: String
+        productId: Int
     ): Result<Unit, DataError.Network> {
 
         when (val userResult = getUser()) {
@@ -86,7 +86,7 @@ class FirebaseUserDataSource(
     }
 
     override suspend fun addProductToCart(
-        productId: String
+        productId: Int
     ): Result<Unit, DataError.Network> {
 
         when (val userResult = getUser()) {
@@ -111,7 +111,7 @@ class FirebaseUserDataSource(
     }
 
     override suspend fun removeProductToCart(
-        productId: String
+        productId: Int
     ): Result<Unit, DataError.Network> {
 
         when (val userResult = getUser()) {

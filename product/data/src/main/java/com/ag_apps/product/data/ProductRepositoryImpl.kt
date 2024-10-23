@@ -32,9 +32,9 @@ class ProductRepositoryImpl(
 
         if (userResult is Result.Success && productsResult is Result.Success) {
             val productsForUser = productsResult.data.map { product ->
-                if (userResult.data.wishlist.contains(product.productId.toString())) {
+                if (userResult.data.wishlist.contains(product.productId)) {
                     product.copy(isInWishList = true)
-                } else if (userResult.data.cart.contains(product.productId.toString())) {
+                } else if (userResult.data.cart.contains(product.productId)) {
                     product.copy(isInCartList = true)
                 } else {
                     product
@@ -48,26 +48,32 @@ class ProductRepositoryImpl(
 
     }
 
+    override suspend fun getProduct(
+        productId: Int
+    ): Result<Product, DataError.Network> {
+        return productDataSource.getProduct(productId)
+    }
+
     override suspend fun addProductToWishlist(
-        productId: String
+        productId: Int
     ): Result<Unit, DataError.Network> {
         return userDataSource.addProductToWishlist(productId)
     }
 
     override suspend fun removeProductFromWishlist(
-        productId: String
+        productId: Int
     ): Result<Unit, DataError.Network> {
         return userDataSource.removeProductToWishlist(productId)
     }
 
     override suspend fun addProductToCart(
-        productId: String
+        productId: Int
     ): Result<Unit, DataError.Network> {
         return userDataSource.addProductToCart(productId)
     }
 
     override suspend fun removeProductFromCart(
-        productId: String
+        productId: Int
     ): Result<Unit, DataError.Network> {
         return userDataSource.removeProductToCart(productId)
     }

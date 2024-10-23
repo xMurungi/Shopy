@@ -137,8 +137,8 @@ class FirestoreClient(
             name = this["name"] as String,
             image = this["image"] as String,
             address = address,
-            wishlist = (this["wishlist"] as? List<*>)?.filterIsInstance<String>() ?: emptyList(),
-            cart = (this["cart"] as? List<*>)?.filterIsInstance<String>() ?: emptyList()
+            wishlist = (this["wishlist"] as? List<*>)?.filterIsInstance<Int>() ?: emptyList(),
+            cart = (this["cart"] as? List<*>)?.filterIsInstance<Int>() ?: emptyList()
         )
     }
 }

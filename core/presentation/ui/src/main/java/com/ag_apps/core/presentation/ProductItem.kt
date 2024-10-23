@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.model.ProductUI
+import com.ag_apps.core.presentation.model.previewProducts
 
 /**
  * @author Ahmed Guedmioui
@@ -115,15 +116,27 @@ fun GridProductItem(
                     .align(Alignment.BottomEnd)
             )
 
-            Text(
-                text = product.categoryName,
-                fontSize = 11.sp,
-                color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
-                lineHeight = 1.sp,
+
+            Row (
                 modifier = Modifier
                     .align(Alignment.BottomStart)
-                    .padding(start = 10.dp)
-            )
+                    .padding(start = 10.dp),
+                verticalAlignment = Alignment.Bottom
+            ) {
+                RatingBar(
+                    rating = (product.rating / 2).toFloat(),
+                    size = 6
+                )
+                Spacer(Modifier.width(1.dp))
+                Text(
+                    text = "(${product.rating})",
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
+                    lineHeight = 1.sp,
+                    modifier = Modifier
+                )
+
+            }
         }
 
         Spacer(Modifier.height(6.dp))
@@ -133,6 +146,14 @@ fun GridProductItem(
                 .padding(horizontal = 10.dp)
                 .padding(bottom = 8.dp)
         ) {
+
+            Text(
+                text = product.categoryName,
+                fontSize = 11.sp,
+                color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
+                lineHeight = 1.sp,
+                modifier = Modifier
+            )
 
             Text(
                 text = product.title,
@@ -342,16 +363,7 @@ private fun ProductItemPreview() {
             modifier = Modifier
                 .width(220.dp),
             imageWidth = 120.dp,
-            product = ProductUI(
-                categoryName = "Category",
-                title = "Product Title Product",
-                description = "Product Description",
-                image = "",
-                price = 100,
-                productId = 1,
-                isInWishList = false,
-                isInCartList = true
-            ),
+            product = previewProducts[0],
             isGrid = true,
             onClick = {},
             onToggleInWishlist = {},

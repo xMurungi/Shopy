@@ -10,8 +10,8 @@ data class User(
     val name: String,
     val image: String,
     val address: Address?,
-    val wishlist: List<String>,
-    val cart: List<String>,
+    val wishlist: List<Int>,
+    val cart: List<Int>,
 )
 
 val EmptyFieldsUser = User(

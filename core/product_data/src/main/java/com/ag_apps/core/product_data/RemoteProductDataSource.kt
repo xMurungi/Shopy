@@ -61,7 +61,10 @@ class RemoteProductDataSource(
                         it.images.none { image ->
                             image.contains("[", ignoreCase = true) ||
                                     image.contains("]", ignoreCase = true) ||
-                                    image.contains("\"", ignoreCase = true)
+                                    image.contains("\"", ignoreCase = true) &&
+                                    !image.contains("png") ||
+                                    !image.contains("jpeg") ||
+                                    !image.contains("jpg")
                         }
                     }
                     .map { it.toProduct() }
@@ -108,10 +111,10 @@ class RemoteProductDataSource(
     }
 
     override suspend fun getProduct(
-        id: String
+        productId: Int
     ): Result<Product, DataError.Network> {
         return httpClient.get<ProductDto>(
-            route = "/products/$id"
+            route = "/products/$productId"
         ).map { productDto ->
             productDto.toProduct()
         }
@@ -160,20 +163,20 @@ class RemoteProductDataSource(
     }
 
     override suspend fun getCategory(
-        id: String
+        categoryId: Int
     ): Result<Category, DataError.Network> {
         return httpClient.get<CategoryDto>(
-            route = "/categories/$id"
+            route = "/categories/$categoryId"
         ).map { categoryDto ->
             categoryDto.toCategory()
         }
     }
 
     override suspend fun getCategoryProducts(
-        id: String
+        categoryId: Int
     ): Result<List<Product>, DataError.Network> {
         return httpClient.get<List<ProductDto>>(
-            route = "/categories/$id/products"
+            route = "/categories/$categoryId/products"
         ).map { productsDto ->
             productsDto.map { it.toProduct() }
         }

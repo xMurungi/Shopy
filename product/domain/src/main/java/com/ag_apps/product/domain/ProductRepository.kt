@@ -16,20 +16,24 @@ interface ProductRepository {
         maxPrice: Int? = null,
     ): Result<List<Product>, DataError.Network>
 
+    suspend fun getProduct(
+        productId: Int
+    ): Result<Product, DataError.Network>
+
     suspend fun addProductToWishlist(
-        productId: String
+        productId: Int
     ): Result<Unit, DataError.Network>
 
     suspend fun removeProductFromWishlist(
-        productId: String
+        productId: Int
     ): Result<Unit, DataError.Network>
 
     suspend fun addProductToCart(
-        productId: String
+        productId: Int
     ): Result<Unit, DataError.Network>
 
     suspend fun removeProductFromCart(
-        productId: String
+        productId: Int
     ): Result<Unit, DataError.Network>
 
     suspend fun getCategories(): Result<List<Category>, DataError.Network>

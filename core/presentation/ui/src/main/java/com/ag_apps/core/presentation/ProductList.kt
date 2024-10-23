@@ -41,6 +41,7 @@ import coil.compose.AsyncImage
 import com.ag_apps.core.domain.Category
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.model.ProductUI
+import com.ag_apps.core.presentation.model.previewProducts
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -172,10 +173,9 @@ fun CategoryPager(
         pageCount = { categories.size }
     )
 
-    // Auto swipe logic using LaunchedEffect
     LaunchedEffect(pagerState) {
         while (true) {
-            yield() // Suspend to avoid blocking UI
+            yield()
             delay(autoSwipeDelay)
             val nextPage = (pagerState.currentPage + 1) % categories.size
             pagerState.animateScrollToPage(nextPage)
@@ -287,7 +287,7 @@ private fun ProductListItem(
 private fun ProductListPreview() {
     ShopyTheme {
         ProductList(
-            products = products,
+            products = previewProducts,
             isGridLayout = false,
             isLoading = false,
             isApplyingFilter = false,
@@ -297,126 +297,3 @@ private fun ProductListPreview() {
     }
 }
 
-
-val products = listOf(
-    ProductUI(
-        productId = 1,
-        title = "Product 1",
-        description = "Product 1 description",
-        image = "",
-        price = 100,
-        categoryName = "Category 1",
-        isInWishList = false,
-        isInCartList = false
-    ),
-    ProductUI(
-        productId = 2,
-        title = "Product 2",
-        description = "Product 2 description",
-        image = "",
-        price = 230,
-        categoryName = "Category 2",
-        isInWishList = true,
-        isInCartList = false
-    ),
-    ProductUI(
-        productId = 1,
-        title = "Product 1",
-        description = "Product 1 description",
-        image = "",
-        price = 100,
-        categoryName = "Category 1",
-        isInWishList = false,
-        isInCartList = false
-    ),
-    ProductUI(
-        productId = 2,
-        title = "Product 2",
-        description = "Product 2 description",
-        image = "",
-        price = 230,
-        categoryName = "Category 2",
-        isInWishList = true,
-        isInCartList = false
-    ),
-    ProductUI(
-        productId = 1,
-        title = "Product 1",
-        description = "Product 1 description",
-        image = "",
-        price = 100,
-        categoryName = "Category 1",
-        isInWishList = false,
-        isInCartList = false
-    ),
-    ProductUI(
-        productId = 2,
-        title = "Product 2",
-        description = "Product 2 description",
-        image = "",
-        price = 230,
-        categoryName = "Category 2",
-        isInWishList = true,
-        isInCartList = false
-    ),
-    ProductUI(
-        productId = 1,
-        title = "Product 1",
-        description = "Product 1 description",
-        image = "",
-        price = 100,
-        categoryName = "Category 1",
-        isInWishList = false,
-        isInCartList = false
-    ),
-    ProductUI(
-        productId = 2,
-        title = "Product 2",
-        description = "Product 2 description",
-        image = "",
-        price = 230,
-        categoryName = "Category 2",
-        isInWishList = true,
-        isInCartList = false
-    ),
-    ProductUI(
-        productId = 1,
-        title = "Product 1",
-        description = "Product 1 description",
-        image = "",
-        price = 100,
-        categoryName = "Category 1",
-        isInWishList = false,
-        isInCartList = false
-    ),
-    ProductUI(
-        productId = 2,
-        title = "Product 2",
-        description = "Product 2 description",
-        image = "",
-        price = 230,
-        categoryName = "Category 2",
-        isInWishList = true,
-        isInCartList = false
-    ),
-    ProductUI(
-        productId = 1,
-        title = "Product 1",
-        description = "Product 1 description",
-        image = "",
-        price = 100,
-        categoryName = "Category 1",
-        isInWishList = false,
-        isInCartList = false
-    ),
-    ProductUI(
-        productId = 2,
-        title = "Product 2",
-        description = "Product 2 description",
-        image = "",
-        price = 230,
-        categoryName = "Category 2",
-        isInWishList = true,
-        isInCartList = false
-    ),
-)

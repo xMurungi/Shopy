@@ -9,6 +9,7 @@ data class ProductUI(
     val description: String,
     val image: String,
     val price: Int,
+    val rating: Int,
     val categoryName: String,
     val isInWishList: Boolean,
     val isInCartList: Boolean,
