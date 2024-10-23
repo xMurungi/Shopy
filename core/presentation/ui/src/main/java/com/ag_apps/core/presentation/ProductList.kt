@@ -55,6 +55,7 @@ fun ProductList(
     products: List<ProductUI>,
     isGridLayout: Boolean,
     isLoading: Boolean,
+    isApplyingFilter: Boolean,
     categories: List<Category> = emptyList(),
     onToggleProductInWishlist: ((Int) -> Unit)? = null,
     onToggleProductInCart: ((Int) -> Unit)? = null,
@@ -104,21 +105,23 @@ fun ProductList(
                 }
             }
 
-            itemsIndexed(products) { index, product ->
-                val paddingStart = if ((index % 2) == 0) 12.dp else 0.dp
-                val paddingEnd = if ((index % 2) != 0) 12.dp else 0.dp
-                ProductListItem(
-                    modifier = Modifier.padding(
-                        top = 12.dp, start = paddingStart, end = paddingEnd
-                    ),
-                    product = product,
-                    index = index,
-                    isGridLayout = true,
-                    onToggleProductInWishlist = onToggleProductInWishlist,
-                    onToggleProductInCart = onToggleProductInCart,
-                    onRemove = onRemove,
-                    onProductClick = onProductClick
-                )
+            if (products.isNotEmpty() && !isApplyingFilter) {
+                itemsIndexed(products) { index, product ->
+                    val paddingStart = if ((index % 2) == 0) 12.dp else 0.dp
+                    val paddingEnd = if ((index % 2) != 0) 12.dp else 0.dp
+                    ProductListItem(
+                        modifier = Modifier.padding(
+                            top = 12.dp, start = paddingStart, end = paddingEnd
+                        ),
+                        product = product,
+                        index = index,
+                        isGridLayout = true,
+                        onToggleProductInWishlist = onToggleProductInWishlist,
+                        onToggleProductInCart = onToggleProductInCart,
+                        onRemove = onRemove,
+                        onProductClick = onProductClick
+                    )
+                }
             }
         }
     } else {
@@ -133,25 +136,26 @@ fun ProductList(
                     Spacer(Modifier.height(12.dp))
                 }
             }
+            if (products.isNotEmpty() && !isApplyingFilter) {
+                itemsIndexed(
+                    items = products,
+                    key = { _, article -> article.productId }
+                ) { index, product ->
 
-            itemsIndexed(
-                items = products,
-                key = { _, article -> article.productId }
-            ) { index, product ->
-
-                ProductListItem(
-                    modifier = Modifier
-                        .height(120.dp)
-                        .padding(horizontal = 16.dp),
-                    product = product,
-                    index = index,
-                    isGridLayout = false,
-                    onToggleProductInWishlist = onToggleProductInWishlist,
-                    onToggleProductInCart = onToggleProductInCart,
-                    onRemove = onRemove,
-                    onProductClick = onProductClick
-                )
-                Spacer(Modifier.height(12.dp))
+                    ProductListItem(
+                        modifier = Modifier
+                            .height(120.dp)
+                            .padding(horizontal = 16.dp),
+                        product = product,
+                        index = index,
+                        isGridLayout = false,
+                        onToggleProductInWishlist = onToggleProductInWishlist,
+                        onToggleProductInCart = onToggleProductInCart,
+                        onRemove = onRemove,
+                        onProductClick = onProductClick
+                    )
+                    Spacer(Modifier.height(12.dp))
+                }
             }
         }
     }
@@ -161,7 +165,7 @@ fun ProductList(
 fun CategoryPager(
     categories: List<Category>,
     modifier: Modifier = Modifier,
-    autoSwipeDelay: Long = 2000L // Auto swipe every 3 seconds
+    autoSwipeDelay: Long = 3000L
 ) {
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -286,6 +290,7 @@ private fun ProductListPreview() {
             products = products,
             isGridLayout = false,
             isLoading = false,
+            isApplyingFilter = false,
             onPaginate = {},
             onProductClick = {},
         )

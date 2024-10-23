@@ -69,6 +69,27 @@ private fun ProductOverviewScreen(
         applyFilter = { onAction(ProductOverviewAction.ApplyFilter) },
         onSearch = { onAction(ProductOverviewAction.Search) },
     ) { padding ->
+        ProductList(
+            modifier = Modifier.padding(top = padding.calculateTopPadding()),
+            products = state.products,
+            isGridLayout = state.isGridLayout,
+            isLoading = state.isLoading,
+            categories = state.categories,
+            isApplyingFilter = state.isApplyingFilter,
+            onToggleProductInWishlist = { index ->
+                onAction(ProductOverviewAction.ToggleProductInWishlist(index))
+            },
+            onToggleProductInCart = { index ->
+                onAction(ProductOverviewAction.ToggleProductInCart(index))
+            },
+            onPaginate = {
+                onAction(ProductOverviewAction.Paginate)
+            },
+            onProductClick = { index ->
+                onAction(ProductOverviewAction.ClickProduct(index))
+            }
+        )
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -86,28 +107,6 @@ private fun ProductOverviewScreen(
                     textAlign = TextAlign.Center,
                 )
             }
-        }
-
-        if (state.products.isNotEmpty() && !state.isApplyingFilter) {
-            ProductList(
-                modifier = Modifier.padding(top = padding.calculateTopPadding()),
-                products = state.products,
-                isGridLayout = state.isGridLayout,
-                isLoading = state.isLoading,
-                categories = state.categories,
-                onToggleProductInWishlist = { index ->
-                    onAction(ProductOverviewAction.ToggleProductInWishlist(index))
-                },
-                onToggleProductInCart = { index ->
-                    onAction(ProductOverviewAction.ToggleProductInCart(index))
-                },
-                onPaginate = {
-                    onAction(ProductOverviewAction.Paginate)
-                },
-                onProductClick = { index ->
-                    onAction(ProductOverviewAction.ClickProduct(index))
-                }
-            )
         }
     }
 
