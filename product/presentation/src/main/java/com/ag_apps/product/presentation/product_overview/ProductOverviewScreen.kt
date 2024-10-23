@@ -94,7 +94,7 @@ private fun ProductOverviewScreen(
                 products = state.products,
                 isGridLayout = state.isGridLayout,
                 isLoading = state.isLoading,
-                category = state.category,
+                categories = state.categories,
                 onToggleProductInWishlist = { index ->
                     onAction(ProductOverviewAction.ToggleProductInWishlist(index))
                 },

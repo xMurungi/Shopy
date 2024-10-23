@@ -72,28 +72,7 @@ class ProductRepositoryImpl(
         return userDataSource.removeProductToCart(productId)
     }
 
-    override suspend fun getRandomCategory(): Result<Category, DataError.Network> {
-        when (val categoriesResult = productDataSource.getCategories()) {
-            is Result.Error -> {
-                return Result.Error(categoriesResult.error)
-            }
-
-            is Result.Success -> {
-                val categories = categoriesResult.data.shuffled()
-                var randomCategory = categories.random()
-                for (category in categories) {
-                    if (
-                        category.image.contains("png") ||
-                        category.image.contains("jpeg") ||
-                        category.image.contains("jpg")
-                    ) {
-                        randomCategory = category
-                        break
-                    }
-                }
-                return Result.Success(randomCategory)
-            }
-        }
-
+    override suspend fun getCategories(): Result<List<Category>, DataError.Network> {
+        return productDataSource.getCategories()
     }
 }

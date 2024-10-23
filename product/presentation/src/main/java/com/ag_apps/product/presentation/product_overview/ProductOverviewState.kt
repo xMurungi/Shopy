@@ -12,7 +12,7 @@ data class ProductOverviewState(
     val isApplyingFilter: Boolean = false,
     val isError: Boolean = false,
     val products: List<ProductUI> = emptyList(),
-    val category: Category? = null,
+    val categories: List<Category> = emptyList(),
     val productsOffset: Int = 0,
     val minPriceState: TextFieldState = TextFieldState(""),
     val maxPriceState: TextFieldState = TextFieldState(""),

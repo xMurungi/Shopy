@@ -52,17 +52,27 @@ class RemoteProductDataSource(
             queryParameters = queryParameters
         )
 
-        when(productsResult) {
+        when (productsResult) {
             is Result.Success -> {
                 Timber.tag(tag).d("getProducts: Success ${productsResult.data.size}")
+
+                val products = productsResult.data
+                    .filter {
+                        it.images.none { image ->
+                            image.contains("[", ignoreCase = true) ||
+                                    image.contains("]", ignoreCase = true) ||
+                                    image.contains("\"", ignoreCase = true)
+                        }
+                    }
+                    .map { it.toProduct() }
+
+                return Result.Success(products)
             }
+
             is Result.Error -> {
                 Timber.tag(tag).d("getProducts: Error ${productsResult.error}")
+                return Result.Error(productsResult.error)
             }
-        }
-
-        return productsResult.map { productsDto ->
-            productsDto.map { it.toProduct() }
         }
     }
 
@@ -108,10 +118,44 @@ class RemoteProductDataSource(
     }
 
     override suspend fun getCategories(): Result<List<Category>, DataError.Network> {
-        return httpClient.get<List<CategoryDto>>(
+        val categoriesResult = httpClient.get<List<CategoryDto>>(
             route = "/categories"
-        ).map { categoriesDto ->
-            categoriesDto.map { it.toCategory() }
+        )
+
+        when (categoriesResult) {
+            is Result.Success -> {
+                val categories = categoriesResult.data
+                    .shuffled()
+                    .filter {category ->
+                                // Exclude categories based on name
+                                !category.name.contains("New", ignoreCase = true) &&
+                                !category.name.contains("Category", ignoreCase = true) &&
+                                !category.name.contains("Change", ignoreCase = true) &&
+                                !category.name.contains("Title", ignoreCase = true) &&
+
+                                // Exclude categories with unwanted characters in image
+                                !category.image.contains("[", ignoreCase = true) &&
+                                !category.image.contains("]", ignoreCase = true) &&
+                                !category.image.contains("\"", ignoreCase = true) &&
+
+                                // Only allow specific image formats
+                                (category.image.endsWith("png", ignoreCase = true) ||
+                                        category.image.endsWith("jpeg", ignoreCase = true) ||
+                                        category.image.endsWith("jpg", ignoreCase = true))
+                    }
+                    .onEach {
+                        Timber.tag(tag).d("getCategories: ${it.name}, ${it.image}")
+                    }
+                    .map {
+                        it.toCategory()
+                    }
+
+                return Result.Success(categories)
+            }
+
+            is Result.Error -> {
+                return categoriesResult
+            }
         }
     }
 

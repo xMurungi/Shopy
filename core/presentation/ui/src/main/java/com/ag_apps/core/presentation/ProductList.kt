@@ -3,7 +3,6 @@ package com.ag_apps.core.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +18,8 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,7 +30,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -42,8 +41,10 @@ import coil.compose.AsyncImage
 import com.ag_apps.core.domain.Category
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.model.ProductUI
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.yield
 
 /**
  * @author Ahmed Guedmioui
@@ -54,7 +55,7 @@ fun ProductList(
     products: List<ProductUI>,
     isGridLayout: Boolean,
     isLoading: Boolean,
-    category: Category? = null,
+    categories: List<Category> = emptyList(),
     onToggleProductInWishlist: ((Int) -> Unit)? = null,
     onToggleProductInCart: ((Int) -> Unit)? = null,
     onRemove: ((Int) -> Unit)? = null,
@@ -97,8 +98,10 @@ fun ProductList(
             columns = GridCells.Fixed(2),
             state = gridState
         ) {
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                CategoryListItem(category = category)
+            if (categories.isNotEmpty()) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    CategoryPager(categories = categories)
+                }
             }
 
             itemsIndexed(products) { index, product ->
@@ -124,9 +127,11 @@ fun ProductList(
             contentPadding = PaddingValues(bottom = 8.dp),
             state = listState
         ) {
-            item {
-                CategoryListItem(category = category)
-                Spacer(Modifier.height(12.dp))
+            if (categories.isNotEmpty()) {
+                item {
+                    CategoryPager(categories = categories)
+                    Spacer(Modifier.height(12.dp))
+                }
             }
 
             itemsIndexed(
@@ -153,10 +158,45 @@ fun ProductList(
 }
 
 @Composable
+fun CategoryPager(
+    categories: List<Category>,
+    modifier: Modifier = Modifier,
+    autoSwipeDelay: Long = 2000L // Auto swipe every 3 seconds
+) {
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        pageCount = { categories.size }
+    )
+
+    // Auto swipe logic using LaunchedEffect
+    LaunchedEffect(pagerState) {
+        while (true) {
+            yield() // Suspend to avoid blocking UI
+            delay(autoSwipeDelay)
+            val nextPage = (pagerState.currentPage + 1) % categories.size
+            pagerState.animateScrollToPage(nextPage)
+        }
+    }
+
+    HorizontalPager(
+        state = pagerState,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(200.dp)
+    ) { page ->
+        CategoryListItem(
+            category = categories[page],
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
+
+@Composable
 private fun CategoryListItem(
     modifier: Modifier = Modifier,
-    category: Category?
+    category: Category,
 ) {
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -164,14 +204,14 @@ private fun CategoryListItem(
             .background(MaterialTheme.colorScheme.onBackground.copy(0.1f))
     ) {
         AsyncImage(
-            model = category?.image,
-            contentDescription = category?.name,
+            model = category.image,
+            contentDescription = category.name,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
 
         Text(
-            text = category?.name ?: "",
+            text = category.name,
             fontSize = 35.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -188,7 +228,7 @@ private fun CategoryListItem(
         )
 
         Text(
-            text = category?.name ?: "",
+            text = category.name,
             fontSize = 35.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -247,7 +287,7 @@ private fun ProductListPreview() {
             isGridLayout = false,
             isLoading = false,
             onPaginate = {},
-            onProductClick = {}
+            onProductClick = {},
         )
     }
 }

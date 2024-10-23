@@ -32,7 +32,7 @@ interface ProductRepository {
         productId: String
     ): Result<Unit, DataError.Network>
 
-    suspend fun getRandomCategory(): Result<Category, DataError.Network>
+    suspend fun getCategories(): Result<List<Category>, DataError.Network>
 
 
 }

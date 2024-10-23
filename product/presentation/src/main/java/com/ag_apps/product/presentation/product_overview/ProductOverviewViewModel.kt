@@ -150,10 +150,10 @@ class ProductOverviewViewModel(
 
     private fun loadRandomCategory() {
         viewModelScope.launch {
-            when (val categoryResult = productRepository.getRandomCategory()) {
+            when (val categoryResult = productRepository.getCategories()) {
                 is Result.Error -> Unit
                 is Result.Success -> {
-                    state = state.copy(category = categoryResult.data)
+                    state = state.copy(categories = categoryResult.data)
                 }
             }
         }
