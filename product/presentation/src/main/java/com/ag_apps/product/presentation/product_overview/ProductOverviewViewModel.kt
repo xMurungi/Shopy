@@ -65,6 +65,11 @@ class ProductOverviewViewModel(
                 loadProducts()
             }
 
+
+            is ProductOverviewAction.RefreshUpdatedProductFromDetails -> {
+                refreshUpdatedProductFromDetails(action.updatedProductId)
+            }
+
             ProductOverviewAction.Paginate -> {
                 state = state.copy(productsOffset = state.productsOffset + 10)
                 loadProducts(true)
@@ -97,6 +102,26 @@ class ProductOverviewViewModel(
             is ProductOverviewAction.ClickProduct -> Unit
 
             ProductOverviewAction.Search -> Unit
+        }
+    }
+
+    private fun refreshUpdatedProductFromDetails(updatedProductId: Int) {
+        viewModelScope.launch {
+
+            val productResult = productRepository.getProduct(updatedProductId)
+
+            if (productResult is Result.Success)
+                if (state.products.isNotEmpty()) {
+                    state = state.copy(
+                        products = state.products.map {
+                            if (it.productId == updatedProductId) {
+                                productResult.data
+                            } else {
+                                it
+                            }
+                        }
+                    )
+                }
         }
     }
 

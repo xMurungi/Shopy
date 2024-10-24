@@ -84,7 +84,7 @@ import org.koin.androidx.compose.koinViewModel
 fun ProductDetailsScreenCore(
     viewModel: ProductDetailsViewModel = koinViewModel(),
     productId: Int,
-    onBack: () -> Unit
+    onBack: (Boolean) -> Unit
 ) {
 
     LaunchedEffect(true) {
@@ -95,7 +95,7 @@ fun ProductDetailsScreenCore(
         state = viewModel.state,
         onAction = { action ->
             when (action) {
-                ProductDetailsAction.GoBack -> onBack()
+                ProductDetailsAction.GoBack -> onBack(viewModel.state.isProductUpdate)
 
                 else -> viewModel.onAction(action)
             }

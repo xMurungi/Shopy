@@ -60,7 +60,7 @@ class FirebaseUserDataSource(
         }
     }
 
-    override suspend fun removeProductToWishlist(
+    override suspend fun removeProductFromWishlist(
         productId: Int
     ): Result<Unit, DataError.Network> {
 
@@ -94,7 +94,7 @@ class FirebaseUserDataSource(
                 val cart = userResult.data.cart.toMutableList()
                 cart.add(0, productId)
                 val user = userResult.data.copy(
-                    wishlist = cart
+                    cart = cart
                 )
 
                 val updateResult = updateUser(user)
@@ -110,7 +110,7 @@ class FirebaseUserDataSource(
         }
     }
 
-    override suspend fun removeProductToCart(
+    override suspend fun removeProductFromCart(
         productId: Int
     ): Result<Unit, DataError.Network> {
 
@@ -119,7 +119,7 @@ class FirebaseUserDataSource(
                 val cart = userResult.data.cart.toMutableList()
                 cart.remove(productId)
                 val user = userResult.data.copy(
-                    wishlist = cart
+                    cart = cart
                 )
 
                 val updateResult = updateUser(user)

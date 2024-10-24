@@ -1,7 +1,5 @@
 package com.ag_apps.shopy
 
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
@@ -11,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -89,7 +88,12 @@ fun Navigation(
 
             ProductDetailsScreenCore(
                 productId = productId,
-                onBack = { navController.popBackStack() }
+                onBack = { isProductUpdate ->
+                    navController.popBackStack()
+                    if (isProductUpdate) {
+                        navController.currentBackStackEntry?.savedStateHandle?.set("updatedProductId", productId)
+                    }
+                }
             )
         }
 
@@ -163,11 +167,6 @@ private fun MainBottomBar(
         mutableIntStateOf(0)
     }
 
-    var oldSelectedItem by rememberSaveable {
-        mutableIntStateOf(0)
-    }
-
-
     Scaffold(
         contentWindowInsets = WindowInsets(top = 0.dp),
         bottomBar = {
@@ -209,8 +208,11 @@ private fun MainBottomBar(
 
             // product ----------------------------------------------------------------------------
             composable<BottomBarScreen.ProductOverview> {
+                val updatedProductId = navController.currentBackStackEntry?.savedStateHandle?.get<Int>("updatedProductId")
+
                 ProductOverviewScreenCore(
                     appName = stringResource(R.string.app_name),
+                    updatedProductId = updatedProductId,
                     onProductClick = { productId ->
                         navController.navigate(Screen.ProductDetails(productId))
                     },

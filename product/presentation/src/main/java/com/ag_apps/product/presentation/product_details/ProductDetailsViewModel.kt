@@ -78,9 +78,8 @@ class ProductDetailsViewModel(
 
             state.product?.let { product ->
                 state = state.copy(
-                    product = product.copy(
-                        isInWishList = !product.isInWishList
-                    )
+                    product = product.copy(isInWishList = !product.isInWishList),
+                    isProductUpdate = true
                 )
 
                 if (!product.isInWishList) {
@@ -97,12 +96,11 @@ class ProductDetailsViewModel(
 
             state.product?.let { product ->
                 state = state.copy(
-                    product = product.copy(
-                        isInCartList = !product.isInCartList
-                    )
+                    product = product.copy(isInCartList = !product.isInCartList),
+                    isProductUpdate = true
                 )
 
-                if (!product.isInWishList) {
+                if (!product.isInCartList) {
                     productRepository.addProductToCart(product.productId)
                 } else {
                     productRepository.removeProductFromCart(product.productId)

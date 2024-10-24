@@ -35,7 +35,11 @@ class ProductRepositoryImpl(
         if (userResult is Result.Success && productsResult is Result.Success) {
             val productsForUser = productsResult.data.map { product ->
                 if (userResult.data.wishlist.contains(product.productId)) {
-                    product.copy(isInWishList = true)
+                    if (userResult.data.cart.contains(product.productId)) {
+                        product.copy(isInCartList = true, isInWishList = true)
+                    } else {
+                        product.copy(isInWishList = true)
+                    }
                 } else if (userResult.data.cart.contains(product.productId)) {
                     product.copy(isInCartList = true)
                 } else {
@@ -57,17 +61,17 @@ class ProductRepositoryImpl(
         val productResult = productDataSource.getProduct(productId)
 
         if (userResult is Result.Success && productResult is Result.Success) {
-            val product = productResult.data
-            val productForUser =
-                if (userResult.data.wishlist.contains(product.productId)) {
-                    product.copy(isInWishList = true)
-                } else if (userResult.data.cart.contains(product.productId)) {
-                    product.copy(isInCartList = true)
-                } else {
-                    product
-                }
+            var product = productResult.data
 
-            return Result.Success(productForUser)
+            if (userResult.data.wishlist.contains(product.productId)) {
+                product = product.copy(isInWishList = true)
+            }
+
+            if (userResult.data.cart.contains(product.productId)) {
+                product = product.copy(isInCartList = true)
+            }
+
+            return Result.Success(product)
         }
 
         return productResult
@@ -82,7 +86,7 @@ class ProductRepositoryImpl(
     override suspend fun removeProductFromWishlist(
         productId: Int
     ): Result<Unit, DataError.Network> {
-        return userDataSource.removeProductToWishlist(productId)
+        return userDataSource.removeProductFromWishlist(productId)
     }
 
     override suspend fun addProductToCart(
@@ -94,7 +98,7 @@ class ProductRepositoryImpl(
     override suspend fun removeProductFromCart(
         productId: Int
     ): Result<Unit, DataError.Network> {
-        return userDataSource.removeProductToCart(productId)
+        return userDataSource.removeProductFromCart(productId)
     }
 
     override suspend fun getCategories(): Result<List<Category>, DataError.Network> {
