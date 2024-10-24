@@ -11,7 +11,7 @@ import org.koin.dsl.module
  * @author Ahmed Guedmioui
  */
 
-val coreNetworkModule = module {
+val coreUserDataModule = module {
 
     single { FirestoreClient(get()) }
 

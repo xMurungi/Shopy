@@ -28,6 +28,7 @@ class RemoteProductDataSource(
         maxPrice: Int?,
     ): Result<List<Product>, DataError.Network> {
 
+        if (offset > 0) return Result.Success(emptyList())
         return Result.Success(dummyProducts)
 
         Timber.tag(tag).d(
@@ -88,6 +89,7 @@ class RemoteProductDataSource(
         maxPrice: Int?,
     ): Result<List<Product>, DataError.Network> {
 
+        if (offset > 0) return Result.Success(emptyList())
         return Result.Success(dummyProducts)
 
         val queryParameters =

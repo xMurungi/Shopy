@@ -5,12 +5,14 @@ import android.content.Context
 import com.ag_apps.auth.data.di.authDataModule
 import com.google.firebase.FirebaseApp
 import com.ag_apps.auth.presentation.di.authPresentationModule
-import com.ag_apps.core.user_data.di.coreNetworkModule
+import com.ag_apps.core.user_data.di.coreUserDataModule
 import com.ag_apps.core.product_data.di.coreProductDataModule
 import com.ag_apps.product.data.di.productDataModule
 import com.ag_apps.product.presentation.di.productPresentationModule
 import com.ag_apps.profile.data.di.profileDataModule
 import com.ag_apps.profile.presentation.di.profilePresentationModule
+import com.ag_apps.search.data.di.searchDataModule
+import com.ag_apps.search.presentation.di.searchPresentationModule
 import com.ag_apps.shopy.di.appModule
 import com.google.android.play.core.splitcompat.SplitCompat
 import kotlinx.coroutines.CoroutineScope
@@ -41,14 +43,21 @@ class ShopyApp: Application() {
             androidContext(this@ShopyApp)
             modules(
                 appModule,
+
                 coreProductDataModule,
-                coreNetworkModule,
+                coreUserDataModule,
+
                 authDataModule,
                 authPresentationModule,
+
                 profileDataModule,
                 profilePresentationModule,
+
                 productDataModule,
-                productPresentationModule
+                productPresentationModule,
+
+                searchDataModule,
+                searchPresentationModule
             )
         }
     }

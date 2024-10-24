@@ -19,4 +19,5 @@
     <string name="min_price">Min Price</string>
     <string name="max_price">Max Price</string>
     <string name="apply">Apply</string>
+    <string name="search_products">Search Products</string>
 </resources>

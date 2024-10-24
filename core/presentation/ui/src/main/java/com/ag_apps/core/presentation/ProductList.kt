@@ -20,8 +20,10 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -39,10 +41,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.ag_apps.core.domain.Category
-import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.domain.Product
+import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.util.previewProducts
-
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -51,18 +52,21 @@ import kotlinx.coroutines.yield
 /**
  * @author Ahmed Guedmioui
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductList(
     modifier: Modifier = Modifier,
     products: List<Product>,
     isGridLayout: Boolean,
     isLoading: Boolean,
+    isRefreshing: Boolean,
     isApplyingFilter: Boolean,
     categories: List<Category> = emptyList(),
     onToggleProductInWishlist: ((Int) -> Unit)? = null,
     onToggleProductInCart: ((Int) -> Unit)? = null,
     onRemove: ((Int) -> Unit)? = null,
     onPaginate: () -> Unit,
+    onRefresh: () -> Unit,
     onProductClick: (Int) -> Unit,
 ) {
 
@@ -94,68 +98,76 @@ fun ProductList(
             .collect { onPaginate() }
     }
 
-    if (isGridLayout) {
-        LazyVerticalGrid(
-            modifier = modifier,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            columns = GridCells.Fixed(2),
-            state = gridState
-        ) {
-            if (categories.isNotEmpty()) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                    CategoryPager(categories = categories)
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = { onRefresh() },
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        if (isGridLayout) {
+            LazyVerticalGrid(
+                modifier = modifier,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                columns = GridCells.Fixed(2),
+                state = gridState,
+                contentPadding = PaddingValues(bottom = 22.dp)
+            ) {
+                if (categories.isNotEmpty()) {
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        CategoryPager(categories = categories)
+                    }
                 }
-            }
 
-            if (products.isNotEmpty() && !isApplyingFilter) {
-                itemsIndexed(products) { index, product ->
-                    val paddingStart = if ((index % 2) == 0) 12.dp else 0.dp
-                    val paddingEnd = if ((index % 2) != 0) 12.dp else 0.dp
-                    ProductListItem(
-                        modifier = Modifier.padding(
-                            top = 12.dp, start = paddingStart, end = paddingEnd
-                        ),
-                        product = product,
-                        index = index,
-                        isGridLayout = true,
-                        onToggleProductInWishlist = onToggleProductInWishlist,
-                        onToggleProductInCart = onToggleProductInCart,
-                        onRemove = onRemove,
-                        onProductClick = onProductClick
-                    )
+                if (products.isNotEmpty() && !isApplyingFilter) {
+                    itemsIndexed(products) { index, product ->
+                        val paddingStart = if ((index % 2) == 0) 12.dp else 0.dp
+                        val paddingEnd = if ((index % 2) != 0) 12.dp else 0.dp
+                        ProductListItem(
+                            modifier = Modifier.padding(
+                                top = 12.dp, start = paddingStart, end = paddingEnd
+                            ),
+                            product = product,
+                            index = index,
+                            isGridLayout = true,
+                            onToggleProductInWishlist = onToggleProductInWishlist,
+                            onToggleProductInCart = onToggleProductInCart,
+                            onRemove = onRemove,
+                            onProductClick = onProductClick
+                        )
+                    }
                 }
             }
-        }
-    } else {
-        LazyColumn(
-            modifier = modifier,
-            contentPadding = PaddingValues(bottom = 8.dp),
-            state = listState
-        ) {
-            if (categories.isNotEmpty()) {
-                item {
-                    CategoryPager(categories = categories)
-                    Spacer(Modifier.height(12.dp))
+        } else {
+            LazyColumn(
+                modifier = modifier,
+                contentPadding = PaddingValues(bottom = 22.dp),
+                state = listState
+            ) {
+                if (categories.isNotEmpty()) {
+                    item {
+                        CategoryPager(categories = categories)
+                        Spacer(Modifier.height(12.dp))
+                    }
                 }
-            }
-            if (products.isNotEmpty() && !isApplyingFilter) {
-                itemsIndexed(
-                    items = products,
-                    key = { _, article -> article.productId }
-                ) { index, product ->
+                if (products.isNotEmpty() && !isApplyingFilter) {
+                    itemsIndexed(
+                        items = products,
+                        key = { _, article -> article.productId }
+                    ) { index, product ->
 
-                    ProductListItem(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp),
-                        product = product,
-                        index = index,
-                        isGridLayout = false,
-                        onToggleProductInWishlist = onToggleProductInWishlist,
-                        onToggleProductInCart = onToggleProductInCart,
-                        onRemove = onRemove,
-                        onProductClick = onProductClick
-                    )
-                    Spacer(Modifier.height(12.dp))
+                        ProductListItem(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp),
+                            product = product,
+                            index = index,
+                            isGridLayout = false,
+                            onToggleProductInWishlist = onToggleProductInWishlist,
+                            onToggleProductInCart = onToggleProductInCart,
+                            onRemove = onRemove,
+                            onProductClick = onProductClick
+                        )
+                        Spacer(Modifier.height(12.dp))
+                    }
                 }
             }
         }
@@ -290,8 +302,10 @@ private fun ProductListPreview() {
             isGridLayout = false,
             isLoading = false,
             isApplyingFilter = false,
+            isRefreshing = false,
             onPaginate = {},
             onProductClick = {},
+            onRefresh = {},
         )
     }
 }

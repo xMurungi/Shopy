@@ -31,10 +31,12 @@ import com.ag_apps.core.presentation.designsystem.components.bottomBarItems
 import com.ag_apps.product.presentation.product_details.ProductDetailsScreenCore
 import com.ag_apps.product.presentation.product_overview.ProductOverviewScreenCore
 import com.ag_apps.profile.presentation.ProfileScreenCore
+import com.ag_apps.search.presentation.SearchScreenCore
 
 /**
  * @author Ahmed Guedmioui
  */
+
 
 @Composable
 fun Navigation(
@@ -99,12 +101,15 @@ fun Navigation(
 
         // search ------------------------------------------------------------------------------
         composable<Screen.Search> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "search")
-            }
+            val updatedProductId = navController.currentBackStackEntry?.savedStateHandle?.get<Int>("updatedProductId")
+
+            SearchScreenCore(
+                appName = stringResource(R.string.app_name),
+                updatedProductId = updatedProductId,
+                onProductClick = { productId ->
+                    navController.navigate(Screen.ProductDetails(productId))
+                }
+            )
         }
 
         // category ------------------------------------------------------------------------------

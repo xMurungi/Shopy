@@ -8,6 +8,7 @@ android {
 
 dependencies {
     implementation(projects.core.domain)
-    implementation(projects.core.userData)
     implementation(projects.search.domain)
+
+    implementation(libs.bundles.koin)
 }

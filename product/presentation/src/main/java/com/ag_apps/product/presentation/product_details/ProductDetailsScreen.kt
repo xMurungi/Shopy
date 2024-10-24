@@ -1,5 +1,6 @@
 package com.ag_apps.product.presentation.product_details
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -89,6 +90,10 @@ fun ProductDetailsScreenCore(
 
     LaunchedEffect(true) {
         viewModel.onAction(ProductDetailsAction.LoadProduct(productId))
+    }
+
+    BackHandler {
+        onBack(viewModel.state.isProductUpdate)
     }
 
     ProductDetailsScreen(

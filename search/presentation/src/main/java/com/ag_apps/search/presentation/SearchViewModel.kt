@@ -1,4 +1,4 @@
-package com.ag_apps.product.presentation.product_overview
+package com.ag_apps.search.presentation
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.getValue
@@ -8,7 +8,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ag_apps.core.domain.util.Result
-import com.ag_apps.product.domain.ProductRepository
+import com.ag_apps.search.domain.SearchRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -17,15 +17,17 @@ import kotlinx.coroutines.launch
 /**
  * @author Ahmed Guedmioui
  */
-class ProductOverviewViewModel(
-    private val productRepository: ProductRepository
+class SearchViewModel(
+    private val searchRepository: SearchRepository
 ) : ViewModel() {
 
-    var state by mutableStateOf(ProductOverviewState())
+    var state by mutableStateOf(SearchState())
         private set
 
-    private val eventChannel = Channel<ProductOverviewEvent>()
+    private val eventChannel = Channel<SearchEvent>()
     val event = eventChannel.receiveAsFlow()
+
+    var searchAttempts = 0
 
     init {
         state = state.copy(
@@ -34,6 +36,16 @@ class ProductOverviewViewModel(
             maxPriceState = TextFieldState(""),
         )
 
+        viewModelScope.launch {
+            snapshotFlow { state.searchQueryState.text }.collectLatest {
+                println("SearchViewModel: searchQueryState")
+                searchAttempts++
+                if (searchAttempts > 1) {
+                    searchProducts()
+                }
+            }
+        }
+        
         viewModelScope.launch {
             snapshotFlow { state.minPriceState.text }.collectLatest { input ->
                 val minPrice = input.filter { it.isDigit() }
@@ -53,61 +65,54 @@ class ProductOverviewViewModel(
         }
     }
 
-    fun onAction(action: ProductOverviewAction) {
+    fun onAction(action: SearchAction) {
         when (action) {
-            ProductOverviewAction.Refresh -> {
-                state = state.copy(
-                    productsOffset = 0,
-                    minPriceState = TextFieldState(""),
-                    maxPriceState = TextFieldState(""),
-                )
-                loadProducts()
-            }
 
 
-            is ProductOverviewAction.RefreshUpdatedProductFromDetails -> {
+            is SearchAction.RefreshUpdatedProductFromDetails -> {
                 refreshUpdatedProductFromDetails(action.updatedProductId)
             }
 
-            ProductOverviewAction.Paginate -> {
+            SearchAction.Paginate -> {
+                println("SearchViewModel: Paginate")
                 state = state.copy(productsOffset = state.productsOffset + 10)
-                loadProducts(true)
+                searchProducts(true)
             }
 
-            ProductOverviewAction.ApplyFilter -> {
+            SearchAction.ApplyFilter -> {
+                println("SearchViewModel: ApplyFilter")
                 state = state.copy(
                     productsOffset = 0,
                     isApplyingFilter = true
                 )
-                loadProducts()
+                searchProducts()
             }
 
-            ProductOverviewAction.ToggleFilter -> {
+            SearchAction.ToggleFilter -> {
                 state = state.copy(isFilterOpen = !state.isFilterOpen)
             }
 
-            ProductOverviewAction.ToggleProductsLayout -> {
+            SearchAction.ToggleProductsLayout -> {
                 state = state.copy(isGridLayout = !state.isGridLayout)
             }
 
-            is ProductOverviewAction.ToggleProductInWishlist -> {
+            is SearchAction.ToggleProductInWishlist -> {
                 toggleProductInWishlist(action.productIndex)
             }
 
-            is ProductOverviewAction.ToggleProductInCart -> {
+            is SearchAction.ToggleProductInCart -> {
                 toggleProductInCart(action.productIndex)
             }
 
-            is ProductOverviewAction.ClickProduct -> Unit
+            is SearchAction.ClickProduct -> Unit
 
-            ProductOverviewAction.Search -> Unit
         }
     }
 
     private fun refreshUpdatedProductFromDetails(updatedProductId: Int) {
         viewModelScope.launch {
 
-            val productResult = productRepository.getProduct(updatedProductId)
+            val productResult = searchRepository.getProduct(updatedProductId)
 
             if (productResult is Result.Success)
                 if (state.products.isNotEmpty()) {
@@ -124,19 +129,18 @@ class ProductOverviewViewModel(
         }
     }
 
-    private fun loadProducts(paginate: Boolean = false) {
+    private fun searchProducts(paginate: Boolean = false) {
         viewModelScope.launch {
 
             state = state.copy(
                 isLoading = true, isError = false,
             )
 
-            loadCategories()
-
             val minPrice = state.minPriceState.text.toString()
             val maxPrice = state.maxPriceState.text.toString()
 
-            val productsResult = productRepository.getProducts(
+            val productsResult = searchRepository.searchProducts(
+                query = state.searchQueryState.text.toString(),
                 offset = state.productsOffset,
                 minPrice = if (minPrice.isNotBlank()) minPrice.toIntOrNull() else 1,
                 maxPrice = if (maxPrice.isNotBlank()) maxPrice.toIntOrNull() else null
@@ -171,17 +175,6 @@ class ProductOverviewViewModel(
         }
     }
 
-    private fun loadCategories() {
-        viewModelScope.launch {
-            when (val categoryResult = productRepository.getCategories()) {
-                is Result.Error -> Unit
-                is Result.Success -> {
-                    state = state.copy(categories = categoryResult.data)
-                }
-            }
-        }
-    }
-
     private fun toggleProductInWishlist(index: Int) {
         viewModelScope.launch {
 
@@ -196,9 +189,9 @@ class ProductOverviewViewModel(
             )
 
             if (state.products[index].isInWishList) {
-                productRepository.addProductToWishlist(state.products[index].productId)
+                searchRepository.addProductToWishlist(state.products[index].productId)
             } else {
-                productRepository.removeProductFromWishlist(state.products[index].productId)
+                searchRepository.removeProductFromWishlist(state.products[index].productId)
             }
         }
     }
@@ -217,9 +210,9 @@ class ProductOverviewViewModel(
             )
 
             if (state.products[index].isInCartList) {
-                productRepository.addProductToCart(state.products[index].productId)
+                searchRepository.addProductToCart(state.products[index].productId)
             } else {
-                productRepository.removeProductFromCart(state.products[index].productId)
+                searchRepository.removeProductFromCart(state.products[index].productId)
             }
         }
     }
