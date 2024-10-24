@@ -29,6 +29,7 @@ import com.ag_apps.auth.presentation.login.LoginScreenCore
 import com.ag_apps.auth.presentation.register.RegisterScreenCore
 import com.ag_apps.core.presentation.designsystem.components.ShopyBottomBar
 import com.ag_apps.core.presentation.designsystem.components.bottomBarItems
+import com.ag_apps.product.presentation.product_details.ProductDetailsScreenCore
 import com.ag_apps.product.presentation.product_overview.ProductOverviewScreenCore
 import com.ag_apps.profile.presentation.ProfileScreenCore
 
@@ -90,12 +91,7 @@ fun Navigation(
             val productDetails: Screen.ProductDetails = backStackEntry.toRoute()
             val productId = productDetails.productId
 
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "product details: $productId")
-            }
+            ProductDetailsScreenCore(productId = productId)
         }
 
         // search ------------------------------------------------------------------------------
@@ -205,15 +201,15 @@ private fun MainBottomBar(
 
             // product ----------------------------------------------------------------------------
             composable<BottomBarScreen.ProductOverview> {
-               ProductOverviewScreenCore(
-                   appName = stringResource(R.string.app_name),
-                   onProductClick = { productId ->
-                       navController.navigate(Screen.ProductDetails(productId))
-                   },
-                   onSearch = {
-                       navController.navigate(Screen.Search)
-                   }
-               )
+                ProductOverviewScreenCore(
+                    appName = stringResource(R.string.app_name),
+                    onProductClick = { productId ->
+                        navController.navigate(Screen.ProductDetails(productId))
+                    },
+                    onSearch = {
+                        navController.navigate(Screen.Search)
+                    }
+                )
             }
 
             // category ---------------------------------------------------------------------------

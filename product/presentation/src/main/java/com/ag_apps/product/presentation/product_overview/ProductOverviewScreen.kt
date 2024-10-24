@@ -16,8 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.ag_apps.core.presentation.ProductList
 import com.ag_apps.core.presentation.ProductsScaffold
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
-import com.ag_apps.core.presentation.model.ProductUI
-import com.ag_apps.core.presentation.model.previewProducts
+import com.ag_apps.core.presentation.util.previewProducts
 import com.ag_apps.product.presentation.R
 import org.koin.androidx.compose.koinViewModel
 

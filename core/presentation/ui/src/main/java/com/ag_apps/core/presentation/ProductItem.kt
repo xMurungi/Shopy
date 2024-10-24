@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,8 +40,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
-import com.ag_apps.core.presentation.model.ProductUI
-import com.ag_apps.core.presentation.model.previewProducts
+import com.ag_apps.core.domain.Product
+import com.ag_apps.core.presentation.util.previewProducts
+
 
 /**
  * @author Ahmed Guedmioui
@@ -48,7 +50,7 @@ import com.ag_apps.core.presentation.model.previewProducts
 @Composable
 fun ProductItem(
     modifier: Modifier = Modifier,
-    product: ProductUI,
+    product: Product,
     isGrid: Boolean,
     imageWidth: Dp = 100.dp,
     onToggleInWishlist: (() -> Unit)? = null,
@@ -80,7 +82,7 @@ fun ProductItem(
 @Composable
 fun GridProductItem(
     modifier: Modifier = Modifier,
-    product: ProductUI,
+    product: Product,
     onToggleProductInWishlist: (() -> Unit)? = null,
     onToggleProductInCart: (() -> Unit)? = null,
     onClick: () -> Unit,
@@ -96,7 +98,7 @@ fun GridProductItem(
             modifier = Modifier
         ) {
             AsyncImage(
-                model = product.image,
+                model = product.thumbnail,
                 contentDescription = product.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -116,27 +118,27 @@ fun GridProductItem(
                     .align(Alignment.BottomEnd)
             )
 
+            if (product.discount > 0) {
+                Text(
+                    text = "-${product.discount}%",
+                    color = Color.White,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.TopEnd)
+                        .clip(RoundedCornerShape(50.dp))
+                        .background(Color.Red)
+                        .padding(horizontal = 3.dp),
+                )
+            }
 
-            Row (
+            ProductRatingSection(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .padding(start = 10.dp),
-                verticalAlignment = Alignment.Bottom
-            ) {
-                RatingBar(
-                    rating = (product.rating / 2).toFloat(),
-                    size = 6
-                )
-                Spacer(Modifier.width(1.dp))
-                Text(
-                    text = "(${product.rating})",
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
-                    lineHeight = 1.sp,
-                    modifier = Modifier
-                )
-
-            }
+                rating = product.rating
+            )
         }
 
         Spacer(Modifier.height(6.dp))
@@ -157,9 +159,9 @@ fun GridProductItem(
 
             Text(
                 text = product.title,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp,
-                maxLines = 2,
+                fontWeight = FontWeight.Medium,
+                fontSize = 15.sp,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 lineHeight = 20.sp
             )
@@ -178,7 +180,7 @@ fun GridProductItem(
 @Composable
 fun ColumnProductItem(
     modifier: Modifier = Modifier,
-    product: ProductUI,
+    product: Product,
     onToggleProductInWishlist: (() -> Unit)? = null,
     onRemove: (() -> Unit)? = null,
     onToggleProductInCart: (() -> Unit)? = null,
@@ -186,14 +188,13 @@ fun ColumnProductItem(
     imageWidth: Dp = 100.dp,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier.height(130.dp)
     ) {
         Box(
-            modifier = Modifier
-                .padding(bottom = 10.dp)
+            modifier = Modifier.padding(bottom = 10.dp)
         ) {
             Row(
-                modifier = modifier
+                modifier = Modifier
                     .clip(RoundedCornerShape(10.dp))
                     .background(MaterialTheme.colorScheme.surfaceContainerLowest)
                     .clickable { onClick() }
@@ -201,7 +202,7 @@ fun ColumnProductItem(
             ) {
 
                 AsyncImage(
-                    model = product.image,
+                    model = product.thumbnail,
                     contentDescription = product.title,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -229,19 +230,26 @@ fun ColumnProductItem(
 
                             Text(
                                 text = product.title,
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 17.sp,
-                                maxLines = 2,
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 16.sp,
+                                maxLines = 1,
                                 color = MaterialTheme.colorScheme.onBackground,
                                 overflow = TextOverflow.Ellipsis,
                             )
                         }
 
-                        Text(
-                            text = "$${product.price}",
-                            fontSize = 16.sp,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
+                        Column {
+                            ProductRatingSection(
+                                modifier = Modifier,
+                                rating = product.rating
+                            )
+
+                            Text(
+                                text = "$${product.price}",
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
                     }
 
                     if (onRemove != null) {
@@ -260,21 +268,59 @@ fun ColumnProductItem(
             }
         }
 
+        if (product.discount > 0) {
+            Text(
+                text = "-${product.discount}%",
+                color = Color.White,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(50.dp))
+                    .background(Color.Red)
+                    .padding(horizontal = 3.dp),
+            )
+        }
+
         ProductActionsSection(
             product = product,
             onAddToWishlist = onToggleProductInWishlist,
             onAddToCart = onToggleProductInCart,
             modifier = Modifier
-                .padding(end = 18.dp)
                 .align(Alignment.BottomEnd)
         )
     }
 }
 
 @Composable
+fun ProductRatingSection(
+    modifier: Modifier = Modifier,
+    rating: Float
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.Bottom
+    ) {
+        RatingBar(
+            rating = (rating / 2),
+            size = 6
+        )
+        Spacer(Modifier.width(1.dp))
+        Text(
+            text = "(${rating})",
+            fontSize = 11.sp,
+            color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
+            lineHeight = 1.sp,
+            modifier = Modifier
+        )
+
+    }
+}
+
+@Composable
 fun ProductActionsSection(
     modifier: Modifier = Modifier,
-    product: ProductUI,
+    product: Product,
     onAddToWishlist: (() -> Unit)? = null,
     onAddToCart: (() -> Unit)? = null,
 ) {
@@ -360,8 +406,7 @@ fun ProductActionsSection(
 private fun ProductItemPreview() {
     ShopyTheme {
         ProductItem(
-            modifier = Modifier
-                .width(220.dp),
+            modifier = Modifier,
             imageWidth = 120.dp,
             product = previewProducts[0],
             isGrid = true,

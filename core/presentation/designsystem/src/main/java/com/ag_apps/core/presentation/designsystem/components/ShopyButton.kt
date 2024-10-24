@@ -42,7 +42,7 @@ fun ShopyButton(
         modifier = modifier
     ) {
         Box(
-            modifier = Modifier.padding(vertical = 4.dp),
+            modifier = Modifier.padding(vertical = 8.dp),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(

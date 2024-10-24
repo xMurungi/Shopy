@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="can_t_load_products_right_now_please_try_again_later">Can\'t load products right now,\n please try again later.</string>
+    <string name="add_to_cart">ADD TO CART</string>
+    <string name="remove_from_cart">REMOVE FROM CART</string>
+    <string name="add_to_wishlist">ADD TO WISHLIST</string>
+    <string name="remove_from_wishlist">REMOVE FROM WISHLIST</string>
 </resources>

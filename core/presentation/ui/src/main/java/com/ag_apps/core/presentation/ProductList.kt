@@ -40,8 +40,9 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.ag_apps.core.domain.Category
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
-import com.ag_apps.core.presentation.model.ProductUI
-import com.ag_apps.core.presentation.model.previewProducts
+import com.ag_apps.core.domain.Product
+import com.ag_apps.core.presentation.util.previewProducts
+
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -53,7 +54,7 @@ import kotlinx.coroutines.yield
 @Composable
 fun ProductList(
     modifier: Modifier = Modifier,
-    products: List<ProductUI>,
+    products: List<Product>,
     isGridLayout: Boolean,
     isLoading: Boolean,
     isApplyingFilter: Boolean,
@@ -145,7 +146,6 @@ fun ProductList(
 
                     ProductListItem(
                         modifier = Modifier
-                            .height(120.dp)
                             .padding(horizontal = 16.dp),
                         product = product,
                         index = index,
@@ -248,7 +248,7 @@ private fun CategoryListItem(
 @Composable
 private fun ProductListItem(
     modifier: Modifier = Modifier,
-    product: ProductUI,
+    product: Product,
     index: Int,
     isGridLayout: Boolean,
     onToggleProductInWishlist: ((Int) -> Unit)? = null,

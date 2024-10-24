@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ag_apps.core.domain.util.Result
-import com.ag_apps.core.presentation.model.toProductUI
 import com.ag_apps.product.domain.ProductRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -29,6 +28,12 @@ class ProductDetailsViewModel(
         when (action) {
             is ProductDetailsAction.LoadProduct -> {
                 loadProduct(action.productId)
+            }
+
+            is ProductDetailsAction.SelectFilter -> {
+                state = state.copy(
+                    selectedFilterIndex = action.filterIndex
+                )
             }
 
             is ProductDetailsAction.ToggleProductInWishlist -> {
@@ -59,7 +64,7 @@ class ProductDetailsViewModel(
                     state.copy(
                         isLoading = false,
                         isError = false,
-                        product = productResult.data.toProductUI()
+                        product = productResult.data
                     )
                 }
             }

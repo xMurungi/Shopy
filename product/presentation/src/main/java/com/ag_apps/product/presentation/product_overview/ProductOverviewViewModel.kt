@@ -8,7 +8,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ag_apps.core.domain.util.Result
-import com.ag_apps.core.presentation.model.toProductUI
 import com.ag_apps.product.domain.ProductRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
@@ -131,9 +130,9 @@ class ProductOverviewViewModel(
 
                 is Result.Success -> {
                     val products = if (paginate) {
-                        state.products + productsResult.data.map { it.toProductUI() }
+                        state.products + productsResult.data
                     } else {
-                        productsResult.data.map { it.toProductUI() }
+                        productsResult.data
                     }
 
                     state = state.copy(
@@ -173,9 +172,9 @@ class ProductOverviewViewModel(
             )
 
             if (state.products[index].isInWishList) {
-                productRepository.addProductToWishlist(state.products[index].productId.toString())
+                productRepository.addProductToWishlist(state.products[index].productId)
             } else {
-                productRepository.removeProductFromWishlist(state.products[index].productId.toString())
+                productRepository.removeProductFromWishlist(state.products[index].productId)
             }
         }
     }
@@ -194,9 +193,9 @@ class ProductOverviewViewModel(
             )
 
             if (state.products[index].isInCartList) {
-                productRepository.addProductToCart(state.products[index].productId.toString())
+                productRepository.addProductToCart(state.products[index].productId)
             } else {
-                productRepository.removeProductFromCart(state.products[index].productId.toString())
+                productRepository.removeProductFromCart(state.products[index].productId)
             }
         }
     }
