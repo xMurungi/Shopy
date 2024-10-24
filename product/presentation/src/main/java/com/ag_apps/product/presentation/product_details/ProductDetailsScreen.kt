@@ -3,6 +3,7 @@ package com.ag_apps.product.presentation.product_details
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,12 +31,20 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,7 +54,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,6 +65,7 @@ import coil.compose.AsyncImage
 import com.ag_apps.core.presentation.RatingBar
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.domain.Product
+import com.ag_apps.core.presentation.util.originalPrice
 import com.ag_apps.core.presentation.util.previewProducts
 
 import com.ag_apps.product.presentation.R
@@ -67,7 +80,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ProductDetailsScreenCore(
     viewModel: ProductDetailsViewModel = koinViewModel(),
-    productId: Int
+    productId: Int,
+    onBack: () -> Unit
 ) {
 
     LaunchedEffect(true) {
@@ -76,7 +90,13 @@ fun ProductDetailsScreenCore(
 
     ProductDetailsScreen(
         state = viewModel.state,
-        onAction = viewModel::onAction
+        onAction = { action ->
+            when (action) {
+                ProductDetailsAction.GoBack -> onBack()
+
+                else -> viewModel.onAction(action)
+            }
+        }
     )
 }
 
@@ -101,7 +121,9 @@ private fun ProductDetailsScreen(
                         imageVector = Icons.Rounded.ArrowBackIosNew,
                         contentDescription = null,
                         tint = Color.White,
-                        modifier = Modifier.padding(start = 8.dp)
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .clickable { onAction(ProductDetailsAction.GoBack) }
                     )
                 }
             )
@@ -173,6 +195,7 @@ private fun ProductDetailsScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenContent(
     modifier: Modifier = Modifier,
@@ -180,6 +203,10 @@ fun ScreenContent(
     state: ProductDetailsState,
     onAction: (ProductDetailsAction) -> Unit
 ) {
+
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -197,6 +224,8 @@ fun ScreenContent(
                         shape = RoundedCornerShape(10.dp),
                         color = MaterialTheme.colorScheme.primary
                     )
+                    .clip(RoundedCornerShape(10.dp))
+                    .clickable { showBottomSheet = true }
                     .padding(vertical = 10.dp, horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -214,7 +243,7 @@ fun ScreenContent(
             }
 
             Icon(
-                imageVector = if (state.product?.isInCartList == true) {
+                imageVector = if (state.product?.isInWishList == true) {
                     Icons.Rounded.Favorite
                 } else {
                     Icons.Outlined.FavoriteBorder
@@ -224,7 +253,7 @@ fun ScreenContent(
                 } else {
                     stringResource(R.string.add_to_cart)
                 },
-                tint  = if (state.product?.isInWishList == true) {
+                tint = if (state.product?.isInWishList == true) {
                     MaterialTheme.colorScheme.primary
                 } else {
                     MaterialTheme.colorScheme.onBackground
@@ -237,6 +266,7 @@ fun ScreenContent(
                     )
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                    .clickable { onAction(ProductDetailsAction.ToggleProductInWishlist) }
                     .padding(8.dp)
                     .padding(top = 1.dp)
             )
@@ -246,9 +276,12 @@ fun ScreenContent(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
                 Text(
                     text = product.brand,
                     fontWeight = FontWeight.SemiBold,
@@ -269,22 +302,35 @@ fun ScreenContent(
                 ) {
                     RatingBar(
                         rating = (product.rating / 2),
-                        size = 6
+                        size = 7f
                     )
                     Spacer(Modifier.width(1.dp))
                     Text(
                         text = "(${product.rating})",
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onBackground.copy(0.7f)
+                        fontSize = 13.sp,
+                        color = MaterialTheme.colorScheme.onBackground.copy(0.9f)
                     )
                 }
             }
 
-            Text(
-                text = "$${product.price}",
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 22.sp,
-            )
+            Column(
+                horizontalAlignment = Alignment.End
+            ) {
+                Text(
+                    text = "$${product.price.originalPrice(product.discount)}".take(6),
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onBackground.copy(0.6f),
+                    fontSize = 20.sp,
+                    textDecoration = TextDecoration.LineThrough
+                )
+
+                Text(
+                    text = "$${product.price}",
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 23.sp,
+                )
+            }
 
         }
 
@@ -295,6 +341,42 @@ fun ScreenContent(
             text = product.description,
             fontSize = 15.sp
         )
+    }
+
+    if (showBottomSheet) {
+        FiltersBottomSheet(
+            product = product,
+            sheetState = sheetState,
+            onDismissRequest = { showBottomSheet = false }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FiltersBottomSheet(
+    modifier: Modifier = Modifier,
+    product: Product,
+    sheetState: SheetState,
+    onDismissRequest : () -> Unit
+) {
+    ModalBottomSheet(
+        onDismissRequest = { onDismissRequest() },
+        sheetState = sheetState
+    ) {
+        Column(
+            modifier = modifier
+                .padding(vertical = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(R.string.select) + product.filter
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+
+        }
     }
 }
 
@@ -368,6 +450,7 @@ fun PreviewPage(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(450.dp)
+                .background(MaterialTheme.colorScheme.onBackground.copy(0.7f))
         )
 
         Text(

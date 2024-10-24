@@ -16,6 +16,8 @@ class ProductRepositoryImpl(
     private val userDataSource: UserDataSource
 ) : ProductRepository {
 
+    private val tag = "ProductRepository: "
+
     override suspend fun getProducts(
         offset: Int,
         minPrice: Int?,
@@ -51,7 +53,24 @@ class ProductRepositoryImpl(
     override suspend fun getProduct(
         productId: Int
     ): Result<Product, DataError.Network> {
-        return productDataSource.getProduct(productId)
+        val userResult = userDataSource.getUser()
+        val productResult = productDataSource.getProduct(productId)
+
+        if (userResult is Result.Success && productResult is Result.Success) {
+            val product = productResult.data
+            val productForUser =
+                if (userResult.data.wishlist.contains(product.productId)) {
+                    product.copy(isInWishList = true)
+                } else if (userResult.data.cart.contains(product.productId)) {
+                    product.copy(isInCartList = true)
+                } else {
+                    product
+                }
+
+            return Result.Success(productForUser)
+        }
+
+        return productResult
     }
 
     override suspend fun addProductToWishlist(

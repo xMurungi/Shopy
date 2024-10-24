@@ -260,7 +260,6 @@ private fun ProductListItem(
         modifier = modifier,
         product = product,
         isGrid = isGridLayout,
-        imageWidth = 120.dp,
         onToggleInWishlist = if (onToggleProductInWishlist != null) {
             { onToggleProductInWishlist(index) }
         } else {

@@ -25,10 +25,10 @@ import androidx.compose.ui.unit.dp
 fun RatingBar(
     maxStars: Int = 5,
     rating: Float,
-    size: Int = 8
+    size: Float = 8f
 ) {
     val density = LocalDensity.current.density
-    val starSize = (size.toFloat() * density).dp
+    val starSize = (size * density).dp
     val starSpacing = (0.1f * density).dp
 
     Row(

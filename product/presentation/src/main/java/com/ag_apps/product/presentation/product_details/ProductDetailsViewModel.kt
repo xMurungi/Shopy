@@ -43,6 +43,8 @@ class ProductDetailsViewModel(
             is ProductDetailsAction.ToggleProductInCart -> {
                 toggleProductInCart()
             }
+
+            ProductDetailsAction.GoBack -> Unit
         }
     }
 
@@ -81,7 +83,7 @@ class ProductDetailsViewModel(
                     )
                 )
 
-                if (product.isInWishList) {
+                if (!product.isInWishList) {
                     productRepository.addProductToWishlist(product.productId)
                 } else {
                     productRepository.removeProductFromWishlist(product.productId)
@@ -100,7 +102,7 @@ class ProductDetailsViewModel(
                     )
                 )
 
-                if (product.isInWishList) {
+                if (!product.isInWishList) {
                     productRepository.addProductToCart(product.productId)
                 } else {
                     productRepository.removeProductFromCart(product.productId)

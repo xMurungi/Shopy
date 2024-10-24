@@ -8,7 +8,7 @@ data class Product(
     val thumbnail: String,
     val images: List<String>,
     val rating: Float,
-    val price: Int,
+    val price: Float,
     val discount: Int,
     val categoryName: String,
     val filter: String,

@@ -91,7 +91,10 @@ fun Navigation(
             val productDetails: Screen.ProductDetails = backStackEntry.toRoute()
             val productId = productDetails.productId
 
-            ProductDetailsScreenCore(productId = productId)
+            ProductDetailsScreenCore(
+                productId = productId,
+                onBack = { navController.popBackStack() }
+            )
         }
 
         // search ------------------------------------------------------------------------------

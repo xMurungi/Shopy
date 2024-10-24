@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.domain.Product
+import com.ag_apps.core.presentation.util.originalPrice
 import com.ag_apps.core.presentation.util.previewProducts
 
 
@@ -52,7 +54,7 @@ fun ProductItem(
     modifier: Modifier = Modifier,
     product: Product,
     isGrid: Boolean,
-    imageWidth: Dp = 100.dp,
+    imageWidth: Dp = 130.dp,
     onToggleInWishlist: (() -> Unit)? = null,
     onToggleInCart: (() -> Unit)? = null,
     onRemove: (() -> Unit)? = null,
@@ -102,7 +104,7 @@ fun GridProductItem(
                 contentDescription = product.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .padding(bottom = 23.dp)
+                    .padding(bottom = 28.dp)
                     .fillMaxWidth()
                     .height(200.dp)
                     .background(MaterialTheme.colorScheme.onBackground.copy(0.1f))
@@ -114,7 +116,7 @@ fun GridProductItem(
                 onAddToCart = onToggleProductInCart,
                 modifier = Modifier
                     .padding(horizontal = 2.dp)
-                    .padding(bottom = 8.dp)
+                    .padding(bottom = 14.dp)
                     .align(Alignment.BottomEnd)
             )
 
@@ -133,45 +135,65 @@ fun GridProductItem(
                 )
             }
 
-            ProductRatingSection(
+            Text(
+                text = product.categoryName,
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
                 modifier = Modifier
+                    .padding(start = 10.dp)
                     .align(Alignment.BottomStart)
-                    .padding(start = 10.dp),
-                rating = product.rating
             )
         }
 
-        Spacer(Modifier.height(6.dp))
 
         Column(
-            modifier = Modifier
-                .padding(horizontal = 10.dp)
-                .padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 10.dp, top = 4.dp)
         ) {
-
-            Text(
-                text = product.categoryName,
-                fontSize = 11.sp,
-                color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
-                lineHeight = 1.sp,
-                modifier = Modifier
-            )
 
             Text(
                 text = product.title,
                 fontWeight = FontWeight.Medium,
                 fontSize = 15.sp,
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                lineHeight = 20.sp
+                lineHeight = 20.sp,
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            ProductRatingSection(
+                modifier = Modifier
+                    .padding(horizontal = 7.dp),
+                rating = product.rating
             )
 
             Spacer(Modifier.height(2.dp))
 
-            Text(
-                text = "$${product.price}",
-                fontSize = 15.sp,
-            )
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 8.dp),
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Text(
+                    text = "$${product.price.originalPrice(product.discount)}".take(6),
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onBackground.copy(0.6f),
+                    fontSize = 14.sp,
+                    lineHeight = 1.sp,
+                    textDecoration = TextDecoration.LineThrough
+                )
+
+                Spacer(Modifier.width(6.dp))
+
+                Text(
+                    text = "$${product.price}",
+                    fontSize = 16.sp,
+                    lineHeight = 1.sp,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
     }
 }
@@ -185,10 +207,10 @@ fun ColumnProductItem(
     onRemove: (() -> Unit)? = null,
     onToggleProductInCart: (() -> Unit)? = null,
     onClick: () -> Unit,
-    imageWidth: Dp = 100.dp,
+    imageWidth: Dp,
 ) {
     Box(
-        modifier = modifier.height(130.dp)
+        modifier = modifier.height(160.dp)
     ) {
         Box(
             modifier = Modifier.padding(bottom = 10.dp)
@@ -224,15 +246,15 @@ fun ColumnProductItem(
                         Column {
                             Text(
                                 text = product.categoryName,
-                                fontSize = 12.sp,
+                                fontSize = 13.sp,
                                 color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
                             )
 
                             Text(
                                 text = product.title,
                                 fontWeight = FontWeight.Medium,
-                                fontSize = 16.sp,
-                                maxLines = 1,
+                                fontSize = 17.sp,
+                                maxLines = 2,
                                 color = MaterialTheme.colorScheme.onBackground,
                                 overflow = TextOverflow.Ellipsis,
                             )
@@ -244,11 +266,31 @@ fun ColumnProductItem(
                                 rating = product.rating
                             )
 
-                            Text(
-                                text = "$${product.price}",
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
+                            Spacer(Modifier.height(2.dp))
+
+                            Row(
+                                modifier = Modifier
+                                    .padding(start = 1.dp),
+                                verticalAlignment = Alignment.Bottom
+                            ) {
+                                Text(
+                                    text = "$${product.price.originalPrice(product.discount)}".take(6),
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.onBackground.copy(0.6f),
+                                    fontSize = 14.sp,
+                                    lineHeight = 1.sp,
+                                    textDecoration = TextDecoration.LineThrough
+                                )
+
+                                Spacer(Modifier.width(6.dp))
+
+                                Text(
+                                    text = "$${product.price}",
+                                    fontSize = 16.sp,
+                                    lineHeight = 1.sp,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
                         }
                     }
 
@@ -303,12 +345,12 @@ fun ProductRatingSection(
     ) {
         RatingBar(
             rating = (rating / 2),
-            size = 6
+            size = 6.5f
         )
         Spacer(Modifier.width(1.dp))
         Text(
             text = "(${rating})",
-            fontSize = 11.sp,
+            fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
             lineHeight = 1.sp,
             modifier = Modifier
@@ -362,7 +404,7 @@ fun ProductActionsSection(
             }
         }
 
-        Spacer(Modifier.width(8.dp))
+        Spacer(Modifier.width(4.dp))
 
         if (onAddToWishlist != null) {
             Box(
@@ -406,10 +448,10 @@ fun ProductActionsSection(
 private fun ProductItemPreview() {
     ShopyTheme {
         ProductItem(
-            modifier = Modifier,
-            imageWidth = 120.dp,
+            modifier = Modifier.fillMaxWidth(),
+            imageWidth = 130.dp,
             product = previewProducts[0],
-            isGrid = true,
+            isGrid = false,
             onClick = {},
             onToggleInWishlist = {},
             onToggleInCart = {},

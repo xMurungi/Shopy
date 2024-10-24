@@ -113,8 +113,8 @@ class FirestoreClient(
             "name" to name,
             "image" to image,
             "address" to address,
-            "wishlist" to wishlist,
-            "cart" to cart,
+            "wishlist" to wishlist.map { it.toString() },
+            "cart" to cart.map { it.toString() }
         )
 
         return userMap
@@ -131,14 +131,17 @@ class FirestoreClient(
             )
         }
 
+        val wishlist = (this["wishlist"] as? List<*>)?.filterIsInstance<String>() ?: emptyList()
+        val cart = (this["cart"] as? List<*>)?.filterIsInstance<String>() ?: emptyList()
+
         return User(
             email = this["email"] as String,
             userId = this["userId"] as String,
             name = this["name"] as String,
             image = this["image"] as String,
             address = address,
-            wishlist = (this["wishlist"] as? List<*>)?.filterIsInstance<Int>() ?: emptyList(),
-            cart = (this["cart"] as? List<*>)?.filterIsInstance<Int>() ?: emptyList()
+            wishlist = wishlist.map { it.toInt() },
+            cart = cart.map { it.toInt() },
         )
     }
 }

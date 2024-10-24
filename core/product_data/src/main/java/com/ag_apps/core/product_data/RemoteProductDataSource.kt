@@ -28,6 +28,8 @@ class RemoteProductDataSource(
         maxPrice: Int?,
     ): Result<List<Product>, DataError.Network> {
 
+        return Result.Success(dummyProducts)
+
         Timber.tag(tag).d(
             "getProducts: offset: $offset, minPrice: $minPrice, maxPrice: $maxPrice"
         )
@@ -85,6 +87,9 @@ class RemoteProductDataSource(
         minPrice: Int?,
         maxPrice: Int?,
     ): Result<List<Product>, DataError.Network> {
+
+        return Result.Success(dummyProducts)
+
         val queryParameters =
             if (minPrice != null && maxPrice != null) {
                 mapOf(
@@ -113,6 +118,9 @@ class RemoteProductDataSource(
     override suspend fun getProduct(
         productId: Int
     ): Result<Product, DataError.Network> {
+
+        return Result.Success(dummyProducts[0])
+
         return httpClient.get<ProductDto>(
             route = "/products/$productId"
         ).map { productDto ->
@@ -129,9 +137,9 @@ class RemoteProductDataSource(
             is Result.Success -> {
                 val categories = categoriesResult.data
                     .shuffled()
-                    .filter {category ->
-                                // Exclude categories based on name
-                                !category.name.contains("New", ignoreCase = true) &&
+                    .filter { category ->
+                        // Exclude categories based on name
+                        !category.name.contains("New", ignoreCase = true) &&
                                 !category.name.contains("Category", ignoreCase = true) &&
                                 !category.name.contains("Change", ignoreCase = true) &&
                                 !category.name.contains("Title", ignoreCase = true) &&
@@ -175,12 +183,96 @@ class RemoteProductDataSource(
     override suspend fun getCategoryProducts(
         categoryId: Int
     ): Result<List<Product>, DataError.Network> {
+
+        return Result.Success(dummyProducts)
+
         return httpClient.get<List<ProductDto>>(
             route = "/categories/$categoryId/products"
         ).map { productsDto ->
             productsDto.map { it.toProduct() }
         }
     }
-
-
 }
+
+val dummyProducts = listOf(
+    Product(
+        productId = 1,
+        title = "Blue Shirt with no logo and simple design",
+        description = "Blue Shirt with no logo and simple design that is very comfortable and stylish for summer time and parties.",
+        brand = "Zara",
+        thumbnail = "",
+        images = emptyList(),
+        rating = 8.5f,
+        price = 59.99f,
+        discount = 20,
+        categoryName = "Clothes",
+        filter = "Size",
+        filterList = listOf("S", "M", "L", "XL"),
+        isInWishList = false,
+        isInCartList = false
+    ),
+    Product(
+        productId = 2,
+        title = "Product 1",
+        description = "Product 1 description",
+        brand = "Brand",
+        thumbnail = "",
+        images = emptyList(),
+        rating = 8.5f,
+        price = 100.35f,
+        discount = 20,
+        categoryName = "Category 1",
+        filter = "Size",
+        filterList = listOf("S", "M", "L", "XL"),
+        isInWishList = false,
+        isInCartList = false
+    ),
+    Product(
+        productId = 3,
+        title = "Product 1",
+        description = "Product 1 description",
+        brand = "Brand",
+        thumbnail = "",
+        images = emptyList(),
+        rating = 8.5f,
+        price = 100.35f,
+        discount = 20,
+        categoryName = "Category 1",
+        filter = "Size",
+        filterList = listOf("S", "M", "L", "XL"),
+        isInWishList = false,
+        isInCartList = false
+    ),
+    Product(
+        productId = 4,
+        title = "Product 1",
+        description = "Product 1 description",
+        brand = "Brand",
+        thumbnail = "",
+        images = emptyList(),
+        rating = 8.5f,
+        price = 100.35f,
+        discount = 20,
+        categoryName = "Category 1",
+        filter = "Size",
+        filterList = listOf("S", "M", "L", "XL"),
+        isInWishList = false,
+        isInCartList = false
+    ),
+    Product(
+        productId = 5,
+        title = "Product 1",
+        description = "Product 1 description",
+        brand = "Brand",
+        thumbnail = "",
+        images = emptyList(),
+        rating = 8.5f,
+        price = 100.35f,
+        discount = 20,
+        categoryName = "Category 1",
+        filter = "Size",
+        filterList = listOf("S", "M", "L", "XL"),
+        isInWishList = false,
+        isInCartList = false
+    )
+)
