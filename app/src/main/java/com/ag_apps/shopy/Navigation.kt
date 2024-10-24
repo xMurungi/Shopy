@@ -47,10 +47,6 @@ fun Navigation(
     NavHost(
         navController = navController,
         startDestination = if (isLoggedIn) Screen.Main else Screen.Login,
-        enterTransition = { slideInHorizontally { it } },
-        exitTransition = { slideOutHorizontally { -it } },
-        popEnterTransition = { slideInHorizontally { -it } },
-        popExitTransition = { slideOutHorizontally { it } }
     ) {
 
         // auth ------------------------------------------------------------------------------
@@ -167,6 +163,11 @@ private fun MainBottomBar(
         mutableIntStateOf(0)
     }
 
+    var oldSelectedItem by rememberSaveable {
+        mutableIntStateOf(0)
+    }
+
+
     Scaffold(
         contentWindowInsets = WindowInsets(top = 0.dp),
         bottomBar = {
@@ -200,6 +201,10 @@ private fun MainBottomBar(
             modifier = Modifier.padding(paddingValues),
             navController = bottomBarNavController,
             startDestination = BottomBarScreen.ProductOverview,
+            enterTransition = { slideInHorizontally { it } },
+            exitTransition = { slideOutHorizontally { -it } },
+            popEnterTransition = { slideInHorizontally { -it } },
+            popExitTransition = { slideOutHorizontally { it } }
         ) {
 
             // product ----------------------------------------------------------------------------

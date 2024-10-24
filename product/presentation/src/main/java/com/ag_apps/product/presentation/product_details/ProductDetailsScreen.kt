@@ -7,8 +7,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -115,15 +118,24 @@ private fun ProductDetailsScreen(
                     containerColor = Color.Transparent,
                     scrolledContainerColor = Color.Transparent,
                 ),
+                windowInsets = WindowInsets(
+                    top = TopAppBarDefaults.TopAppBarExpandedHeight - 20.dp
+                ),
                 title = {},
                 navigationIcon = {
                     Icon(
                         imageVector = Icons.Rounded.ArrowBackIosNew,
                         contentDescription = null,
-                        tint = Color.White,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier
-                            .padding(start = 8.dp)
+                            .padding(start = 10.dp)
+                            .clip(CircleShape)
                             .clickable { onAction(ProductDetailsAction.GoBack) }
+                            .size(48.dp)
+                            .background(MaterialTheme.colorScheme.surfaceContainerLowest.copy(0.8f))
+                            .padding(9.dp)
+                            .padding(end = 3.dp)
+
                     )
                 }
             )
@@ -178,9 +190,12 @@ private fun ProductDetailsScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
 
-                PreviewPage(product = product)
+                ImagePager(
+                    product = product,
+                    onAction = onAction
+                )
 
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(16.dp))
 
                 ScreenContent(
                     modifier = Modifier
@@ -205,12 +220,23 @@ fun ScreenContent(
 ) {
 
     val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
-    var showBottomSheet by remember { mutableStateOf(false) }
+    var showBottomSheet by remember {
+        mutableStateOf(false)
+    }
 
     Column(
         modifier = modifier
     ) {
+
+        Text(
+            text = product.title,
+            fontSize = 19.sp,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier
+                .padding(start = 2.dp)
+        )
+
+        Spacer(Modifier.height(12.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -219,98 +245,35 @@ fun ScreenContent(
         ) {
             Row(
                 modifier = Modifier
+                    .width(130.dp)
                     .border(
                         width = 1.dp,
                         shape = RoundedCornerShape(10.dp),
                         color = MaterialTheme.colorScheme.primary
                     )
                     .clip(RoundedCornerShape(10.dp))
+                    .background(MaterialTheme.colorScheme.surfaceContainerLowest.copy(0.4f))
                     .clickable { showBottomSheet = true }
                     .padding(vertical = 10.dp, horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = product.filter,
+                    text = if (state.selectedFilterIndex == null) {
+                        product.filter
+                    } else {
+                        product.filterList[state.selectedFilterIndex]
+                    },
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 19.sp
                 )
 
-                Spacer(Modifier.width(38.dp))
 
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowDown,
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )
-            }
-
-            Icon(
-                imageVector = if (state.product?.isInWishList == true) {
-                    Icons.Rounded.Favorite
-                } else {
-                    Icons.Outlined.FavoriteBorder
-                },
-                contentDescription = if (state.product?.isInWishList == true) {
-                    stringResource(R.string.remove_from_wishlist)
-                } else {
-                    stringResource(R.string.add_to_cart)
-                },
-                tint = if (state.product?.isInWishList == true) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.onBackground
-                },
-                modifier = Modifier
-                    .shadow(
-                        elevation = 6.dp,
-                        shape = CircleShape,
-                        spotColor = MaterialTheme.colorScheme.onBackground,
-                    )
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surfaceContainerLowest)
-                    .clickable { onAction(ProductDetailsAction.ToggleProductInWishlist) }
-                    .padding(8.dp)
-                    .padding(top = 1.dp)
-            )
-        }
-
-        Spacer(Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = product.brand,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 19.sp,
-                    modifier = Modifier.padding(start = 2.dp)
-                )
-
-                Text(
-                    text = product.categoryName,
-                    fontSize = 12.sp,
-                    lineHeight = 1.sp,
-                    color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
-                    modifier = Modifier.padding(start = 2.dp)
-                )
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    RatingBar(
-                        rating = (product.rating / 2),
-                        size = 7f
-                    )
-                    Spacer(Modifier.width(1.dp))
-                    Text(
-                        text = "(${product.rating})",
-                        fontSize = 13.sp,
-                        color = MaterialTheme.colorScheme.onBackground.copy(0.9f)
-                    )
-                }
             }
 
             Column(
@@ -334,12 +297,54 @@ fun ScreenContent(
 
         }
 
+        Spacer(Modifier.height(8.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = product.brand,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(start = 2.dp)
+                )
+
+                Text(
+                    text = product.categoryName,
+                    fontSize = 14.sp,
+                    lineHeight = 1.sp,
+                    color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
+                    modifier = Modifier.padding(start = 2.dp)
+                )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RatingBar(
+                        rating = (product.rating / 2),
+                        size = 7f
+                    )
+                    Spacer(Modifier.width(1.dp))
+                    Text(
+                        text = "(${product.rating})",
+                        fontSize = 13.sp,
+                        color = MaterialTheme.colorScheme.onBackground.copy(0.9f)
+                    )
+                }
+            }
+
+        }
 
         Spacer(Modifier.height(16.dp))
 
         Text(
             text = product.description,
-            fontSize = 15.sp
+            fontSize = 16.sp
         )
     }
 
@@ -347,34 +352,76 @@ fun ScreenContent(
         FiltersBottomSheet(
             product = product,
             sheetState = sheetState,
-            onDismissRequest = { showBottomSheet = false }
+            onDismissRequest = { showBottomSheet = false },
+            onAction = onAction
         )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun FiltersBottomSheet(
     modifier: Modifier = Modifier,
     product: Product,
     sheetState: SheetState,
-    onDismissRequest : () -> Unit
+    onDismissRequest: () -> Unit,
+    onAction: (ProductDetailsAction) -> Unit
 ) {
     ModalBottomSheet(
+        containerColor = MaterialTheme.colorScheme.background,
         onDismissRequest = { onDismissRequest() },
         sheetState = sheetState
     ) {
         Column(
             modifier = modifier
-                .padding(vertical = 16.dp),
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.select) + product.filter
+                text = stringResource(R.string.select) + " " + product.filter,
+                fontWeight = FontWeight.Medium,
+                fontSize = 19.sp
             )
 
             Spacer(Modifier.height(16.dp))
 
+            FlowRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                maxItemsInEachRow = 3
+            ) {
+                for (index in 0..product.filterList.size - 1) {
+                    Row(
+                        modifier = Modifier
+                            .width(100.dp)
+                            .border(
+                                width = 1.dp,
+                                shape = RoundedCornerShape(10.dp),
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(MaterialTheme.colorScheme.surfaceContainerLowest.copy(0.4f))
+                            .clickable {
+                                onAction(ProductDetailsAction.SelectFilter(index))
+                                onDismissRequest()
+                            }
+                            .padding(vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = product.filterList[index],
+                            fontSize = 17.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+
+            }
 
         }
     }
@@ -384,7 +431,8 @@ fun FiltersBottomSheet(
 fun ImagePager(
     product: Product,
     modifier: Modifier = Modifier,
-    autoSwipeDelay: Long = 3000L
+    autoSwipeDelay: Long = 3000L,
+    onAction: (ProductDetailsAction) -> Unit
 ) {
 
     val pagerState = rememberPagerState(
@@ -404,7 +452,9 @@ fun ImagePager(
     Box {
         HorizontalPager(
             state = pagerState,
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
+                .height(450.dp)
         ) { page ->
             AsyncImage(
                 model = product.images[page],
@@ -414,26 +464,43 @@ fun ImagePager(
                     .fillMaxWidth()
                     .height(450.dp)
                     .background(MaterialTheme.colorScheme.onBackground.copy(0.1f))
+                    .shadow(
+                        elevation = 10.dp,
+                        spotColor = MaterialTheme.colorScheme.onBackground.copy(0.5f),
+                    )
             )
         }
 
-        Text(
-            text = product.title,
-            fontSize = 17.sp,
-            color = Color.White,
+        Icon(
+            imageVector = if (product.isInWishList) {
+                Icons.Rounded.Favorite
+            } else {
+                Icons.Outlined.FavoriteBorder
+            },
+            contentDescription = if (product.isInWishList) {
+                stringResource(R.string.remove_from_wishlist)
+            } else {
+                stringResource(R.string.add_to_wishlist)
+            },
+            tint = if (product.isInWishList) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.onBackground
+            },
             modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Transparent,
-                            Color.Black.copy(0.7f)
-                        ),
-                    )
+                .padding(16.dp)
+                .shadow(
+                    elevation = 10.dp,
+                    shape = CircleShape,
+                    spotColor = MaterialTheme.colorScheme.onBackground,
                 )
-                .padding(horizontal = 16.dp)
-                .padding(bottom = 12.dp, top = 18.dp)
-                .align(Alignment.BottomStart)
+                .clip(CircleShape)
+                .size(48.dp)
+                .background(MaterialTheme.colorScheme.surfaceContainerLowest.copy(0.9f))
+                .clickable { onAction(ProductDetailsAction.ToggleProductInWishlist) }
+                .padding(7.dp)
+                .padding(top = 2.dp)
+                .align(Alignment.BottomEnd)
         )
     }
 }

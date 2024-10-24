@@ -200,8 +200,12 @@ val dummyProducts = listOf(
         title = "Blue Shirt with no logo and simple design",
         description = "Blue Shirt with no logo and simple design that is very comfortable and stylish for summer time and parties.",
         brand = "Zara",
-        thumbnail = "",
-        images = emptyList(),
+        thumbnail = "https://ph-test-11.slatic.net/p/49b09ac65cd105a535c7342974984cb3.jpg",
+        images = listOf(
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuV_-Ugu4Kr6KWzCFYjMfOIfzGscAWw1d30E9tL_jnTL4otAtRzy0fnPitRzVIfThZK9I&usqp=CAU",
+            "https://ph-test-11.slatic.net/p/45b6ee7725ad871cf46fc0b9be59953e.jpg",
+            "https://m.media-amazon.com/images/I/71WvF2D8SfL._AC_UY1100_.jpg"
+        ),
         rating = 8.5f,
         price = 59.99f,
         discount = 20,
