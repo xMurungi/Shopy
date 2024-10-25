@@ -9,7 +9,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ag_apps.core.domain.util.Result
 import com.ag_apps.search.domain.SearchRepository
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -27,7 +29,8 @@ class SearchViewModel(
     private val eventChannel = Channel<SearchEvent>()
     val event = eventChannel.receiveAsFlow()
 
-    var searchAttempts = 0
+    private var isFirstSearch = true
+    private var searchJob: Job? = null
 
     init {
         state = state.copy(
@@ -38,14 +41,14 @@ class SearchViewModel(
 
         viewModelScope.launch {
             snapshotFlow { state.searchQueryState.text }.collectLatest {
-                println("SearchViewModel: searchQueryState")
-                searchAttempts++
-                if (searchAttempts > 1) {
+                if (!isFirstSearch) {
                     searchProducts()
+                } else {
+                    isFirstSearch = false
                 }
             }
         }
-        
+
         viewModelScope.launch {
             snapshotFlow { state.minPriceState.text }.collectLatest { input ->
                 val minPrice = input.filter { it.isDigit() }
@@ -134,7 +137,9 @@ class SearchViewModel(
     }
 
     private fun searchProducts(paginate: Boolean = false) {
-        viewModelScope.launch {
+        searchJob = null
+        searchJob = viewModelScope.launch {
+            delay(500)
 
             state = state.copy(
                 isLoading = true, isError = false,

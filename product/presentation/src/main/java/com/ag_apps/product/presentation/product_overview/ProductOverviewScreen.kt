@@ -112,7 +112,7 @@ private fun ProductOverviewScreen(
             }
             if (state.isError && state.products.isEmpty()) {
                 Text(
-                    text = stringResource(R.string.can_t_load_products_right_now_please_try_again_later),
+                    text = stringResource(R.string.can_t_load_products_right_now),
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
                 )

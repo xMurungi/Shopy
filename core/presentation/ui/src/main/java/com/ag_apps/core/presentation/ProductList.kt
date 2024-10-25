@@ -37,6 +37,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -121,7 +122,7 @@ fun ProductList(
                     val paddingEnd = if ((index % 2) != 0) 12.dp else 0.dp
                     ProductListItem(
                         modifier = Modifier.padding(
-                            top = 12.dp, start = paddingStart, end = paddingEnd
+                            top = 16.dp, start = paddingStart, end = paddingEnd
                         ),
                         product = product,
                         index = index,
@@ -143,7 +144,7 @@ fun ProductList(
             if (categories.isNotEmpty()) {
                 item {
                     CategoryPager(categories = categories)
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(16.dp))
                 }
             }
             if (products.isNotEmpty() && !isApplyingFilter) {
@@ -195,6 +196,10 @@ fun CategoryPager(
         modifier = modifier
             .fillMaxWidth()
             .height(200.dp)
+            .shadow(
+                elevation = 10.dp,
+                spotColor = MaterialTheme.colorScheme.primary.copy(0.5f),
+            )
     ) { page ->
         CategoryListItem(
             category = categories[page],

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="can_t_load_products_right_now_please_try_again_later">Can\'t load products right now.</string>
+    <string name="can_t_load_products_right_now">Can\'t load products right now.</string>
+    <string name="can_t_load_product_right_now">Can\'t load product right now.</string>
     <string name="add_to_cart">ADD TO CART</string>
     <string name="remove_from_cart">REMOVE FROM CART</string>
     <string name="add_to_wishlist">ADD TO WISHLIST</string>

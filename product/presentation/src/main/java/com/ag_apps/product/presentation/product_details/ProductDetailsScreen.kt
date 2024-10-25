@@ -21,8 +21,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.ShoppingBag
@@ -30,6 +32,7 @@ import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.ShoppingBag
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
@@ -60,6 +63,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -147,52 +151,75 @@ private fun ProductDetailsScreen(
         },
         floatingActionButtonPosition = FabPosition.Center,
         floatingActionButton = {
-            FloatingActionButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 22.dp),
-                containerColor = MaterialTheme.colorScheme.primary,
-                onClick = {
-                    onAction(ProductDetailsAction.ToggleProductInCart)
-                }
-            ) {
-                Row(
+            if (state.product != null) {
+                FloatingActionButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.Center
+                        .padding(horizontal = 22.dp),
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    onClick = {
+                        onAction(ProductDetailsAction.ToggleProductInCart)
+                    }
                 ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
 
-                    Icon(
-                        imageVector = if (state.product?.isInCartList == true) {
-                            Icons.Rounded.ShoppingBag
-                        } else {
-                            Icons.Outlined.ShoppingBag
-                        },
-                        contentDescription = if (state.product?.isInCartList == true) {
-                            stringResource(R.string.remove_from_cart)
-                        } else {
-                            stringResource(R.string.add_to_cart)
-                        },
-                    )
+                        Icon(
+                            imageVector = if (state.product?.isInCartList == true) {
+                                Icons.Rounded.ShoppingBag
+                            } else {
+                                Icons.Outlined.ShoppingBag
+                            },
+                            contentDescription = if (state.product?.isInCartList == true) {
+                                stringResource(R.string.remove_from_cart)
+                            } else {
+                                stringResource(R.string.add_to_cart)
+                            },
+                        )
 
-                    Spacer(Modifier.width(8.dp))
+                        Spacer(Modifier.width(8.dp))
 
-                    Text(
-                        text = if (state.product?.isInCartList == true) {
-                            stringResource(R.string.remove_from_cart)
-                        } else {
-                            stringResource(R.string.add_to_cart)
-                        },
-                        fontWeight = FontWeight.Medium,
-                    )
+                        Text(
+                            text = if (state.product?.isInCartList == true) {
+                                stringResource(R.string.remove_from_cart)
+                            } else {
+                                stringResource(R.string.add_to_cart)
+                            },
+                            fontWeight = FontWeight.Medium,
+                        )
+                    }
                 }
             }
         }
     ) { padding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(horizontal = 16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            if (state.isLoading && !state.isError && state.product == null) {
+                CircularProgressIndicator()
+            }
+            if (state.isError && state.product == null) {
+                Text(
+                    text = stringResource(R.string.can_t_load_product_right_now),
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center,
+                )
+            }
+        }
+
         state.product?.let { product ->
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .fillMaxSize()
             ) {
 
                 ImagePager(
@@ -200,12 +227,13 @@ private fun ProductDetailsScreen(
                     onAction = onAction
                 )
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(18.dp))
 
                 ScreenContent(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 16.dp),
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 150.dp),
                     product = product,
                     state = state,
                     onAction = onAction
@@ -460,6 +488,10 @@ fun ImagePager(
             modifier = modifier
                 .fillMaxWidth()
                 .height(450.dp)
+                .shadow(
+                    elevation = 16.dp,
+                    spotColor = MaterialTheme.colorScheme.primary.copy(0.5f),
+                )
         ) { page ->
             AsyncImage(
                 model = product.images[page],
@@ -469,10 +501,6 @@ fun ImagePager(
                     .fillMaxWidth()
                     .height(450.dp)
                     .background(MaterialTheme.colorScheme.onBackground.copy(0.1f))
-                    .shadow(
-                        elevation = 10.dp,
-                        spotColor = MaterialTheme.colorScheme.onBackground.copy(0.5f),
-                    )
             )
         }
 

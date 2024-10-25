@@ -19,8 +19,8 @@ fun ProductDto.toProduct(): Product = Product(
     rating = Random.nextInt(5, 10).toFloat(),
     price = price.toFloat(),
     discount = Random.nextInt(0, 30),
-    filter = if (category.name.contains("clothe")) "Size" else "Color",
-    filterList = if (category.name.contains("clothe")) {
+    filter = if (category.name.contains("clothe", ignoreCase = true)) "Size" else "Color",
+    filterList = if (category.name.contains("clothe", ignoreCase = true)) {
         listOf("S", "M", "L", "XL")
     } else {
         listOf("Black", "White", "Gray")
