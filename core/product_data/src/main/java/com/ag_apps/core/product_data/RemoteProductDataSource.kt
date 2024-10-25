@@ -22,33 +22,51 @@ class RemoteProductDataSource(
 
     private val tag = "ProductDataSource"
 
+    private fun isTitleValid(title: String): Boolean {
+        return !title.contains("New", ignoreCase = true) &&
+                !title.contains("Category", ignoreCase = true) &&
+                !title.contains("Product", ignoreCase = true) &&
+                !title.contains("Change", ignoreCase = true) &&
+                !title.contains("Title", ignoreCase = true)
+    }
+
+    private fun isImageValid(image: String): Boolean {
+        return !(image.contains("[") ||
+                image.contains("]") ||
+                image.contains("\"")) &&
+                (image.contains("png", ignoreCase = true) ||
+                        image.contains("jpeg", ignoreCase = true) ||
+                        image.contains("jpg", ignoreCase = true))
+    }
+
     override suspend fun getProducts(
+        query: String?,
         offset: Int,
         minPrice: Int?,
         maxPrice: Int?,
     ): Result<List<Product>, DataError.Network> {
 
-        if (offset > 0) return Result.Success(emptyList())
-        return Result.Success(dummyProducts)
+//        if (offset > 0) return Result.Success(emptyList())
+//        return Result.Success(dummyProducts)
 
         Timber.tag(tag).d(
-            "getProducts: offset: $offset, minPrice: $minPrice, maxPrice: $maxPrice"
+            "getProducts: query: $query, offset: $offset, minPrice: $minPrice, maxPrice: $maxPrice"
         )
 
-        val queryParameters =
-            if (minPrice != null && maxPrice != null) {
-                mapOf(
-                    "price_min" to minPrice,
-                    "price_max" to maxPrice,
-                    "offset" to offset,
-                    "limit" to 10
-                )
-            } else {
-                mapOf(
-                    "offset" to offset,
-                    "limit" to 10
-                )
-            }
+        val queryParameters: MutableMap<String, Any> = mutableMapOf(
+            "offset" to offset,
+            "limit" to 10
+        )
+
+        if (minPrice != null) {
+            queryParameters["price_min"] = minPrice
+        }
+        if (maxPrice != null) {
+            queryParameters["price_max"] = maxPrice
+        }
+        if (query != null) {
+            queryParameters["title"] = query
+        }
 
         val productsResult = httpClient.get<List<ProductDto>>(
             route = "/products",
@@ -57,18 +75,13 @@ class RemoteProductDataSource(
 
         when (productsResult) {
             is Result.Success -> {
-                Timber.tag(tag).d("getProducts: Success ${productsResult.data.size}")
 
                 val products = productsResult.data
-                    .filter {
-                        it.images.none { image ->
-                            image.contains("[", ignoreCase = true) ||
-                                    image.contains("]", ignoreCase = true) ||
-                                    image.contains("\"", ignoreCase = true) &&
-                                    !image.contains("png") ||
-                                    !image.contains("jpeg") ||
-                                    !image.contains("jpg")
-                        }
+                    .filter { product ->
+                        isTitleValid(product.title) && product.images.all { isImageValid(it) }
+                    }
+                    .onEach {
+                        Timber.tag(tag).d("getProducts: ${it.title}, ${it.images}")
                     }
                     .map { it.toProduct() }
 
@@ -76,44 +89,8 @@ class RemoteProductDataSource(
             }
 
             is Result.Error -> {
-                Timber.tag(tag).d("getProducts: Error ${productsResult.error}")
                 return Result.Error(productsResult.error)
             }
-        }
-    }
-
-    override suspend fun searchProducts(
-        query: String,
-        offset: Int,
-        minPrice: Int?,
-        maxPrice: Int?,
-    ): Result<List<Product>, DataError.Network> {
-
-        if (offset > 0) return Result.Success(emptyList())
-        return Result.Success(dummyProducts)
-
-        val queryParameters =
-            if (minPrice != null && maxPrice != null) {
-                mapOf(
-                    "title" to query,
-                    "price_min" to minPrice,
-                    "price_max" to maxPrice,
-                    "offset" to offset,
-                    "limit" to 10
-                )
-            } else {
-                mapOf(
-                    "title" to query,
-                    "offset" to offset,
-                    "limit" to 10
-                )
-            }
-
-        return httpClient.get<List<ProductDto>>(
-            route = "/products",
-            queryParameters = queryParameters
-        ).map { productsDto ->
-            productsDto.map { it.toProduct() }
         }
     }
 
@@ -121,7 +98,7 @@ class RemoteProductDataSource(
         productId: Int
     ): Result<Product, DataError.Network> {
 
-        return Result.Success(dummyProducts[0])
+//        return Result.Success(dummyProducts[0])
 
         return httpClient.get<ProductDto>(
             route = "/products/$productId"
@@ -140,21 +117,7 @@ class RemoteProductDataSource(
                 val categories = categoriesResult.data
                     .shuffled()
                     .filter { category ->
-                        // Exclude categories based on name
-                        !category.name.contains("New", ignoreCase = true) &&
-                                !category.name.contains("Category", ignoreCase = true) &&
-                                !category.name.contains("Change", ignoreCase = true) &&
-                                !category.name.contains("Title", ignoreCase = true) &&
-
-                                // Exclude categories with unwanted characters in image
-                                !category.image.contains("[", ignoreCase = true) &&
-                                !category.image.contains("]", ignoreCase = true) &&
-                                !category.image.contains("\"", ignoreCase = true) &&
-
-                                // Only allow specific image formats
-                                (category.image.endsWith("png", ignoreCase = true) ||
-                                        category.image.endsWith("jpeg", ignoreCase = true) ||
-                                        category.image.endsWith("jpg", ignoreCase = true))
+                        isTitleValid(category.name) && isImageValid(category.image)
                     }
                     .onEach {
                         Timber.tag(tag).d("getCategories: ${it.name}, ${it.image}")
@@ -186,7 +149,7 @@ class RemoteProductDataSource(
         categoryId: Int
     ): Result<List<Product>, DataError.Network> {
 
-        return Result.Success(dummyProducts)
+//        return Result.Success(dummyProducts)
 
         return httpClient.get<List<ProductDto>>(
             route = "/categories/$categoryId/products"

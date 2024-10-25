@@ -29,7 +29,7 @@ class ProductRepositoryImpl(
         val productsResult = productDataSource.getProducts(
             offset = offset,
             minPrice = minPrice,
-            maxPrice = maxPrice
+            maxPrice = maxPrice,
         )
 
         if (userResult is Result.Success && productsResult is Result.Success) {

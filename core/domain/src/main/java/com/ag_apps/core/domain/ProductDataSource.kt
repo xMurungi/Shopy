@@ -9,17 +9,10 @@ import com.ag_apps.core.domain.util.Result
 interface ProductDataSource {
 
     suspend fun getProducts(
+        query: String? = null,
         offset: Int,
-        minPrice: Int?,
-        maxPrice: Int?,
-    ): Result<List<Product>, DataError.Network>
-
-
-    suspend fun searchProducts(
-        query: String,
-        offset: Int,
-        minPrice: Int?,
-        maxPrice: Int?,
+        minPrice: Int? = null,
+        maxPrice: Int? = null,
     ): Result<List<Product>, DataError.Network>
 
 

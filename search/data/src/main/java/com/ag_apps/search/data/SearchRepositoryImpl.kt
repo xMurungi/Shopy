@@ -26,7 +26,7 @@ class SearchRepositoryImpl(
 
         val userResult = userDataSource.getUser()
 
-        val productsResult = productDataSource.searchProducts(
+        val productsResult = productDataSource.getProducts(
             query = query,
             offset = offset,
             minPrice = minPrice,
