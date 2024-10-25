@@ -130,19 +130,15 @@ class ProductOverviewViewModel(
                 }
 
                 is Result.Success -> {
-                    val updatedProductsMap = productsResult.data.associateBy { it.productId }
 
-                    val newProducts = state.products.mapNotNull { product ->
-                        updatedProductsMap[product.productId]?.let { updatedProduct ->
-                            product.copy(
-                                isInWishList = updatedProduct.isInWishList,
-                                isInCartList = updatedProduct.isInCartList
-                            )
-                        }
-                    }
+                    val updatedProductsMap = productsResult.data.map {
+                        it.productId to it
+                    }.toMap()
 
                     state = state.copy(
-                        products = newProducts
+                        products = state.products.map { product ->
+                            updatedProductsMap[product.productId] ?: product
+                        }
                     )
 
                 }
