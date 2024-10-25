@@ -4,16 +4,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,6 +16,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.ag_apps.core.presentation.OnResume
 import com.ag_apps.core.presentation.ProductList
 import com.ag_apps.core.presentation.ProductsScaffold
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
@@ -32,25 +30,17 @@ import org.koin.androidx.compose.koinViewModel
  * @author Ahmed Guedmioui
  */
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductOverviewScreenCore(
     viewModel: ProductOverviewViewModel = koinViewModel(),
     appName: String,
-    updatedProductId: Int?,
     onProductClick: (Int) -> Unit,
     onSearch: () -> Unit
 ) {
 
-    LaunchedEffect(key1 = Unit) {
-        println("ProductOverviewScreenCore: updatedProductId $updatedProductId")
-
-        if (updatedProductId != null) {
-            viewModel.onAction(ProductOverviewAction.RefreshUpdatedProductFromDetails(updatedProductId))
-        } else {
-            viewModel.onAction(ProductOverviewAction.Refresh)
-        }
-    }
+   OnResume {
+       viewModel.onAction(ProductOverviewAction.RefreshUpdatedProducts)
+   }
 
     ProductOverviewScreen(
         state = viewModel.state,

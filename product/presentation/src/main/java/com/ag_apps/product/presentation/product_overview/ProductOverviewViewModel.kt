@@ -33,6 +33,7 @@ class ProductOverviewViewModel(
             minPriceState = TextFieldState(""),
             maxPriceState = TextFieldState(""),
         )
+        loadProducts()
 
         viewModelScope.launch {
             snapshotFlow { state.minPriceState.text }.collectLatest { input ->
@@ -65,8 +66,10 @@ class ProductOverviewViewModel(
             }
 
 
-            is ProductOverviewAction.RefreshUpdatedProductFromDetails -> {
-                refreshUpdatedProductFromDetails(action.updatedProductId)
+            is ProductOverviewAction.RefreshUpdatedProducts -> {
+                if (state.products.isNotEmpty()) {
+                    refreshUpdatedProducts()
+                }
             }
 
             ProductOverviewAction.Paginate -> {
@@ -104,27 +107,51 @@ class ProductOverviewViewModel(
         }
     }
 
-    private fun refreshUpdatedProductFromDetails(updatedProductId: Int) {
+    private fun refreshUpdatedProducts() {
+        println("ProductOverviewViewModel.refreshUpdatedProducts()")
         viewModelScope.launch {
+            val minPrice = state.minPriceState.text.toString()
+            val maxPrice = state.maxPriceState.text.toString()
 
-            val productResult = productRepository.getProduct(updatedProductId)
+            val productsResult = productRepository.getProducts(
+                offset = state.productsOffset,
+                minPrice = if (minPrice.isNotBlank()) minPrice.toIntOrNull() else 1,
+                maxPrice = if (maxPrice.isNotBlank()) maxPrice.toIntOrNull() else null
+            )
 
-            if (productResult is Result.Success)
-                if (state.products.isNotEmpty()) {
+            when (productsResult) {
+                is Result.Error -> {
                     state = state.copy(
-                        products = state.products.map {
-                            if (it.productId == updatedProductId) {
-                                productResult.data
-                            } else {
-                                it
-                            }
-                        }
+                        isLoading = false,
+                        isApplyingFilter = false,
+                        isFilterOpen = false,
+                        isError = true
                     )
                 }
+
+                is Result.Success -> {
+                    val updatedProductsMap = productsResult.data.associateBy { it.productId }
+
+                    val newProducts = state.products.mapNotNull { product ->
+                        updatedProductsMap[product.productId]?.let { updatedProduct ->
+                            product.copy(
+                                isInWishList = updatedProduct.isInWishList,
+                                isInCartList = updatedProduct.isInCartList
+                            )
+                        }
+                    }
+
+                    state = state.copy(
+                        products = newProducts
+                    )
+
+                }
+            }
         }
     }
 
     private fun loadProducts(paginate: Boolean = false) {
+        println("ProductOverviewViewModel.loadProducts()")
         viewModelScope.launch {
 
             state = state.copy(

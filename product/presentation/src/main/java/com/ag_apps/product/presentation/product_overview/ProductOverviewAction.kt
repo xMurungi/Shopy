@@ -5,7 +5,7 @@ package com.ag_apps.product.presentation.product_overview
  */
 sealed interface ProductOverviewAction {
     data object Refresh : ProductOverviewAction
-    data class RefreshUpdatedProductFromDetails(val updatedProductId: Int) : ProductOverviewAction
+    data object RefreshUpdatedProducts : ProductOverviewAction
     data object Paginate : ProductOverviewAction
     data object ApplyFilter : ProductOverviewAction
     data object ToggleFilter : ProductOverviewAction

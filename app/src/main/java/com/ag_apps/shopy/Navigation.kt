@@ -213,11 +213,8 @@ private fun MainBottomBar(
 
             // product ----------------------------------------------------------------------------
             composable<BottomBarScreen.ProductOverview> {
-                val updatedProductId = navController.currentBackStackEntry?.savedStateHandle?.get<Int>("updatedProductId")
-
                 ProductOverviewScreenCore(
                     appName = stringResource(R.string.app_name),
-                    updatedProductId = updatedProductId,
                     onProductClick = { productId ->
                         navController.navigate(Screen.ProductDetails(productId))
                     },

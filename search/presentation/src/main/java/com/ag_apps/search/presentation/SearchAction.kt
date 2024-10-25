@@ -5,6 +5,7 @@ package com.ag_apps.search.presentation
  */
 sealed interface SearchAction {
     data class RefreshUpdatedProductFromDetails(val updatedProductId: Int) : SearchAction
+    data object Refresh : SearchAction
     data object Paginate : SearchAction
     data object ApplyFilter : SearchAction
     data object ToggleFilter : SearchAction
