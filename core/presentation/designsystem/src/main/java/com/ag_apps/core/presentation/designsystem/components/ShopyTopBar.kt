@@ -1,6 +1,5 @@
 package com.ag_apps.core.presentation.designsystem.components
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -49,8 +48,8 @@ fun ShopyTopBar(
         scrollBehavior = scrollBehavior,
         windowInsets = windowInsets,
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(0.5f),
-            scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(0.5f),
+            containerColor = Color.Transparent,
+            scrolledContainerColor = Color.Transparent
         ),
         title = {
             if (titleText != null) {

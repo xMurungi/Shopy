@@ -139,7 +139,9 @@ class ProductOverviewViewModel(
 
                     state = state.copy(
                         products = state.products.map { product ->
-                            updatedProductsMap[product.productId] ?: product
+                            updatedProductsMap[product.productId]?.copy(
+                                thumbnail = product.thumbnail
+                            ) ?: product
                         }
                     )
 
@@ -198,10 +200,10 @@ class ProductOverviewViewModel(
 
     private fun loadCategories() {
         viewModelScope.launch {
-            when (val categoryResult = productRepository.getCategories()) {
+            when (val categoriesResult = productRepository.getCategories()) {
                 is Result.Error -> Unit
                 is Result.Success -> {
-                    state = state.copy(categories = categoryResult.data)
+                    state = state.copy(categories = categoriesResult.data)
                 }
             }
         }

@@ -125,6 +125,9 @@ private fun ProductOverviewScreen(
             },
             onProductClick = { index ->
                 onAction(ProductOverviewAction.ClickProduct(index))
+            },
+            onCategoryClick = { index ->
+                onAction(ProductOverviewAction.ClickCategory(index))
             }
         )
 
@@ -147,58 +150,6 @@ private fun ProductOverviewScreen(
             }
         }
     }
-
-//    ShopyScaffold(
-//        title = appName,
-//        isFilterOpen = state.isFilterOpen,
-//        minPriceState = state.minPriceState,
-//        maxPriceState = state.maxPriceState,
-//        toggleFilter = { onAction(ProductOverviewAction.ToggleFilter) },
-//        toggleProductsLayout = { onAction(ProductOverviewAction.ToggleProductsLayout) },
-//        applyFilter = { onAction(ProductOverviewAction.ApplyFilter) },
-//        onSearch = { onAction(ProductOverviewAction.Search) },
-//    ) { padding ->
-//        ProductList(
-//            modifier = Modifier.padding(top = padding.calculateTopPadding()),
-//            products = state.products,
-//            isGridLayout = state.isGridLayout,
-//            isLoading = state.isLoading,
-//            categories = state.categories,
-//            isApplyingFilter = state.isApplyingFilter,
-//            onToggleProductInWishlist = { index ->
-//                onAction(ProductOverviewAction.ToggleProductInWishlist(index))
-//            },
-//            onToggleProductInCart = { index ->
-//                onAction(ProductOverviewAction.ToggleProductInCart(index))
-//            },
-//            onPaginate = {
-//                onAction(ProductOverviewAction.Paginate)
-//            },
-//            onProductClick = { index ->
-//                onAction(ProductOverviewAction.ClickProduct(index))
-//            }
-//        )
-//
-//        Box(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(padding)
-//                .padding(horizontal = 16.dp),
-//            contentAlignment = Alignment.Center
-//        ) {
-//            if (state.isApplyingFilter || state.isLoading && !state.isError && state.products.isEmpty()) {
-//                CircularProgressIndicator()
-//            }
-//            if (state.isError && state.products.isEmpty()) {
-//                Text(
-//                    text = stringResource(R.string.can_t_load_products_right_now),
-//                    fontSize = 20.sp,
-//                    textAlign = TextAlign.Center,
-//                )
-//            }
-//        }
-//    }
-
 }
 
 @Preview

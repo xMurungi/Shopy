@@ -40,6 +40,7 @@ import com.ag_apps.core.presentation.designsystem.components.ShopyButton
 import com.ag_apps.core.presentation.designsystem.components.ShopyOutlinedButton
 import com.ag_apps.core.presentation.designsystem.components.ShopyLargeTopBar
 import com.ag_apps.core.presentation.designsystem.components.ShopyPasswordTextField
+import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.components.ShopyTextField
 import com.ag_apps.core.presentation.ui.ObserveAsEvent
 import org.koin.androidx.compose.koinViewModel
@@ -101,8 +102,7 @@ private fun LoginScreen(
     onAction: (LoginAction) -> Unit
 ) {
 
-    Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
+    ShopyScaffold (
         topBar = {
             ShopyLargeTopBar(
                 title = stringResource(R.string.login),

@@ -123,6 +123,7 @@ class RemoteProductDataSource(
                     .onEach {
                         Timber.tag(tag).d("getCategories: ${it.name}, ${it.image}")
                     }
+                    .reversed()
                     .map {
                         it.toCategory()
                     }

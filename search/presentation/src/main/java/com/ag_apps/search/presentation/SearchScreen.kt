@@ -41,7 +41,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SearchScreenCore(
     viewModel: SearchViewModel = koinViewModel(),
-    appName: String,
     updatedProductId: Int?,
     onProductClick: (Int) -> Unit
 ) {
@@ -56,7 +55,6 @@ fun SearchScreenCore(
 
     SearchScreen(
         state = viewModel.state,
-        appName = appName,
         onAction = { action ->
             when (action) {
                 is SearchAction.ClickProduct -> {
@@ -75,7 +73,6 @@ fun SearchScreenCore(
 @Composable
 private fun SearchScreen(
     state: SearchState,
-    appName: String,
     onAction: (SearchAction) -> Unit,
 ) {
 
@@ -161,7 +158,6 @@ private fun SearchScreen(
 private fun SearchScreenPreview() {
     ShopyTheme {
         SearchScreen(
-            appName = "Shopy",
             state = SearchState(
                 products = previewProducts,
                 isGridLayout = true

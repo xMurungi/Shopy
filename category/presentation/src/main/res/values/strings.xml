@@ -3,4 +3,6 @@
     <string name="go_back">Go back</string>
     <string name="search_products">Search products</string>
     <string name="categories">Categories</string>
+    <string name="can_t_load_categories_right_now">Can\'t load categories right now.</string>
+    <string name="can_t_load_products_right_now">Can\'t load products right now.</string>
 </resources>

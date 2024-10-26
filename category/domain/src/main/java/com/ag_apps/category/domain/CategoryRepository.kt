@@ -32,5 +32,6 @@ interface CategoryRepository {
 
     suspend fun getCategories(): Result<List<Category>, DataError.Network>
 
+    suspend fun getCategory(categoryId: Int): Result<Category, DataError.Network>
 
 }

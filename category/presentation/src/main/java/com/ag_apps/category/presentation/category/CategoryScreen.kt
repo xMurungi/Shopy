@@ -1,15 +1,10 @@
-package com.ag_apps.category.presentation.category_overview
+package com.ag_apps.category.presentation.category
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material.icons.rounded.Search
@@ -18,19 +13,22 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ag_apps.category.presentation.R
+import com.ag_apps.core.presentation.OnResume
+import com.ag_apps.core.presentation.ProductList
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.components.ShopyTopBar
+import com.ag_apps.core.presentation.util.previewProducts
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -38,19 +36,34 @@ import org.koin.androidx.compose.koinViewModel
  */
 
 @Composable
-fun CategoryOverviewScreenCore(
-    viewModel: CategoryOverviewViewModel = koinViewModel(),
-    onCategoryClick: (Int) -> Unit,
+fun CategoryScreenCore(
+    viewModel: CategoryViewModel = koinViewModel(),
+    categoryId: Int,
+    onProductClick: (Int) -> Unit,
+    onSearch: () -> Unit,
+    onBack: () -> Unit
 ) {
-    CategoryOverviewScreen(
+    OnResume {
+        viewModel.onAction(CategoryAction.RefreshUpdatedProducts)
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.onAction(CategoryAction.LoadCategoryProducts(categoryId))
+    }
+
+    CategoryScreen(
         state = viewModel.state,
         onAction = { action ->
             when (action) {
-                is CategoryOverviewAction.ClickCategory -> {
-                    onCategoryClick(
-                        viewModel.state.categories[action.categoryIndex].categoryId
+                is CategoryAction.ClickProduct -> {
+                    onProductClick(
+                        viewModel.state.products[action.productIndex].productId
                     )
                 }
+
+                is CategoryAction.Search -> onSearch()
+
+                is CategoryAction.Back -> onBack()
 
                 else -> viewModel.onAction(action)
 
@@ -61,21 +74,22 @@ fun CategoryOverviewScreenCore(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CategoryOverviewScreen(
-    state: CategoryOverviewState,
-    onAction: (CategoryOverviewAction) -> Unit
+private fun CategoryScreen(
+    state: CategoryState,
+    onAction: (CategoryAction) -> Unit,
 ) {
 
     ShopyScaffold(
         topBar = { scrollBehavior ->
             ShopyTopBar(
                 scrollBehavior = scrollBehavior,
-                titleText = stringResource(R.string.categories),
+                titleText = state.category?.name,
                 actionIcon = Icons.Rounded.Search,
                 actionIconDescription = stringResource(R.string.search_products),
+                onActionClick = { onAction(CategoryAction.Search) },
                 navigationIcon = Icons.Rounded.ArrowBackIosNew,
                 navigationIconDescription = stringResource(R.string.go_back),
-                onActionClick = { onAction(CategoryOverviewAction.Search) },
+                onNavigationClick = { onAction(CategoryAction.Back) },
             )
 
             Spacer(Modifier.height(8.dp))
@@ -83,6 +97,21 @@ private fun CategoryOverviewScreen(
             HorizontalDivider(Modifier.alpha(0.6f))
         }
     ) { padding ->
+        ProductList(
+            modifier = Modifier.padding(top = padding.calculateTopPadding()),
+            products = state.products,
+            isGridLayout = state.isGridLayout,
+            isLoading = state.isLoading,
+            onToggleProductInWishlist = { index ->
+                onAction(CategoryAction.ToggleProductInWishlist(index))
+            },
+            onToggleProductInCart = { index ->
+                onAction(CategoryAction.ToggleProductInCart(index))
+            },
+            onProductClick = { index ->
+                onAction(CategoryAction.ClickProduct(index))
+            }
+        )
 
         Box(
             modifier = Modifier
@@ -91,70 +120,29 @@ private fun CategoryOverviewScreen(
                 .padding(horizontal = 16.dp),
             contentAlignment = Alignment.Center
         ) {
-            if (state.isLoading && !state.isError && state.categories.isEmpty()) {
+            if (state.isLoading && !state.isError && state.products.isEmpty()) {
                 CircularProgressIndicator()
             }
-            if (state.isError && state.categories.isEmpty()) {
+            if (state.isError && state.products.isEmpty()) {
                 Text(
-                    text = stringResource(R.string.can_t_load_categories_right_now),
+                    text = stringResource(R.string.can_t_load_products_right_now),
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
                 )
             }
         }
-
-        if (state.categories.isNotEmpty()) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = padding.calculateTopPadding()),
-            ) {
-                itemsIndexed(state.categories) { index, category ->
-                    CategoryItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                onAction(CategoryOverviewAction.ClickCategory(index))
-                            },
-                        categoryName = category.name
-                    )
-                }
-            }
-        }
-    }
-
-}
-
-@Composable
-fun CategoryItem(
-    modifier: Modifier = Modifier,
-    categoryName: String,
-) {
-    Column(
-        modifier = modifier
-    ) {
-        HorizontalDivider(Modifier.alpha(0.6f))
-
-        Spacer(Modifier.height(17.dp))
-
-        Text(
-            text = categoryName,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(horizontal = 22.dp),
-        )
-
-        Spacer(Modifier.height(17.dp))
-
     }
 }
 
 @Preview
 @Composable
-private fun CategoryOverviewScreenPreview() {
+private fun CategoryScreenPreview() {
     ShopyTheme {
-        CategoryOverviewScreen(
-            state = CategoryOverviewState(),
+        CategoryScreen(
+            state = CategoryState(
+                products = previewProducts,
+                isGridLayout = true
+            ),
             onAction = {}
         )
     }

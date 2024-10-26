@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -26,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.ag_apps.auth.presentation.login.LoginScreenCore
 import com.ag_apps.auth.presentation.register.RegisterScreenCore
+import com.ag_apps.category.presentation.category.CategoryScreenCore
 import com.ag_apps.category.presentation.category_overview.CategoryOverviewScreenCore
 import com.ag_apps.core.presentation.designsystem.components.ShopyBottomBar
 import com.ag_apps.core.presentation.designsystem.components.bottomBarItems
@@ -109,7 +109,6 @@ fun Navigation(
                 navController.currentBackStackEntry?.savedStateHandle?.get<Int>("updatedProductId")
 
             SearchScreenCore(
-                appName = stringResource(R.string.app_name),
                 updatedProductId = updatedProductId,
                 onProductClick = { productId ->
                     navController.navigate(Screen.ProductDetails(productId))
@@ -118,13 +117,22 @@ fun Navigation(
         }
 
         // category ------------------------------------------------------------------------------
-        composable<Screen.CategoryDetails> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "category details")
-            }
+        composable<Screen.CategoryDetails> { backStackEntry->
+            val categoryDetails: Screen.CategoryDetails = backStackEntry.toRoute()
+            val categoryId = categoryDetails.categoryId
+
+           CategoryScreenCore(
+               categoryId = categoryId,
+               onProductClick = { productId ->
+                   navController.navigate(Screen.ProductDetails(productId))
+               },
+               onSearch = {
+                   navController.navigate(Screen.Search)
+               },
+               onBack = {
+                   navController.popBackStack()
+               }
+           )
         }
 
         // checkout ------------------------------------------------------------------------------

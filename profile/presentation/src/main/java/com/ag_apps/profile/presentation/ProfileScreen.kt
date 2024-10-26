@@ -44,6 +44,7 @@ import com.ag_apps.core.domain.User
 import com.ag_apps.core.presentation.DisclaimerInfoDialog
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyLargeTopBar
+import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.ui.ObserveAsEvent
 import com.ag_apps.profile.presentation.components.EditeAddressDialog
 import com.ag_apps.profile.presentation.components.EditeCardDialog
@@ -103,8 +104,7 @@ private fun ProfileScreen(
     onOrdersClick: () -> Unit
 ) {
 
-    Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
+    ShopyScaffold(
         topBar = {
             ShopyLargeTopBar(
                 title = stringResource(R.string.my_profile),
@@ -122,7 +122,7 @@ private fun ProfileScreen(
 
             ProfileInfo(state = state)
 
-            Spacer(Modifier.height(32.dp))
+            Spacer(Modifier.height(16.dp))
 
             ProfileActionSection(
                 text = stringResource(R.string.my_orders),
@@ -257,7 +257,7 @@ private fun ProfileScreenPreview() {
                     cart = emptyList(),
                     wishlist = emptyList()
                 ),
-                isEditeAddressShowing = true
+                isEditeAddressShowing = false
             ),
             onAction = {},
             onOrdersClick = {}

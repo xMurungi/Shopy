@@ -77,4 +77,8 @@ class CategoryRepositoryImpl(
     override suspend fun getCategories(): Result<List<Category>, DataError.Network> {
         return productDataSource.getCategories()
     }
+
+    override suspend fun getCategory(categoryId: Int): Result<Category, DataError.Network> {
+        return productDataSource.getCategory(categoryId)
+    }
 }
