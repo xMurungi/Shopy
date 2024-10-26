@@ -26,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.ag_apps.auth.presentation.login.LoginScreenCore
 import com.ag_apps.auth.presentation.register.RegisterScreenCore
+import com.ag_apps.category.presentation.category_overview.CategoryOverviewScreenCore
 import com.ag_apps.core.presentation.designsystem.components.ShopyBottomBar
 import com.ag_apps.core.presentation.designsystem.components.bottomBarItems
 import com.ag_apps.product.presentation.product_details.ProductDetailsScreenCore
@@ -93,7 +94,10 @@ fun Navigation(
                 onBack = { isProductUpdate ->
                     navController.popBackStack()
                     if (isProductUpdate) {
-                        navController.currentBackStackEntry?.savedStateHandle?.set("updatedProductId", productId)
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            "updatedProductId",
+                            productId
+                        )
                     }
                 }
             )
@@ -101,7 +105,8 @@ fun Navigation(
 
         // search ------------------------------------------------------------------------------
         composable<Screen.Search> {
-            val updatedProductId = navController.currentBackStackEntry?.savedStateHandle?.get<Int>("updatedProductId")
+            val updatedProductId =
+                navController.currentBackStackEntry?.savedStateHandle?.get<Int>("updatedProductId")
 
             SearchScreenCore(
                 appName = stringResource(R.string.app_name),
@@ -218,6 +223,9 @@ private fun MainBottomBar(
                     onProductClick = { productId ->
                         navController.navigate(Screen.ProductDetails(productId))
                     },
+                    onCategoryClick = { categoryId ->
+                        navController.navigate(Screen.CategoryDetails(categoryId))
+                    },
                     onSearch = {
                         navController.navigate(Screen.Search)
                     }
@@ -226,12 +234,11 @@ private fun MainBottomBar(
 
             // category ---------------------------------------------------------------------------
             composable<BottomBarScreen.CategoryOverview> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "category overview")
-                }
+                CategoryOverviewScreenCore(
+                    onCategoryClick = { categoryId ->
+                        navController.navigate(Screen.CategoryDetails(categoryId))
+                    }
+                )
             }
 
             // cart ------------------------------------------------------------------------------
@@ -302,7 +309,7 @@ sealed interface Screen {
     data class ProductDetails(val productId: Int) : Screen
 
     @kotlinx.serialization.Serializable
-    data object CategoryDetails : Screen
+    data class CategoryDetails(val categoryId: Int) : Screen
 
     @kotlinx.serialization.Serializable
     data object Search : Screen

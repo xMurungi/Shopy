@@ -1,5 +1,6 @@
 package com.ag_apps.core.presentation.designsystem.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -19,10 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ag_apps.core.presentation.designsystem.R
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 
 /**
@@ -32,7 +32,8 @@ import com.ag_apps.core.presentation.designsystem.ShopyTheme
 @Composable
 fun ShopyTopBar(
     modifier: Modifier = Modifier,
-    title: String,
+    titleText: String? = null,
+    titleContent: (@Composable () -> Unit)? = null,
     navigationIcon: ImageVector? = null,
     navigationIconDescription: String? = null,
     actionIcon: ImageVector? = null,
@@ -52,10 +53,15 @@ fun ShopyTopBar(
             scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow.copy(0.5f),
         ),
         title = {
-            Text(
-                text = title,
-                color = MaterialTheme.colorScheme.onBackground,
-            )
+            if (titleText != null) {
+                Text(
+                    text = titleText,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontWeight = FontWeight.Medium
+                )
+            } else if (titleContent != null) {
+                titleContent()
+            }
         },
         navigationIcon = {
             if (navigationIcon != null) {
@@ -148,7 +154,7 @@ private fun ToolbarPreview() {
             modifier = Modifier.fillMaxWidth(),
             navigationIcon = Icons.Outlined.ArrowBackIosNew,
             actionIcon = Icons.Outlined.Search,
-            title = "Shopy",
+            titleText = "Shopy",
         )
     }
 }

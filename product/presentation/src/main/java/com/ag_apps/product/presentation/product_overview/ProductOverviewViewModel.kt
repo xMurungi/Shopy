@@ -103,6 +103,8 @@ class ProductOverviewViewModel(
 
             is ProductOverviewAction.ClickProduct -> Unit
 
+            is ProductOverviewAction.ClickCategory -> Unit
+
             ProductOverviewAction.Search -> Unit
         }
     }

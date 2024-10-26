@@ -24,6 +24,7 @@ class RemoteProductDataSource(
 
     private fun isTitleValid(title: String): Boolean {
         return !title.contains("New", ignoreCase = true) &&
+                !title.contains("Name", ignoreCase = true) &&
                 !title.contains("Category", ignoreCase = true) &&
                 !title.contains("Product", ignoreCase = true) &&
                 !title.contains("Change", ignoreCase = true) &&
@@ -151,11 +152,30 @@ class RemoteProductDataSource(
 
 //        return Result.Success(dummyProducts)
 
-        return httpClient.get<List<ProductDto>>(
+        val productsResult = httpClient.get<List<ProductDto>>(
             route = "/categories/$categoryId/products"
-        ).map { productsDto ->
-            productsDto.map { it.toProduct() }
+        )
+
+        when (productsResult) {
+            is Result.Success -> {
+
+                val products = productsResult.data
+                    .filter { product ->
+                        isTitleValid(product.title) && product.images.all { isImageValid(it) }
+                    }
+                    .onEach {
+                        Timber.tag(tag).d("getProducts: ${it.title}, ${it.images}")
+                    }
+                    .map { it.toProduct() }
+
+                return Result.Success(products)
+            }
+
+            is Result.Error -> {
+                return Result.Error(productsResult.error)
+            }
         }
+
     }
 }
 

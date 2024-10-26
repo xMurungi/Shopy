@@ -13,5 +13,6 @@ sealed interface ProductOverviewAction {
     data class ToggleProductInWishlist(val productIndex: Int) : ProductOverviewAction
     data class ToggleProductInCart(val productIndex: Int) : ProductOverviewAction
     data class ClickProduct(val productIndex: Int) : ProductOverviewAction
+    data class ClickCategory(val categoryIndex: Int) : ProductOverviewAction
     data object Search : ProductOverviewAction
 }

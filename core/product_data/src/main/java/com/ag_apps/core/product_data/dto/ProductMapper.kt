@@ -30,7 +30,7 @@ fun ProductDto.toProduct(): Product = Product(
 )
 
 fun CategoryDto.toCategory(): Category = Category(
-    id = id,
+    categoryId = id,
     image = image,
     name = name
 )

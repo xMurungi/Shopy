@@ -5,6 +5,8 @@ import android.content.Context
 import com.ag_apps.auth.data.di.authDataModule
 import com.google.firebase.FirebaseApp
 import com.ag_apps.auth.presentation.di.authPresentationModule
+import com.ag_apps.category.data.di.categoryDataModule
+import com.ag_apps.category.presentation.di.categoryPresentationModule
 import com.ag_apps.core.user_data.di.coreUserDataModule
 import com.ag_apps.core.product_data.di.coreProductDataModule
 import com.ag_apps.product.data.di.productDataModule
@@ -57,7 +59,10 @@ class ShopyApp: Application() {
                 productPresentationModule,
 
                 searchDataModule,
-                searchPresentationModule
+                searchPresentationModule,
+
+                categoryDataModule,
+                categoryPresentationModule
             )
         }
     }

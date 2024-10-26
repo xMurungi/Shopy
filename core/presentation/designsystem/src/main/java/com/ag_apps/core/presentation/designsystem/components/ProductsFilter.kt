@@ -1,4 +1,4 @@
-package com.ag_apps.core.presentation
+package com.ag_apps.core.presentation.designsystem.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,8 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ag_apps.core.presentation.designsystem.components.ShopyTextField
-import com.ag_apps.core.presentation.ui.R
+import com.ag_apps.core.presentation.designsystem.R
 
 /**
  * @author Ahmed Guedmioui

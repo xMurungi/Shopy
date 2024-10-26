@@ -1,21 +1,36 @@
 package com.ag_apps.search.presentation
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ag_apps.core.presentation.ProductList
-import com.ag_apps.core.presentation.ProductsScaffold
+import com.ag_apps.core.presentation.designsystem.R
+import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
+import com.ag_apps.core.presentation.designsystem.components.ProductsFilter
+import com.ag_apps.core.presentation.designsystem.components.ShopyTextField
+import com.ag_apps.core.presentation.designsystem.components.ShopyTopBar
 import com.ag_apps.core.presentation.util.previewProducts
 import org.koin.androidx.compose.koinViewModel
 
@@ -56,6 +71,7 @@ fun SearchScreenCore(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchScreen(
     state: SearchState,
@@ -63,17 +79,40 @@ private fun SearchScreen(
     onAction: (SearchAction) -> Unit,
 ) {
 
-    ProductsScaffold(
-        appName = appName,
-        isForSearch = true,
-        searchQueryState = state.searchQueryState,
-        isFilterOpen = state.isFilterOpen,
-        minPriceState = state.minPriceState,
-        maxPriceState = state.maxPriceState,
-        toggleFilter = { onAction(SearchAction.ToggleFilter) },
-        toggleProductsLayout = { onAction(SearchAction.ToggleProductsLayout) },
-        applyFilter = { onAction(SearchAction.ApplyFilter) },
+    ShopyScaffold(
+        topBar = { scrollBehavior ->
+            ShopyTopBar(
+                scrollBehavior = scrollBehavior,
+                titleContent = {
+                    ShopyTextField(
+                        textFieldState = state.searchQueryState,
+                        hint = stringResource(R.string.search_products),
+                        textVerticalPadding = 12.dp,
+                        textSize = 16.sp,
+                        endIcon = Icons.Rounded.Search,
+                        endIconTint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.padding(end = 16.dp)
+                    )
+                }
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            ProductsFilter(
+                isFilterOpen = state.isFilterOpen,
+                minPriceState = state.minPriceState,
+                maxPriceState = state.maxPriceState,
+                toggleFilter = { onAction(SearchAction.ToggleFilter) },
+                toggleProductsLayout = { onAction(SearchAction.ToggleProductsLayout) },
+                applyFilter = { onAction(SearchAction.ApplyFilter) },
+            )
+
+            Spacer(Modifier.height(8.dp))
+
+            HorizontalDivider(Modifier.alpha(0.6f))
+        }
     ) { padding ->
+
         ProductList(
             modifier = Modifier.padding(top = padding.calculateTopPadding()),
             products = state.products,

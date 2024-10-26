@@ -1,6 +1,7 @@
 package com.ag_apps.core.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -72,6 +73,7 @@ fun ProductList(
     onPaginate: () -> Unit,
     onRefresh: () -> Unit = {},
     onProductClick: (Int) -> Unit,
+    onCategoryClick: (Int) -> Unit = {},
 ) {
 
     val listState = rememberLazyListState()
@@ -112,7 +114,10 @@ fun ProductList(
         ) {
             if (categories.isNotEmpty()) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
-                    CategoryPager(categories = categories)
+                    CategoryPager(
+                        categories = categories,
+                        onCategoryClick = onCategoryClick
+                    )
                 }
             }
 
@@ -143,7 +148,10 @@ fun ProductList(
         ) {
             if (categories.isNotEmpty()) {
                 item {
-                    CategoryPager(categories = categories)
+                    CategoryPager(
+                        categories = categories,
+                        onCategoryClick = onCategoryClick
+                    )
                     Spacer(Modifier.height(16.dp))
                 }
             }
@@ -175,7 +183,8 @@ fun ProductList(
 fun CategoryPager(
     categories: List<Category>,
     modifier: Modifier = Modifier,
-    autoSwipeDelay: Long = 3000L
+    autoSwipeDelay: Long = 3000L,
+    onCategoryClick: (Int) -> Unit,
 ) {
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -203,7 +212,9 @@ fun CategoryPager(
     ) { page ->
         CategoryListItem(
             category = categories[page],
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable { onCategoryClick(page) }
         )
     }
 }
