@@ -236,7 +236,10 @@ class ProductOverviewViewModel(
             )
 
             if (state.products[index].isInCartList) {
-                productRepository.addProductToCart(state.products[index].productId)
+                productRepository.addProductToCart(
+                    productId = state.products[index].productId,
+                    filter = state.products[index].filterList.firstOrNull()
+                )
             } else {
                 productRepository.removeProductFromCart(state.products[index].productId)
             }

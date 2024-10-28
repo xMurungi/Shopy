@@ -226,7 +226,10 @@ class SearchViewModel(
             )
 
             if (state.products[index].isInCartList) {
-                searchRepository.addProductToCart(state.products[index].productId)
+                searchRepository.addProductToCart(
+                    productId = state.products[index].productId,
+                    filter = state.products[index].filterList.firstOrNull()
+                )
             } else {
                 searchRepository.removeProductFromCart(state.products[index].productId)
             }

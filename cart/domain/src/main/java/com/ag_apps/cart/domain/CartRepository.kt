@@ -1,4 +1,4 @@
-package com.ag_apps.wishlist.domain
+package com.ag_apps.cart.domain
 
 import com.ag_apps.core.domain.Product
 import com.ag_apps.core.domain.util.DataError
@@ -7,23 +7,15 @@ import com.ag_apps.core.domain.util.Result
 /**
  * @author Ahmed Guedmioui
  */
-interface WishlistRepository {
+interface CartRepository {
 
-    suspend fun getWishlistProducts(): Result<List<Product>, DataError.Network>
+    suspend fun getCartProducts(): Result<List<Product>, DataError.Network>
 
     suspend fun addProductToWishlist(
         productId: Int
     ): Result<Unit, DataError.Network>
 
     suspend fun removeProductFromWishlist(
-        productId: Int
-    ): Result<Unit, DataError.Network>
-
-    suspend fun addProductToCart(
-        productId: Int, filter: String?
-    ): Result<Unit, DataError.Network>
-
-    suspend fun removeProductFromCart(
         productId: Int
     ): Result<Unit, DataError.Network>
 

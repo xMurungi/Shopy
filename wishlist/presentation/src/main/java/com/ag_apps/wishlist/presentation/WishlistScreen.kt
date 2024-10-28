@@ -74,7 +74,7 @@ private fun WishlistScreen(
         topBar = { scrollBehavior ->
             ShopyTopBar(
                 scrollBehavior = scrollBehavior,
-                titleText = "Wishlist",
+                titleText = stringResource(R.string.wishlist),
                 actionIcon = Icons.Rounded.Search,
                 actionIconDescription = stringResource(R.string.search_products),
                 onActionClick = { onAction(WishlistAction.Search) },

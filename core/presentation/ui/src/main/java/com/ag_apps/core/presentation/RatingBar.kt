@@ -54,10 +54,6 @@ fun RatingBar(
                 modifier = Modifier
                     .width(starSize)
                     .height(starSize)
-                    .selectable(
-                        selected = isSelected,
-                        onClick = {}
-                    )
             )
 
             if (i < maxStars) {

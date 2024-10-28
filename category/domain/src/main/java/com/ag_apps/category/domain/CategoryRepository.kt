@@ -23,7 +23,7 @@ interface CategoryRepository {
     ): Result<Unit, DataError.Network>
 
     suspend fun addProductToCart(
-        productId: Int
+        productId: Int, filter: String?
     ): Result<Unit, DataError.Network>
 
     suspend fun removeProductFromCart(

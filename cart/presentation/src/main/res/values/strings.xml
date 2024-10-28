@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_cart">My Cart</string>
+    <string name="can_t_load_cart_right_now">Can\'t load cart products right now.</string>
+    <string name="check_out">CHECK OUT</string>
+    <string name="total_price">Total price:</string>
+</resources>

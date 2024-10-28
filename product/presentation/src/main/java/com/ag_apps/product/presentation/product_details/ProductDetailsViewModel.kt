@@ -101,7 +101,10 @@ class ProductDetailsViewModel(
                 )
 
                 if (!product.isInCartList) {
-                    productRepository.addProductToCart(product.productId)
+                    productRepository.addProductToCart(
+                        productId = product.productId,
+                        filter = product.filterList[state.selectedFilterIndex ?: 0]
+                    )
                 } else {
                     productRepository.removeProductFromCart(product.productId)
                 }

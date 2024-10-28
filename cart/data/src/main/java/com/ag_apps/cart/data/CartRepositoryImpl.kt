@@ -1,29 +1,29 @@
-package com.ag_apps.wishlist.data
+package com.ag_apps.cart.data
 
+import com.ag_apps.cart.domain.CartRepository
 import com.ag_apps.core.domain.Product
 import com.ag_apps.core.domain.ProductDataSource
 import com.ag_apps.core.domain.UserDataSource
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
-import com.ag_apps.wishlist.domain.WishlistRepository
 
 /**
  * @author Ahmed Guedmioui
  */
-class WishlistRepositoryImpl(
+class CartRepositoryImpl(
     private val productDataSource: ProductDataSource,
     private val userDataSource: UserDataSource
-) : WishlistRepository {
+) : CartRepository {
 
-    private val tag = "WishlistRepository: "
+    private val tag = "CartRepository: "
 
-    override suspend fun getWishlistProducts(): Result<List<Product>, DataError.Network> {
+    override suspend fun getCartProducts(): Result<List<Product>, DataError.Network> {
 
         when (val userResult = userDataSource.getUser()) {
             is Result.Success -> {
                 val productsForUser = mutableListOf<Product>()
-                userResult.data.wishlist.forEach { productId ->
-                    when (val product = productDataSource.getProduct(productId)) {
+                userResult.data.cart.forEach { cartProduct ->
+                    when (val product = productDataSource.getProduct(cartProduct.key)) {
                         is Result.Success -> {
                             productsForUser.add(product.data)
                         }
@@ -51,17 +51,5 @@ class WishlistRepositoryImpl(
         productId: Int
     ): Result<Unit, DataError.Network> {
         return userDataSource.removeProductFromWishlist(productId)
-    }
-
-    override suspend fun addProductToCart(
-        productId: Int, filter: String?
-    ): Result<Unit, DataError.Network> {
-        return userDataSource.addProductToCart(productId, filter)
-    }
-
-    override suspend fun removeProductFromCart(
-        productId: Int
-    ): Result<Unit, DataError.Network> {
-        return userDataSource.removeProductFromCart(productId)
     }
 }

@@ -86,15 +86,13 @@ class FirebaseUserDataSource(
     }
 
     override suspend fun addProductToCart(
-        productId: Int
+        productId: Int, filter: String?
     ): Result<Unit, DataError.Network> {
 
         when (val userResult = getUser()) {
             is Result.Success -> {
-                val cart = userResult.data.cart.toMutableList()
-                cart.add(0, productId)
                 val user = userResult.data.copy(
-                    cart = cart
+                    cart = userResult.data.cart.toMutableMap().apply { put(productId, filter) }
                 )
 
                 val updateResult = updateUser(user)
@@ -116,10 +114,8 @@ class FirebaseUserDataSource(
 
         when (val userResult = getUser()) {
             is Result.Success -> {
-                val cart = userResult.data.cart.toMutableList()
-                cart.remove(productId)
                 val user = userResult.data.copy(
-                    cart = cart
+                    cart = userResult.data.cart.toMutableMap().apply { remove(productId) }
                 )
 
                 val updateResult = updateUser(user)

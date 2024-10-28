@@ -176,7 +176,10 @@ class CategoryViewModel(
             )
 
             if (state.products[index].isInCartList) {
-                categoryRepository.addProductToCart(state.products[index].productId)
+                categoryRepository.addProductToCart(
+                    productId = state.products[index].productId,
+                    filter = state.products[index].filterList.firstOrNull(),
+                )
             } else {
                 categoryRepository.removeProductFromCart(state.products[index].productId)
             }

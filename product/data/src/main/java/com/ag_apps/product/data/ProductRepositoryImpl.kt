@@ -90,9 +90,9 @@ class ProductRepositoryImpl(
     }
 
     override suspend fun addProductToCart(
-        productId: Int
+        productId: Int, filter: String?
     ): Result<Unit, DataError.Network> {
-        return userDataSource.addProductToCart(productId)
+        return userDataSource.addProductToCart(productId, filter)
     }
 
     override suspend fun removeProductFromCart(

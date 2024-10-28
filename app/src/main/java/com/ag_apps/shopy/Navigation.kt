@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.ag_apps.auth.presentation.login.LoginScreenCore
 import com.ag_apps.auth.presentation.register.RegisterScreenCore
+import com.ag_apps.cart.presentation.CartScreenCore
 import com.ag_apps.category.presentation.category.CategoryScreenCore
 import com.ag_apps.category.presentation.category_overview.CategoryOverviewScreenCore
 import com.ag_apps.core.presentation.designsystem.components.ShopyBottomBar
@@ -255,12 +256,14 @@ private fun MainBottomBar(
 
             // cart ------------------------------------------------------------------------------
             composable<BottomBarScreen.Cart> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "cart")
-                }
+                CartScreenCore(
+                    onProductClick = { productId ->
+                        navController.navigate(Screen.ProductDetails(productId))
+                    },
+                    onCheckout = {
+                        navController.navigate(Screen.Checkout)
+                    }
+                )
             }
 
             // wishlist ---------------------------------------------------------------------------

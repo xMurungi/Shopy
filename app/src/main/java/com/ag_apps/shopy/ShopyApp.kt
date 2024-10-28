@@ -5,6 +5,8 @@ import android.content.Context
 import com.ag_apps.auth.data.di.authDataModule
 import com.google.firebase.FirebaseApp
 import com.ag_apps.auth.presentation.di.authPresentationModule
+import com.ag_apps.cart.data.di.cartDataModule
+import com.ag_apps.cart.presentation.di.cartPresentationModule
 import com.ag_apps.category.data.di.categoryDataModule
 import com.ag_apps.category.presentation.di.categoryPresentationModule
 import com.ag_apps.core.user_data.di.coreUserDataModule
@@ -68,6 +70,9 @@ class ShopyApp: Application() {
 
                 wishlistDataModule,
                 wishlistPresentationModule,
+
+                cartDataModule,
+                cartPresentationModule
             )
         }
     }

@@ -11,7 +11,7 @@ data class User(
     val image: String,
     val address: Address?,
     val wishlist: List<Int>,
-    val cart: List<Int>,
+    val cart: Map<Int, String?>,
 )
 
 val EmptyFieldsUser = User(
@@ -21,5 +21,5 @@ val EmptyFieldsUser = User(
     image = "",
     address = EmptyFieldsAddress,
     wishlist = emptyList(),
-    cart = emptyList()
+    cart = mapOf()
 )

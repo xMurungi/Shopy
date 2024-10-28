@@ -18,7 +18,9 @@ interface UserDataSource {
 
     suspend fun removeProductFromWishlist(productId: Int): Result<Unit, DataError.Network>
 
-    suspend fun addProductToCart(productId: Int): Result<Unit, DataError.Network>
+    suspend fun addProductToCart(
+        productId: Int, filter: String?
+    ): Result<Unit, DataError.Network>
 
     suspend fun removeProductFromCart(productId: Int): Result<Unit, DataError.Network>
 

@@ -99,7 +99,10 @@ class WishlistViewModel(
             )
 
             if (state.products[index].isInCartList) {
-                wishlistRepository.addProductToCart(state.products[index].productId)
+                wishlistRepository.addProductToCart(
+                    productId = state.products[index].productId,
+                    filter = state.products[index].filterList.firstOrNull()
+                )
             } else {
                 wishlistRepository.removeProductFromCart(state.products[index].productId)
             }

@@ -254,7 +254,7 @@ private fun ProfileScreenPreview() {
                     email = "ahmed@gmail.com",
                     userId = "",
                     address = null,
-                    cart = emptyList(),
+                    cart = mapOf(),
                     wishlist = emptyList()
                 ),
                 isEditeAddressShowing = false
