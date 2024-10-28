@@ -67,6 +67,7 @@ fun ProductList(
     isLoading: Boolean,
     isApplyingFilter: Boolean = false,
     categories: List<Category> = emptyList(),
+    contentPadding: PaddingValues = PaddingValues(bottom = 22.dp),
     onToggleProductInWishlist: ((Int) -> Unit)? = null,
     onToggleProductInCart: ((Int) -> Unit)? = null,
     onRemove: ((Int) -> Unit)? = null,
@@ -110,7 +111,7 @@ fun ProductList(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             columns = GridCells.Fixed(2),
             state = gridState,
-            contentPadding = PaddingValues(bottom = 22.dp)
+            contentPadding = contentPadding
         ) {
             if (categories.isNotEmpty()) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
@@ -143,7 +144,7 @@ fun ProductList(
     } else {
         LazyColumn(
             modifier = modifier,
-            contentPadding = PaddingValues(bottom = 22.dp),
+            contentPadding = contentPadding,
             state = listState
         ) {
             if (categories.isNotEmpty()) {

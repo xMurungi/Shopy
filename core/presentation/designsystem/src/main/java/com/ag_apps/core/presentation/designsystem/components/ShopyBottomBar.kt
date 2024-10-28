@@ -51,7 +51,7 @@ fun ShopyBottomBar(
         modifier = modifier
     ) {
         Column {
-            HorizontalDivider(Modifier.alpha(0.6f))
+            HorizontalDivider(Modifier.alpha(0.5f))
             Row(
                 modifier = Modifier
                     .padding(horizontal = 4.dp)

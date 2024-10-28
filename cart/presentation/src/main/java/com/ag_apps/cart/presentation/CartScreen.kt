@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -87,14 +88,14 @@ private fun CartScreen(
         }
     ) { padding ->
         Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier = Modifier.fillMaxSize()
         ) {
             ProductList(
                 modifier = Modifier.padding(top = padding.calculateTopPadding()),
                 products = state.products,
                 isGridLayout = false,
                 isLoading = state.isLoading,
+                contentPadding = PaddingValues(bottom = 150.dp),
                 onToggleProductInWishlist = { index ->
                     onAction(CartAction.ToggleProductInWishlist(index))
                 },
@@ -112,9 +113,7 @@ private fun CartScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    HorizontalDivider(Modifier.alpha(0.6f))
-
-                    Spacer(Modifier.height(8.dp))
+                    Spacer(Modifier.height(10.dp))
 
                     Row(
                         modifier = Modifier
