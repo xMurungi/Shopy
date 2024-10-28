@@ -73,6 +73,8 @@ import coil.compose.AsyncImage
 import com.ag_apps.core.presentation.RatingBar
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.domain.Product
+import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
+import com.ag_apps.core.presentation.designsystem.components.ShopyTopBar
 import com.ag_apps.core.presentation.util.originalPrice
 import com.ag_apps.core.presentation.util.previewProducts
 
@@ -119,19 +121,17 @@ private fun ProductDetailsScreen(
     onAction: (ProductDetailsAction) -> Unit
 ) {
 
-    Scaffold(
+    ShopyScaffold(
         modifier = Modifier.fillMaxSize(),
+        topBarContainerColor = Color.Transparent,
         topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                    scrolledContainerColor = Color.Transparent,
-                ),
+            ShopyTopBar(
+                containerColor = Color.Transparent,
+                scrolledContainerColor = Color.Transparent,
                 windowInsets = WindowInsets(
                     top = TopAppBarDefaults.TopAppBarExpandedHeight - 20.dp
                 ),
-                title = {},
-                navigationIcon = {
+                navigationIconContent = {
                     Icon(
                         imageVector = Icons.Rounded.ArrowBackIosNew,
                         contentDescription = null,
@@ -169,12 +169,12 @@ private fun ProductDetailsScreen(
                     ) {
 
                         Icon(
-                            imageVector = if (state.product?.isInCartList == true) {
+                            imageVector = if (state.product.isInCartList) {
                                 Icons.Rounded.ShoppingBag
                             } else {
                                 Icons.Outlined.ShoppingBag
                             },
-                            contentDescription = if (state.product?.isInCartList == true) {
+                            contentDescription = if (state.product.isInCartList) {
                                 stringResource(R.string.remove_from_cart)
                             } else {
                                 stringResource(R.string.add_to_cart)
@@ -184,7 +184,7 @@ private fun ProductDetailsScreen(
                         Spacer(Modifier.width(8.dp))
 
                         Text(
-                            text = if (state.product?.isInCartList == true) {
+                            text = if (state.product.isInCartList) {
                                 stringResource(R.string.remove_from_cart)
                             } else {
                                 stringResource(R.string.add_to_cart)

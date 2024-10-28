@@ -117,22 +117,22 @@ fun Navigation(
         }
 
         // category ------------------------------------------------------------------------------
-        composable<Screen.CategoryDetails> { backStackEntry->
+        composable<Screen.CategoryDetails> { backStackEntry ->
             val categoryDetails: Screen.CategoryDetails = backStackEntry.toRoute()
             val categoryId = categoryDetails.categoryId
 
-           CategoryScreenCore(
-               categoryId = categoryId,
-               onProductClick = { productId ->
-                   navController.navigate(Screen.ProductDetails(productId))
-               },
-               onSearch = {
-                   navController.navigate(Screen.Search)
-               },
-               onBack = {
-                   navController.popBackStack()
-               }
-           )
+            CategoryScreenCore(
+                categoryId = categoryId,
+                onProductClick = { productId ->
+                    navController.navigate(Screen.ProductDetails(productId))
+                },
+                onSearch = {
+                    navController.navigate(Screen.Search)
+                },
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
 
         // checkout ------------------------------------------------------------------------------
@@ -245,6 +245,9 @@ private fun MainBottomBar(
                 CategoryOverviewScreenCore(
                     onCategoryClick = { categoryId ->
                         navController.navigate(Screen.CategoryDetails(categoryId))
+                    },
+                    onSearch = {
+                        navController.navigate(Screen.Search)
                     }
                 )
             }

@@ -34,13 +34,17 @@ fun ShopyTopBar(
     titleText: String? = null,
     titleContent: (@Composable () -> Unit)? = null,
     navigationIcon: ImageVector? = null,
+    navigationIconContent: (@Composable () -> Unit)? = null,
     navigationIconDescription: String? = null,
     actionIcon: ImageVector? = null,
+    actionIconContent: (@Composable () -> Unit)? = null,
     actionIconDescription: String? = null,
     onNavigationClick: () -> Unit = {},
     onActionClick: () -> Unit = {},
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLowest,
+    scrolledContainerColor: Color = MaterialTheme.colorScheme.surfaceContainerLowest
 ) {
 
     TopAppBar(
@@ -48,8 +52,8 @@ fun ShopyTopBar(
         scrollBehavior = scrollBehavior,
         windowInsets = windowInsets,
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Transparent,
-            scrolledContainerColor = Color.Transparent
+            containerColor = containerColor,
+            scrolledContainerColor = scrolledContainerColor
         ),
         title = {
             if (titleText != null) {
@@ -71,6 +75,8 @@ fun ShopyTopBar(
                         tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
+            } else if (navigationIconContent != null) {
+                navigationIconContent()
             }
         },
         actions = {
@@ -83,6 +89,8 @@ fun ShopyTopBar(
                         modifier = Modifier.size(30.dp)
                     )
                 }
+            } else if (actionIconContent != null) {
+                actionIconContent()
             }
         }
     )
