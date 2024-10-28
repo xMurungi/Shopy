@@ -16,6 +16,8 @@ import com.ag_apps.profile.presentation.di.profilePresentationModule
 import com.ag_apps.search.data.di.searchDataModule
 import com.ag_apps.search.presentation.di.searchPresentationModule
 import com.ag_apps.shopy.di.appModule
+import com.ag_apps.wishlist.data.di.wishlistDataModule
+import com.ag_apps.wishlist.presentation.di.wishlistPresentationModule
 import com.google.android.play.core.splitcompat.SplitCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -62,7 +64,10 @@ class ShopyApp: Application() {
                 searchPresentationModule,
 
                 categoryDataModule,
-                categoryPresentationModule
+                categoryPresentationModule,
+
+                wishlistDataModule,
+                wishlistPresentationModule,
             )
         }
     }

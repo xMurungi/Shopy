@@ -122,17 +122,7 @@ class ProductOverviewViewModel(
             )
 
             when (productsResult) {
-                is Result.Error -> {
-                    state = state.copy(
-                        isLoading = false,
-                        isApplyingFilter = false,
-                        isFilterOpen = false,
-                        isError = true
-                    )
-                }
-
                 is Result.Success -> {
-
                     val updatedProductsMap = productsResult.data.map {
                         it.productId to it
                     }.toMap()
@@ -146,6 +136,8 @@ class ProductOverviewViewModel(
                     )
 
                 }
+
+                is Result.Error -> Unit
             }
         }
     }

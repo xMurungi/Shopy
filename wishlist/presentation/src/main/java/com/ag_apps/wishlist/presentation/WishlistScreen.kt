@@ -1,4 +1,4 @@
-package com.ag_apps.product.presentation.product_overview
+package com.ag_apps.wishlist.presentation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +12,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -22,12 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ag_apps.core.presentation.OnResume
 import com.ag_apps.core.presentation.ProductList
-import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
-import com.ag_apps.core.presentation.designsystem.components.ProductsFilter
+import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.components.ShopyTopBar
 import com.ag_apps.core.presentation.util.previewProducts
-import com.ag_apps.product.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -35,36 +34,28 @@ import org.koin.androidx.compose.koinViewModel
  */
 
 @Composable
-fun ProductOverviewScreenCore(
-    viewModel: ProductOverviewViewModel = koinViewModel(),
-    appName: String,
+fun WishlistScreenCore(
+    viewModel: WishlistViewModel = koinViewModel(),
     onProductClick: (Int) -> Unit,
-    onCategoryClick: (Int) -> Unit,
     onSearch: () -> Unit
 ) {
 
-    OnResume {
-        viewModel.onAction(ProductOverviewAction.RefreshUpdatedProducts)
+
+    LaunchedEffect(true) {
+        viewModel.onAction(WishlistAction.Refresh)
     }
 
-    ProductOverviewScreen(
+    WishlistScreen(
         state = viewModel.state,
-        appName = appName,
         onAction = { action ->
             when (action) {
-                is ProductOverviewAction.ClickProduct -> {
+                is WishlistAction.ClickProduct -> {
                     onProductClick(
                         viewModel.state.products[action.productIndex].productId
                     )
                 }
 
-                is ProductOverviewAction.ClickCategory -> {
-                    onCategoryClick(
-                        viewModel.state.categories[action.categoryIndex].categoryId
-                    )
-                }
-
-                is ProductOverviewAction.Search -> onSearch()
+                is WishlistAction.Search -> onSearch()
 
                 else -> viewModel.onAction(action)
 
@@ -75,55 +66,34 @@ fun ProductOverviewScreenCore(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ProductOverviewScreen(
-    state: ProductOverviewState,
-    appName: String,
-    onAction: (ProductOverviewAction) -> Unit,
+private fun WishlistScreen(
+    state: WishlistState,
+    onAction: (WishlistAction) -> Unit
 ) {
-
     ShopyScaffold(
         topBar = { scrollBehavior ->
             ShopyTopBar(
                 scrollBehavior = scrollBehavior,
-                titleText = appName,
+                titleText = "Wishlist",
                 actionIcon = Icons.Rounded.Search,
                 actionIconDescription = stringResource(R.string.search_products),
-                onActionClick = { onAction(ProductOverviewAction.Search) },
-            )
-
-            Spacer(Modifier.height(8.dp))
-
-            ProductsFilter(
-                isFilterOpen = state.isFilterOpen,
-                minPriceState = state.minPriceState,
-                maxPriceState = state.maxPriceState,
-                toggleFilter = { onAction(ProductOverviewAction.ToggleFilter) },
-                toggleProductsLayout = { onAction(ProductOverviewAction.ToggleProductsLayout) },
-                applyFilter = { onAction(ProductOverviewAction.ApplyFilter) },
+                onActionClick = { onAction(WishlistAction.Search) },
             )
         }
     ) { padding ->
         ProductList(
             modifier = Modifier.padding(top = padding.calculateTopPadding()),
             products = state.products,
-            isGridLayout = state.isGridLayout,
+            isGridLayout = false,
             isLoading = state.isLoading,
-            categories = state.categories,
-            isApplyingFilter = state.isApplyingFilter,
-            onToggleProductInWishlist = { index ->
-                onAction(ProductOverviewAction.ToggleProductInWishlist(index))
+            onRemove = { index ->
+                onAction(WishlistAction.RemoveProductFromWishlist(index))
             },
             onToggleProductInCart = { index ->
-                onAction(ProductOverviewAction.ToggleProductInCart(index))
-            },
-            onPaginate = {
-                onAction(ProductOverviewAction.Paginate)
+                onAction(WishlistAction.ToggleProductInCart(index))
             },
             onProductClick = { index ->
-                onAction(ProductOverviewAction.ClickProduct(index))
-            },
-            onCategoryClick = { index ->
-                onAction(ProductOverviewAction.ClickCategory(index))
+                onAction(WishlistAction.ClickProduct(index))
             }
         )
 
@@ -134,12 +104,12 @@ private fun ProductOverviewScreen(
                 .padding(horizontal = 16.dp),
             contentAlignment = Alignment.Center
         ) {
-            if (state.isApplyingFilter || state.isLoading && !state.isError && state.products.isEmpty()) {
+            if (state.isLoading && !state.isError && state.products.isEmpty()) {
                 CircularProgressIndicator()
             }
             if (state.isError && state.products.isEmpty()) {
                 Text(
-                    text = stringResource(R.string.can_t_load_products_right_now),
+                    text = stringResource(R.string.can_t_load_wishlist_right_now),
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
                 )
@@ -150,13 +120,11 @@ private fun ProductOverviewScreen(
 
 @Preview
 @Composable
-private fun ProductOverviewScreenPreview() {
+private fun WishlistScreenPreview() {
     ShopyTheme {
-        ProductOverviewScreen(
-            appName = "Shopy",
-            state = ProductOverviewState(
-                products = previewProducts,
-                isGridLayout = true
+        WishlistScreen(
+            state = WishlistState(
+                products = previewProducts
             ),
             onAction = {}
         )

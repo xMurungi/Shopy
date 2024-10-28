@@ -72,7 +72,9 @@ class SearchViewModel(
         when (action) {
 
             is SearchAction.RefreshUpdatedProductFromDetails -> {
-                refreshUpdatedProductFromDetails(action.updatedProductId)
+                if (state.products.isNotEmpty()) {
+                    refreshUpdatedProductFromDetails(action.updatedProductId)
+                }
             }
 
             SearchAction.Paginate -> {
@@ -119,10 +121,9 @@ class SearchViewModel(
     private fun refreshUpdatedProductFromDetails(updatedProductId: Int) {
         viewModelScope.launch {
 
-            val productResult = searchRepository.getProduct(updatedProductId)
+            when (val productResult = searchRepository.getProduct(updatedProductId)) {
+                is Result.Success -> {
 
-            if (productResult is Result.Success)
-                if (state.products.isNotEmpty()) {
                     state = state.copy(
                         products = state.products.map {
                             if (it.productId == updatedProductId) {
@@ -132,7 +133,13 @@ class SearchViewModel(
                             }
                         }
                     )
+
                 }
+
+                is Result.Error -> Unit
+            }
+
+
         }
     }
 

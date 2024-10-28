@@ -152,9 +152,9 @@ fun ProductList(
                         categories = categories,
                         onCategoryClick = onCategoryClick
                     )
-                    Spacer(Modifier.height(16.dp))
                 }
             }
+
             if (products.isNotEmpty() && !isApplyingFilter) {
                 itemsIndexed(
                     items = products,
@@ -163,7 +163,8 @@ fun ProductList(
 
                     ProductListItem(
                         modifier = Modifier
-                            .padding(horizontal = 16.dp),
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 16.dp),
                         product = product,
                         index = index,
                         isGridLayout = false,
@@ -172,7 +173,6 @@ fun ProductList(
                         onRemove = onRemove,
                         onProductClick = onProductClick
                     )
-                    Spacer(Modifier.height(12.dp))
                 }
             }
         }

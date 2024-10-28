@@ -122,10 +122,10 @@ private fun ProductDetailsScreen(
 ) {
 
     ShopyScaffold(
-        modifier = Modifier.fillMaxSize(),
         topBarContainerColor = Color.Transparent,
-        topBar = {
+        topBar = { scrollBehavior->
             ShopyTopBar(
+                scrollBehavior = scrollBehavior,
                 containerColor = Color.Transparent,
                 scrolledContainerColor = Color.Transparent,
                 windowInsets = WindowInsets(

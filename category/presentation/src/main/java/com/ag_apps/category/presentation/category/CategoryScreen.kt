@@ -91,10 +91,6 @@ private fun CategoryScreen(
                 navigationIconDescription = stringResource(R.string.go_back),
                 onNavigationClick = { onAction(CategoryAction.Back) },
             )
-
-            Spacer(Modifier.height(8.dp))
-
-            HorizontalDivider(Modifier.alpha(0.6f))
         }
     ) { padding ->
         ProductList(

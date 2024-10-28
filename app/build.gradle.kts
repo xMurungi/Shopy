@@ -70,17 +70,25 @@ dependencies {
     implementation(projects.auth.data)
     implementation(projects.auth.presentation)
 
+    implementation(projects.profile.domain)
+    implementation(projects.profile.data)
+    implementation(projects.profile.presentation)
+
     implementation(projects.product.domain)
     implementation(projects.product.data)
     implementation(projects.product.presentation)
+    
+    implementation(projects.search.domain)
+    implementation(projects.search.data)
+    implementation(projects.search.presentation)
 
     implementation(projects.category.domain)
     implementation(projects.category.data)
     implementation(projects.category.presentation)
 
-    implementation(projects.search.domain)
-    implementation(projects.search.data)
-    implementation(projects.search.presentation)
+    implementation(projects.wishlist.domain)
+    implementation(projects.wishlist.data)
+    implementation(projects.wishlist.presentation)
 
     implementation(projects.cart.domain)
     implementation(projects.cart.data)
@@ -89,10 +97,6 @@ dependencies {
     implementation(projects.checkout.domain)
     implementation(projects.checkout.data)
     implementation(projects.checkout.presentation)
-
-    implementation(projects.profile.domain)
-    implementation(projects.profile.data)
-    implementation(projects.profile.presentation)
 
     implementation(projects.order.domain)
     implementation(projects.order.data)

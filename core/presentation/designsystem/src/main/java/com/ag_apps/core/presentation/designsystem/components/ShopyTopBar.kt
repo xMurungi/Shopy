@@ -1,5 +1,6 @@
 package com.ag_apps.core.presentation.designsystem.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -72,7 +73,10 @@ fun ShopyTopBar(
                     Icon(
                         imageVector = navigationIcon,
                         contentDescription = navigationIconDescription,
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.clickable {
+                            onNavigationClick()
+                        }
                     )
                 }
             } else if (navigationIconContent != null) {

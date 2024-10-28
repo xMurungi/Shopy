@@ -33,6 +33,7 @@ import com.ag_apps.product.presentation.product_details.ProductDetailsScreenCore
 import com.ag_apps.product.presentation.product_overview.ProductOverviewScreenCore
 import com.ag_apps.profile.presentation.ProfileScreenCore
 import com.ag_apps.search.presentation.SearchScreenCore
+import com.ag_apps.wishlist.presentation.WishlistScreenCore
 
 /**
  * @author Ahmed Guedmioui
@@ -264,12 +265,14 @@ private fun MainBottomBar(
 
             // wishlist ---------------------------------------------------------------------------
             composable<BottomBarScreen.Wishlist> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "wishlist")
-                }
+                WishlistScreenCore(
+                    onProductClick = { productId ->
+                        navController.navigate(Screen.ProductDetails(productId))
+                    },
+                    onSearch = {
+                        navController.navigate(Screen.Search)
+                    }
+                )
             }
 
             // profile ----------------------------------------------------------------------------

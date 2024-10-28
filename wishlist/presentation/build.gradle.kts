@@ -7,5 +7,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.checkout.domain)
+    implementation(projects.core.domain)
+    implementation(projects.wishlist.domain)
 }

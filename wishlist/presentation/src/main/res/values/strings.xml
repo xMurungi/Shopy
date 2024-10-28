@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_products">Search Products</string>
+    <string name="can_t_load_wishlist_right_now">Can\'t load wishlist right now.</string>
+</resources>

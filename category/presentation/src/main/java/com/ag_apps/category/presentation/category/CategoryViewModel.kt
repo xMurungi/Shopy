@@ -77,12 +77,6 @@ class CategoryViewModel(
                 )
 
                 when (productsResult) {
-                    is Result.Error -> {
-                        state = state.copy(
-                            isLoading = false,
-                            isError = true
-                        )
-                    }
 
                     is Result.Success -> {
 
@@ -99,6 +93,8 @@ class CategoryViewModel(
                         )
 
                     }
+
+                    is Result.Error -> Unit
                 }
             }
         }

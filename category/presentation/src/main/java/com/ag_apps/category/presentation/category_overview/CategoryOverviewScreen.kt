@@ -83,10 +83,6 @@ private fun CategoryOverviewScreen(
                 actionIconDescription = stringResource(R.string.search_products),
                 onActionClick = { onAction(CategoryOverviewAction.Search) },
             )
-
-            Spacer(Modifier.height(8.dp))
-
-            HorizontalDivider(Modifier.alpha(0.6f))
         }
     ) { padding ->
 

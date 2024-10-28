@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -103,10 +104,6 @@ private fun SearchScreen(
                 toggleProductsLayout = { onAction(SearchAction.ToggleProductsLayout) },
                 applyFilter = { onAction(SearchAction.ApplyFilter) },
             )
-
-            Spacer(Modifier.height(8.dp))
-
-            HorizontalDivider(Modifier.alpha(0.6f))
         }
     ) { padding ->
 
