@@ -15,12 +15,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
-import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -86,6 +86,25 @@ private fun CategoryOverviewScreen(
         }
     ) { padding ->
 
+        if (state.categories.isNotEmpty()) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = padding.calculateTopPadding()),
+            ) {
+                itemsIndexed(state.categories) { index, category ->
+                    CategoryItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onAction(CategoryOverviewAction.ClickCategory(index))
+                            },
+                        categoryName = category.name
+                    )
+                }
+            }
+        }
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -103,24 +122,13 @@ private fun CategoryOverviewScreen(
                     textAlign = TextAlign.Center,
                 )
             }
-        }
-
-        if (state.categories.isNotEmpty()) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = padding.calculateTopPadding()),
-            ) {
-                itemsIndexed(state.categories) { index, category ->
-                    CategoryItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                onAction(CategoryOverviewAction.ClickCategory(index))
-                            },
-                        categoryName = category.name
-                    )
-                }
+            if (!state.isLoading && !state.isError && state.categories.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.no_categories_found),
+                    fontSize = 20.sp,
+                    color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
+                    textAlign = TextAlign.Center,
+                )
             }
         }
     }

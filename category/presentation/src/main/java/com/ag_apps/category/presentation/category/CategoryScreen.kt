@@ -11,6 +11,7 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -123,6 +124,14 @@ private fun CategoryScreen(
                 Text(
                     text = stringResource(R.string.can_t_load_products_right_now),
                     fontSize = 20.sp,
+                    textAlign = TextAlign.Center,
+                )
+            }
+            if (!state.isLoading && !state.isError && state.products.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.no_products_found_in_this_category),
+                    fontSize = 20.sp,
+                    color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
                     textAlign = TextAlign.Center,
                 )
             }

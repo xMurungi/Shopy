@@ -33,7 +33,7 @@ import com.ag_apps.checkout.presentation.success.SuccessScreen
 import com.ag_apps.core.presentation.designsystem.components.ShopyBottomBar
 import com.ag_apps.core.presentation.designsystem.components.bottomBarItems
 import com.ag_apps.order.presentation.order_overview.OrderOverviewScreenCore
-import com.ag_apps.product.presentation.product.ProductDetailsScreenCore
+import com.ag_apps.product.presentation.product.ProductScreenCore
 import com.ag_apps.product.presentation.product_overview.ProductOverviewScreenCore
 import com.ag_apps.profile.presentation.ProfileScreenCore
 import com.ag_apps.search.presentation.SearchScreenCore
@@ -89,12 +89,12 @@ fun Navigation(
         }
 
         // product ------------------------------------------------------------------------------
-        composable<Screen.ProductDetails> { backStackEntry ->
+        composable<Screen.Product> { backStackEntry ->
 
-            val productDetails: Screen.ProductDetails = backStackEntry.toRoute()
-            val productId = productDetails.productId
+            val product: Screen.Product = backStackEntry.toRoute()
+            val productId = product.productId
 
-            ProductDetailsScreenCore(
+            ProductScreenCore(
                 productId = productId,
                 onBack = { isProductUpdate ->
                     navController.popBackStack()
@@ -116,7 +116,7 @@ fun Navigation(
             SearchScreenCore(
                 updatedProductId = updatedProductId,
                 onProductClick = { productId ->
-                    navController.navigate(Screen.ProductDetails(productId))
+                    navController.navigate(Screen.Product(productId))
                 }
             )
         }
@@ -129,7 +129,7 @@ fun Navigation(
             CategoryScreenCore(
                 categoryId = categoryId,
                 onProductClick = { productId ->
-                    navController.navigate(Screen.ProductDetails(productId))
+                    navController.navigate(Screen.Product(productId))
                 },
                 onSearch = {
                     navController.navigate(Screen.Search)
@@ -243,7 +243,7 @@ private fun MainBottomBar(
                 ProductOverviewScreenCore(
                     appName = stringResource(R.string.app_name),
                     onProductClick = { productId ->
-                        navController.navigate(Screen.ProductDetails(productId))
+                        navController.navigate(Screen.Product(productId))
                     },
                     onCategoryClick = { categoryId ->
                         navController.navigate(Screen.CategoryDetails(categoryId))
@@ -270,7 +270,7 @@ private fun MainBottomBar(
             composable<BottomBarScreen.Cart> {
                 CartScreenCore(
                     onProductClick = { productId ->
-                        navController.navigate(Screen.ProductDetails(productId))
+                        navController.navigate(Screen.Product(productId))
                     },
                     onCheckout = {
                         navController.navigate(Screen.Checkout)
@@ -282,7 +282,7 @@ private fun MainBottomBar(
             composable<BottomBarScreen.Wishlist> {
                 WishlistScreenCore(
                     onProductClick = { productId ->
-                        navController.navigate(Screen.ProductDetails(productId))
+                        navController.navigate(Screen.Product(productId))
                     },
                     onSearch = {
                         navController.navigate(Screen.Search)
@@ -335,7 +335,7 @@ sealed interface Screen {
     data object Main : Screen
 
     @kotlinx.serialization.Serializable
-    data class ProductDetails(val productId: Int) : Screen
+    data class Product(val productId: Int) : Screen
 
     @kotlinx.serialization.Serializable
     data class CategoryDetails(val categoryId: Int) : Screen

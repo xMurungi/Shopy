@@ -5,4 +5,6 @@
     <string name="categories">Categories</string>
     <string name="can_t_load_categories_right_now">Can\'t load categories right now.</string>
     <string name="can_t_load_products_right_now">Can\'t load products right now.</string>
+    <string name="no_products_found_in_this_category">No products found in this category.</string>
+    <string name="no_categories_found">No categories found.</string>
 </resources>

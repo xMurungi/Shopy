@@ -5,7 +5,7 @@ import com.ag_apps.core.domain.Product
 /**
  * @author Ahmed Guedmioui
  */
-data class ProductDetailsState(
+data class ProductState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val product: Product? = null,

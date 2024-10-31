@@ -13,15 +13,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -88,23 +85,26 @@ private fun CartScreen(
         }
     ) { padding ->
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .padding(top = padding.calculateTopPadding())
+                .fillMaxSize()
         ) {
-            ProductList(
-                modifier = Modifier.padding(top = padding.calculateTopPadding()),
-                products = state.products,
-                isGridLayout = false,
-                isLoading = state.isLoading,
-                contentPadding = PaddingValues(bottom = 150.dp),
-                onToggleProductInWishlist = { index ->
-                    onAction(CartAction.ToggleProductInWishlist(index))
-                },
-                onProductClick = { index ->
-                    onAction(CartAction.ClickProduct(index))
-                }
-            )
 
             if (state.products.isNotEmpty()) {
+                ProductList(
+                    modifier = Modifier,
+                    products = state.products,
+                    isGridLayout = false,
+                    isLoading = state.isLoading,
+                    contentPadding = PaddingValues(bottom = 150.dp),
+                    onToggleProductInWishlist = { index ->
+                        onAction(CartAction.ToggleProductInWishlist(index))
+                    },
+                    onProductClick = { index ->
+                        onAction(CartAction.ClickProduct(index))
+                    }
+                )
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -159,6 +159,14 @@ private fun CartScreen(
                     Text(
                         text = stringResource(R.string.can_t_load_cart_right_now),
                         fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+                if (!state.isLoading && !state.isError && state.products.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.you_cart_is_empty),
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
                         textAlign = TextAlign.Center,
                     )
                 }

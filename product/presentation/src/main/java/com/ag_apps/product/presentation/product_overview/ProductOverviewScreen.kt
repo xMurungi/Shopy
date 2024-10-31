@@ -9,12 +9,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ag_apps.core.presentation.OnResume
 import com.ag_apps.core.presentation.ProductList
-import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ProductsFilter
+import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.components.ShopyTopBar
 import com.ag_apps.core.presentation.util.previewProducts
 import com.ag_apps.product.presentation.R
@@ -104,29 +103,31 @@ private fun ProductOverviewScreen(
         }
     ) { padding ->
 
-        ProductList(
-            modifier = Modifier.padding(top = padding.calculateTopPadding()),
-            products = state.products,
-            isGridLayout = state.isGridLayout,
-            isLoading = state.isLoading,
-            categories = state.categories,
-            isApplyingFilter = state.isApplyingFilter,
-            onToggleProductInWishlist = { index ->
-                onAction(ProductOverviewAction.ToggleProductInWishlist(index))
-            },
-            onToggleProductInCart = { index ->
-                onAction(ProductOverviewAction.ToggleProductInCart(index))
-            },
-            onPaginate = {
-                onAction(ProductOverviewAction.Paginate)
-            },
-            onProductClick = { index ->
-                onAction(ProductOverviewAction.ClickProduct(index))
-            },
-            onCategoryClick = { index ->
-                onAction(ProductOverviewAction.ClickCategory(index))
-            }
-        )
+        if (state.products.isNotEmpty()) {
+            ProductList(
+                modifier = Modifier.padding(top = padding.calculateTopPadding()),
+                products = state.products,
+                isGridLayout = state.isGridLayout,
+                isLoading = state.isLoading,
+                categories = state.categories,
+                isApplyingFilter = state.isApplyingFilter,
+                onToggleProductInWishlist = { index ->
+                    onAction(ProductOverviewAction.ToggleProductInWishlist(index))
+                },
+                onToggleProductInCart = { index ->
+                    onAction(ProductOverviewAction.ToggleProductInCart(index))
+                },
+                onPaginate = {
+                    onAction(ProductOverviewAction.Paginate)
+                },
+                onProductClick = { index ->
+                    onAction(ProductOverviewAction.ClickProduct(index))
+                },
+                onCategoryClick = { index ->
+                    onAction(ProductOverviewAction.ClickCategory(index))
+                }
+            )
+        }
 
         Box(
             modifier = Modifier
@@ -142,6 +143,14 @@ private fun ProductOverviewScreen(
                 Text(
                     text = stringResource(R.string.can_t_load_products_right_now),
                     fontSize = 20.sp,
+                    textAlign = TextAlign.Center,
+                )
+            }
+            if (!state.isLoading && !state.isError && state.products.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.can_t_load_products_right_now),
+                    fontSize = 20.sp,
+                    color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
                     textAlign = TextAlign.Center,
                 )
             }

@@ -82,25 +82,25 @@ import org.koin.androidx.compose.koinViewModel
  */
 
 @Composable
-fun ProductDetailsScreenCore(
-    viewModel: ProductDetailsViewModel = koinViewModel(),
+fun ProductScreenCore(
+    viewModel: ProductViewModel = koinViewModel(),
     productId: Int,
     onBack: (Boolean) -> Unit
 ) {
 
     LaunchedEffect(true) {
-        viewModel.onAction(ProductDetailsAction.LoadProduct(productId))
+        viewModel.onAction(ProductAction.LoadProduct(productId))
     }
 
     BackHandler {
         onBack(viewModel.state.isProductUpdate)
     }
 
-    ProductDetailsScreen(
+    ProductScreen(
         state = viewModel.state,
         onAction = { action ->
             when (action) {
-                ProductDetailsAction.GoBack -> onBack(viewModel.state.isProductUpdate)
+                ProductAction.GoBack -> onBack(viewModel.state.isProductUpdate)
 
                 else -> viewModel.onAction(action)
             }
@@ -110,9 +110,9 @@ fun ProductDetailsScreenCore(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ProductDetailsScreen(
-    state: ProductDetailsState,
-    onAction: (ProductDetailsAction) -> Unit
+private fun ProductScreen(
+    state: ProductState,
+    onAction: (ProductAction) -> Unit
 ) {
 
     ShopyScaffold(
@@ -133,7 +133,7 @@ private fun ProductDetailsScreen(
                         modifier = Modifier
                             .padding(start = 10.dp)
                             .clip(CircleShape)
-                            .clickable { onAction(ProductDetailsAction.GoBack) }
+                            .clickable { onAction(ProductAction.GoBack) }
                             .size(48.dp)
                             .background(MaterialTheme.colorScheme.surfaceContainerLowest.copy(0.8f))
                             .padding(9.dp)
@@ -152,7 +152,7 @@ private fun ProductDetailsScreen(
                         .padding(horizontal = 22.dp),
                     containerColor = MaterialTheme.colorScheme.primary,
                     onClick = {
-                        onAction(ProductDetailsAction.ToggleProductInCart)
+                        onAction(ProductAction.ToggleProductInCart)
                     }
                 ) {
                     Row(
@@ -242,8 +242,8 @@ private fun ProductDetailsScreen(
 fun ScreenContent(
     modifier: Modifier = Modifier,
     product: Product,
-    state: ProductDetailsState,
-    onAction: (ProductDetailsAction) -> Unit
+    state: ProductState,
+    onAction: (ProductAction) -> Unit
 ) {
 
     val sheetState = rememberModalBottomSheetState()
@@ -392,7 +392,7 @@ fun FiltersBottomSheet(
     product: Product,
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
-    onAction: (ProductDetailsAction) -> Unit
+    onAction: (ProductAction) -> Unit
 ) {
     ModalBottomSheet(
         containerColor = MaterialTheme.colorScheme.background,
@@ -433,7 +433,7 @@ fun FiltersBottomSheet(
                             .clip(RoundedCornerShape(10.dp))
                             .background(MaterialTheme.colorScheme.surfaceContainerLowest.copy(0.4f))
                             .clickable {
-                                onAction(ProductDetailsAction.SelectFilter(index))
+                                onAction(ProductAction.SelectFilter(index))
                                 onDismissRequest()
                             }
                             .padding(vertical = 10.dp),
@@ -459,7 +459,7 @@ fun ImagePager(
     product: Product,
     modifier: Modifier = Modifier,
     autoSwipeDelay: Long = 3000L,
-    onAction: (ProductDetailsAction) -> Unit
+    onAction: (ProductAction) -> Unit
 ) {
 
     val pagerState = rememberPagerState(
@@ -524,7 +524,7 @@ fun ImagePager(
                 .clip(CircleShape)
                 .size(48.dp)
                 .background(MaterialTheme.colorScheme.surfaceContainerLowest.copy(0.9f))
-                .clickable { onAction(ProductDetailsAction.ToggleProductInWishlist) }
+                .clickable { onAction(ProductAction.ToggleProductInWishlist) }
                 .padding(7.dp)
                 .padding(top = 2.dp)
                 .align(Alignment.BottomEnd)
@@ -573,8 +573,8 @@ fun PreviewPage(
 @Composable
 private fun ProductDetailsScreenPreview() {
     ShopyTheme {
-        ProductDetailsScreen(
-            state = ProductDetailsState(
+        ProductScreen(
+            state = ProductState(
                 product = previewProducts[0]
             ),
             onAction = {}

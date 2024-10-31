@@ -14,37 +14,37 @@ import kotlinx.coroutines.launch
 /**
  * @author Ahmed Guedmioui
  */
-class ProductDetailsViewModel(
+class ProductViewModel(
     private val productRepository: ProductRepository
 ) : ViewModel() {
 
-    var state by mutableStateOf(ProductDetailsState())
+    var state by mutableStateOf(ProductState())
         private set
 
-    private val eventChannel = Channel<ProductDetailsEvent>()
+    private val eventChannel = Channel<ProductEvent>()
     val event = eventChannel.receiveAsFlow()
 
-    fun onAction(action: ProductDetailsAction) {
+    fun onAction(action: ProductAction) {
         when (action) {
-            is ProductDetailsAction.LoadProduct -> {
+            is ProductAction.LoadProduct -> {
                 loadProduct(action.productId)
             }
 
-            is ProductDetailsAction.SelectFilter -> {
+            is ProductAction.SelectFilter -> {
                 state = state.copy(
                     selectedFilterIndex = action.filterIndex
                 )
             }
 
-            is ProductDetailsAction.ToggleProductInWishlist -> {
+            is ProductAction.ToggleProductInWishlist -> {
                 toggleProductInWishlist()
             }
 
-            is ProductDetailsAction.ToggleProductInCart -> {
+            is ProductAction.ToggleProductInCart -> {
                 toggleProductInCart()
             }
 
-            ProductDetailsAction.GoBack -> Unit
+            ProductAction.GoBack -> Unit
         }
     }
 
