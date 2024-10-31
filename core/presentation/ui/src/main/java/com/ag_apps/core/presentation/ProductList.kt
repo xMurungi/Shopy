@@ -93,7 +93,6 @@ fun ProductList(
             } else {
                 listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
             }
-
             lastVisibleIndex == totalItems - 1 && !isLoading
         }
     }
@@ -102,7 +101,10 @@ fun ProductList(
         snapshotFlow { shouldPaginate.value }
             .distinctUntilChanged()
             .filter { it }
-            .collect { onPaginate() }
+            .collect {
+                println("ProductList: onPaginate, $isLoading")
+                onPaginate()
+            }
     }
 
     if (isGridLayout) {
@@ -157,10 +159,7 @@ fun ProductList(
             }
 
             if (products.isNotEmpty() && !isApplyingFilter) {
-                itemsIndexed(
-                    items = products,
-                    key = { _, article -> article.productId }
-                ) { index, product ->
+                itemsIndexed(items = products) { index, product ->
 
                     ProductListItem(
                         modifier = Modifier

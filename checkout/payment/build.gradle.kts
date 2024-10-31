@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.shopy.android.library)
+    alias(libs.plugins.shopy.android.feature.ui)
 }
 
 android {
@@ -7,11 +7,6 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.androidx.core.ktx)
-    
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(projects.core.domain)
+    implementation (libs.stripe.android)
 }

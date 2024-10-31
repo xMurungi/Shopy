@@ -9,6 +9,8 @@ import com.ag_apps.cart.data.di.cartDataModule
 import com.ag_apps.cart.presentation.di.cartPresentationModule
 import com.ag_apps.category.data.di.categoryDataModule
 import com.ag_apps.category.presentation.di.categoryPresentationModule
+import com.ag_apps.checkout.data.di.checkoutDataModule
+import com.ag_apps.checkout.presentation.di.checkoutPresentationModule
 import com.ag_apps.core.user_data.di.coreUserDataModule
 import com.ag_apps.core.product_data.di.coreProductDataModule
 import com.ag_apps.product.data.di.productDataModule
@@ -72,7 +74,10 @@ class ShopyApp: Application() {
                 wishlistPresentationModule,
 
                 cartDataModule,
-                cartPresentationModule
+                cartPresentationModule,
+
+                checkoutDataModule,
+                checkoutPresentationModule,
             )
         }
     }

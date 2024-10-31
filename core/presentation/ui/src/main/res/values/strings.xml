@@ -13,4 +13,31 @@
     <string name="disclaimer_card_info">This is a personal project made by Ahmed Guedmioui.\n\nPlease note that for your security, do NOT enter your real card details.\nAnd even if you enter your real card details, NO real transactions will happen, NO funds will be withdrawn from your bank account. And you will NOT receive any products from any simulated purchases.\n\nThank you for your understanding and cooperation.</string>
     <string name="disclaimer">Disclaimer</string>
     <string name="okay">Okay</string>
+
+    <string name="shipping_address">Shipping Address</string>
+    <string name="address">Address</string>
+    <string name="street">Street</string>
+    <string name="city">City</string>
+    <string name="state_province_region">State/Province/Region</string>
+    <string name="zip_code_postal_code">Zip Code (Postal Code)</string>
+    <string name="country">Country</string>
+    <string name="street_hint">3 Newbridge Court</string>
+    <string name="city_hint">Chino Hills</string>
+    <string name="state_province_region_hint">California</string>
+    <string name="zip_code_postal_code_hint">91709</string>
+    <string name="country_hint">United States</string>
+    <string name="save">Save</string>
+
+
+    <string name="payment_card">Payment Card</string>
+    <string name="card_holder_name">Card Holder Name</string>
+    <string name="card_number">Card Number</string>
+    <string name="expire_date">Expire Date</string>
+    <string name="cvv">CVV</string>
+    <string name="card_holder_name_hint">Ahmed Guedmioui</string>
+    <string name="card_number_hint">1234 5678 9012 3456</string>
+    <string name="expire_date_hint">05/26</string>
+    <string name="cvv_hint">567</string>
+    <string name="cancel">Cancel</string>
+
 </resources>

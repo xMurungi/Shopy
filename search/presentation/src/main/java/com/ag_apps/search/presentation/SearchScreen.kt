@@ -6,30 +6,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ag_apps.core.presentation.ProductList
-import com.ag_apps.core.presentation.designsystem.R
-import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ProductsFilter
+import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.components.ShopyTextField
 import com.ag_apps.core.presentation.designsystem.components.ShopyTopBar
 import com.ag_apps.core.presentation.util.previewProducts
@@ -112,7 +106,6 @@ private fun SearchScreen(
             products = state.products,
             isGridLayout = state.isGridLayout,
             isLoading = state.isLoading,
-            categories = state.categories,
             isApplyingFilter = state.isApplyingFilter,
             onToggleProductInWishlist = { index ->
                 onAction(SearchAction.ToggleProductInWishlist(index))
@@ -140,7 +133,7 @@ private fun SearchScreen(
             }
             if (state.isError && state.products.isEmpty()) {
                 Text(
-                    text = "Can't search products right now.",
+                    text = stringResource(R.string.can_t_search_products_right_now),
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
                 )

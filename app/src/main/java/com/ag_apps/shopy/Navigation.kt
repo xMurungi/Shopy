@@ -28,6 +28,8 @@ import com.ag_apps.auth.presentation.register.RegisterScreenCore
 import com.ag_apps.cart.presentation.CartScreenCore
 import com.ag_apps.category.presentation.category.CategoryScreenCore
 import com.ag_apps.category.presentation.category_overview.CategoryOverviewScreenCore
+import com.ag_apps.checkout.presentation.checkout.CheckoutScreenCore
+import com.ag_apps.checkout.presentation.success.SuccessScreen
 import com.ag_apps.core.presentation.designsystem.components.ShopyBottomBar
 import com.ag_apps.core.presentation.designsystem.components.bottomBarItems
 import com.ag_apps.product.presentation.product_details.ProductDetailsScreenCore
@@ -139,21 +141,23 @@ fun Navigation(
 
         // checkout ------------------------------------------------------------------------------
         composable<Screen.Checkout> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "checkout")
-            }
+            CheckoutScreenCore(
+                onOrdersSubmitted = {
+                    navController.navigate(Screen.Success)
+                },
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
 
         composable<Screen.Success> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "success")
-            }
+            SuccessScreen(
+                onContinue = {
+                    navController.popBackStack()
+                    navController.popBackStack()
+                }
+            )
         }
 
         // order ------------------------------------------------------------------------------

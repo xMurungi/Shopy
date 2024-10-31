@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="address_saved">Address is saved</string>
+    <string name="address_not_saved">Couldn\'t save address</string>
+    <string name="card_saved">Card is saved</string>
+    <string name="card_not_saved">Couldn\'t save card</string>
+    <string name="checkout">Checkout</string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="edit">Edit</string>
+    <string name="add">Add</string>
+    <string name="payment_card">Payment Card</string>
+    <string name="total_price">Total Price</string>
+    <string name="submit_order">Submit Order</string>
+    <string name="can_t_load_checkout_details_right_now">Can\'t load checkout details right now.</string>
+    <string name="order_not_submitted">Couldn\'t submit your order.</string>
+    <string name="success">Success!</string>
+    <string name="thank_you_for_choosing_our_app">Thank you for choosing our app!</string>
+    <string name="continue_shopping">Continue Shopping</string>
+</resources>

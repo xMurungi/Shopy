@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_products">Search Products</string>
+    <string name="can_t_search_products_right_now">Can\'t search products right now.</string>
+</resources>

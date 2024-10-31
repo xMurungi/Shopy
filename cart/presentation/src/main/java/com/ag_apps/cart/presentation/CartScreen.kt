@@ -151,15 +151,17 @@ private fun CartScreen(
                 }
             }
 
-            if (state.isLoading && !state.isError && state.products.isEmpty()) {
-                CircularProgressIndicator()
-            }
-            if (state.isError && state.products.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.can_t_load_cart_right_now),
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center,
-                )
+            Box(modifier = Modifier.align(Alignment.Center)) {
+                if (state.isLoading && !state.isError && state.products.isEmpty()) {
+                    CircularProgressIndicator()
+                }
+                if (state.isError && state.products.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.can_t_load_cart_right_now),
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
         }
     }

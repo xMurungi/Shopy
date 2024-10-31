@@ -1,5 +1,6 @@
 package com.ag_apps.core.product_data
 
+import android.app.Application
 import com.ag_apps.core.domain.Category
 import com.ag_apps.core.domain.Product
 import com.ag_apps.core.domain.ProductDataSource
@@ -12,12 +13,14 @@ import com.ag_apps.core.product_data.dto.toCategory
 import com.ag_apps.core.product_data.dto.toProduct
 import io.ktor.client.HttpClient
 import timber.log.Timber
+import java.io.IOException
 
 /**
  * @author Ahmed Guedmioui
  */
 class RemoteProductDataSource(
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
+    private val application: Application
 ) : ProductDataSource {
 
     private val tag = "ProductDataSource"
@@ -39,6 +42,7 @@ class RemoteProductDataSource(
                         image.contains("jpeg", ignoreCase = true) ||
                         image.contains("jpg", ignoreCase = true))
     }
+
 
     override suspend fun getProducts(
         query: String?,

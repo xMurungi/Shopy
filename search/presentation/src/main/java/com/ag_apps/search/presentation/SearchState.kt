@@ -13,7 +13,6 @@ data class SearchState(
     val searchQueryState: TextFieldState = TextFieldState(""),
     val isError: Boolean = false,
     val products: List<Product> = emptyList(),
-    val categories: List<Category> = emptyList(),
     val productsOffset: Int = 0,
     val minPriceState: TextFieldState = TextFieldState(""),
     val maxPriceState: TextFieldState = TextFieldState(""),

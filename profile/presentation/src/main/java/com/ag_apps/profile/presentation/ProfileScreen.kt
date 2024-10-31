@@ -20,7 +20,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,8 +45,8 @@ import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyLargeTopBar
 import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.ui.ObserveAsEvent
-import com.ag_apps.profile.presentation.components.EditeAddressDialog
-import com.ag_apps.profile.presentation.components.EditeCardDialog
+import com.ag_apps.core.presentation.EditeAddressDialog
+import com.ag_apps.core.presentation.EditeCardDialog
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -68,17 +67,10 @@ fun ProfileScreenCore(
         }
 
         when (event) {
-            is ProfileEvent.AddressSave -> {
+            is ProfileEvent.AddressSaved -> {
                 showToast(
                     if (event.isSaved) context.getString(R.string.address_saved)
                     else context.getString(R.string.address_not_saved)
-                )
-            }
-
-            is ProfileEvent.CardSave -> {
-                showToast(
-                    if (event.isSaved) context.getString(R.string.card_saved)
-                    else context.getString(R.string.card_not_saved)
                 )
             }
 
@@ -91,8 +83,15 @@ fun ProfileScreenCore(
 
     ProfileScreen(
         state = viewModel.state,
-        onAction = viewModel::onAction,
-        onOrdersClick = onOrdersClick
+        onAction = { action ->
+            when (action) {
+                is ProfileAction.OnOrdersClick -> {
+                    onOrdersClick()
+                }
+
+                else -> viewModel.onAction(action)
+            }
+        }
     )
 }
 
@@ -101,7 +100,6 @@ fun ProfileScreenCore(
 private fun ProfileScreen(
     state: ProfileState,
     onAction: (ProfileAction) -> Unit,
-    onOrdersClick: () -> Unit
 ) {
 
     ShopyScaffold(
@@ -126,7 +124,7 @@ private fun ProfileScreen(
 
             ProfileActionSection(
                 text = stringResource(R.string.my_orders),
-                onClick = { onOrdersClick() }
+                onClick = { onAction(ProfileAction.OnOrdersClick) }
             )
 
             ProfileActionSection(
@@ -142,28 +140,24 @@ private fun ProfileScreen(
         }
 
         var isAddressDisclaimerShowing by remember { mutableStateOf(false) }
-        var isCardDisclaimerShowing by remember { mutableStateOf(false) }
 
         if (state.isEditeAddressShowing && !isAddressDisclaimerShowing) {
             EditeAddressDialog(
-                onAction = onAction,
-                state = state,
+                streetTextState = state.streetTextState,
+                cityTextState = state.cityTextState,
+                regionTextState = state.regionTextState,
+                zipcodeTextState = state.zipcodeTextState,
+                countryTextState = state.countryTextState,
+                canSavingAddress = state.canSavingAddress,
                 onDisclaimerClick = { isAddressDisclaimerShowing = true },
+                onSaveAddress = { onAction(ProfileAction.OnSaveAddress) },
+                onAddressToggle = { onAction(ProfileAction.OnAddressToggle) },
             )
         }
 
-        if (state.isEditeCardShowing && !isCardDisclaimerShowing) {
-            EditeCardDialog(
-                onAction = onAction,
-                state = state,
-                onDisclaimer = { isCardDisclaimerShowing = true }
-            )
-        }
-
-        if (isAddressDisclaimerShowing || isCardDisclaimerShowing) {
-            DisclaimerInfoDialog(isAddress = isAddressDisclaimerShowing) {
+        if (isAddressDisclaimerShowing) {
+            DisclaimerInfoDialog(isAddress = true) {
                 isAddressDisclaimerShowing = false
-                isCardDisclaimerShowing = false
             }
         }
     }
@@ -260,7 +254,6 @@ private fun ProfileScreenPreview() {
                 isEditeAddressShowing = false
             ),
             onAction = {},
-            onOrdersClick = {}
         )
     }
 }

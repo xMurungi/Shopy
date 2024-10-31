@@ -103,6 +103,7 @@ private fun ProductOverviewScreen(
             )
         }
     ) { padding ->
+
         ProductList(
             modifier = Modifier.padding(top = padding.calculateTopPadding()),
             products = state.products,

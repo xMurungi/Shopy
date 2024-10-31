@@ -30,7 +30,6 @@ class ProfileViewModel(
     init {
         loadUser()
         observeAddressTextFieldStates()
-        observeCardTextFieldStates()
     }
 
     fun onAction(action: ProfileAction) {
@@ -45,13 +44,6 @@ class ProfileViewModel(
                 }
             }
 
-            ProfileAction.OnCardToggle -> {
-                state = state.copy(isEditeCardShowing = !state.isEditeCardShowing)
-                if (state.isEditeCardShowing) {
-                    setDefaultAddressAndCardInfo()
-                }
-            }
-
             ProfileAction.OnLogoutClick -> {
                 viewModelScope.launch {
                     profileRepository.logout()
@@ -61,10 +53,6 @@ class ProfileViewModel(
 
             ProfileAction.OnSaveAddress -> {
                 saveAddress()
-            }
-
-            ProfileAction.OnSaveCard -> {
-                saveCard()
             }
 
         }
@@ -102,21 +90,6 @@ class ProfileViewModel(
                 countryTextState = TextFieldState(address.country)
             )
         }
-
-        val card = state.card
-        card?.let {
-            val cardNumber = if (card.cardNumber.isNotBlank()) {
-                "...." + card.cardNumber.takeLast(4)
-            } else {
-                ""
-            }
-            state = state.copy(
-                nameOnCardTextState = TextFieldState(""),
-                cardNumberTextState = TextFieldState(cardNumber),
-                expireDateTextState = TextFieldState(""),
-                cvvTextState = TextFieldState(""),
-            )
-        }
     }
 
     private fun saveAddress() {
@@ -138,7 +111,7 @@ class ProfileViewModel(
             when (updateResult) {
                 is Result.Error -> {
                     state = state.copy(isSavingAddress = false)
-                    eventChannel.send(ProfileEvent.AddressSave(false))
+                    eventChannel.send(ProfileEvent.AddressSaved(false))
                 }
 
                 is Result.Success -> {
@@ -146,41 +119,12 @@ class ProfileViewModel(
                         isSavingAddress = false,
                         isEditeAddressShowing = false
                     )
-                    eventChannel.send(ProfileEvent.AddressSave(true))
+                    eventChannel.send(ProfileEvent.AddressSaved(true))
                 }
             }
         }
     }
 
-    private fun saveCard() {
-        state = state.copy(
-            card = state.card?.copy(
-                nameOnCard = state.nameOnCardTextState.text.toString(),
-                cardNumber = state.cardNumberTextState.text.toString(),
-                expireDate = state.expireDateTextState.text.toString(),
-                cvv = state.cvvTextState.text.toString()
-            )
-        )
-
-        viewModelScope.launch {
-            state = state.copy(isSavingCard = true)
-            val updateResult = profileRepository.updateUser(state.user)
-            when (updateResult) {
-                is Result.Error -> {
-                    state = state.copy(isSavingCard = false)
-                    eventChannel.send(ProfileEvent.CardSave(false))
-                }
-
-                is Result.Success -> {
-                    state = state.copy(
-                        isSavingCard = false,
-                        isEditeCardShowing = false
-                    )
-                    eventChannel.send(ProfileEvent.CardSave(true))
-                }
-            }
-        }
-    }
 
     private fun observeAddressTextFieldStates() {
         viewModelScope.launch {
@@ -215,49 +159,6 @@ class ProfileViewModel(
 
     }
 
-    private fun observeCardTextFieldStates() {
-        viewModelScope.launch {
-            snapshotFlow { state.nameOnCardTextState.text }.collectLatest {
-                setCanSaveCard()
-            }
-        }
-
-        viewModelScope.launch {
-            snapshotFlow { state.cardNumberTextState.text }.collectLatest {
-                state = state.copy(isValidCardNumber = isValidCreditCard(it.toString()))
-                setCanSaveCard()
-            }
-        }
-
-        viewModelScope.launch {
-            snapshotFlow { state.expireDateTextState.text }.collectLatest { input ->
-                val filteredInput = input.filter { it.isDigit() }
-
-                val formattedInput = when (filteredInput.length) {
-                    in 0..2 -> filteredInput
-                    in 3..4 -> "${filteredInput.substring(0, 2)}/${filteredInput.substring(2)}"
-                    else -> "${filteredInput.substring(0, 2)}/${filteredInput.substring(2, 4)}"
-                }
-
-                state = state.copy(
-                    expireDateTextState = TextFieldState(formattedInput.toString())
-                )
-
-                setCanSaveCard()
-            }
-        }
-
-        viewModelScope.launch {
-            snapshotFlow { state.cvvTextState.text }.collectLatest { input ->
-                val sanitizedInput = input.filter { it.isDigit() }
-                state = state.copy(
-                    cvvTextState = TextFieldState(sanitizedInput.toString().take(3))
-                )
-
-                setCanSaveCard()
-            }
-        }
-    }
 
     private fun setCanSaveAddress() {
         state = state.copy(
@@ -267,41 +168,6 @@ class ProfileViewModel(
                     state.zipcodeTextState.text.isNotBlank() &&
                     state.countryTextState.text.isNotBlank()
         )
-    }
-
-    private fun setCanSaveCard() {
-        state = state.copy(
-            canSavingCard = state.nameOnCardTextState.text.isNotBlank() &&
-                    state.cardNumberTextState.text.isNotBlank() &&
-                    state.expireDateTextState.text.isNotBlank() &&
-                    state.cvvTextState.text.isNotBlank() &&
-                    state.cvvTextState.text.length == 3 &&
-                    isValidCreditCard(state.cardNumberTextState.text.toString())
-        )
-    }
-
-    private fun isValidCreditCard(number: String): Boolean {
-        val cardNumber = number.replace("[\\s-]".toRegex(), "")
-
-        if (!cardNumber.all { it.isDigit() }) {
-            return false
-        }
-
-        val reversedCardNumber = cardNumber.reversed()
-        var sum = 0
-
-        for ((index, digitChar) in reversedCardNumber.withIndex()) {
-            val digit = digitChar.toString().toInt()
-
-            sum += if (index % 2 == 1) {
-                val doubledDigit = digit * 2
-                if (doubledDigit > 9) doubledDigit - 9 else doubledDigit
-            } else {
-                digit
-            }
-        }
-
-        return sum % 10 == 0
     }
 
 }

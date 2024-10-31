@@ -1,4 +1,4 @@
-package com.ag_apps.profile.presentation.components
+package com.ag_apps.core.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -6,13 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Info
@@ -25,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,19 +34,22 @@ import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyButton
 import com.ag_apps.core.presentation.designsystem.components.ShopyOutlinedButton
 import com.ag_apps.core.presentation.designsystem.components.ShopyTextField
-import com.ag_apps.profile.presentation.ProfileAction
-import com.ag_apps.profile.presentation.ProfileState
-import com.ag_apps.profile.presentation.R
+import com.ag_apps.core.presentation.ui.R
 
 /**
  * @author Ahmed Guedmioui
  */
 
 @Composable
-fun EditeAddressDialog(
-    onAction: (ProfileAction) -> Unit,
-    state: ProfileState,
-    onDisclaimerClick: () -> Unit,
+fun EditeCardDialog(
+    nameOnCardTextState: TextFieldState,
+    cardNumberTextState: TextFieldState,
+    expireDateTextState: TextFieldState,
+    cvvTextState: TextFieldState,
+    canSavingCard: Boolean,
+    onSaveCard: () -> Unit,
+    onDisclaimer: () -> Unit,
+    onCardToggle: () -> Unit,
 ) {
     Dialog(
         onDismissRequest = {},
@@ -76,11 +79,11 @@ fun EditeAddressDialog(
                     imageVector = Icons.Outlined.Info,
                     contentDescription = stringResource(R.string.disclaimer),
                     modifier = Modifier
-                        .clickable { onDisclaimerClick() }
+                        .clickable { onDisclaimer() }
                         .align(Alignment.End)
                 )
                 Text(
-                    text = stringResource(R.string.shipping_address),
+                    text = stringResource(R.string.payment_card),
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 20.sp,
                 )
@@ -90,33 +93,30 @@ fun EditeAddressDialog(
             Spacer(Modifier.height(0.dp))
 
             ShopyTextField(
-                textFieldState = state.streetTextState,
-                hint = stringResource(R.string.street_hint),
-                title = stringResource(R.string.street),
+                textFieldState = nameOnCardTextState,
+                hint = stringResource(R.string.card_holder_name_hint),
+                title = stringResource(R.string.card_holder_name)
             )
 
             ShopyTextField(
-                textFieldState = state.cityTextState,
-                hint = stringResource(R.string.city_hint),
-                title = stringResource(R.string.city),
+                textFieldState = cardNumberTextState,
+                hint = stringResource(R.string.card_number_hint),
+                title = stringResource(R.string.card_number),
+                keyBoardType = KeyboardType.Number
             )
 
             ShopyTextField(
-                textFieldState = state.regionTextState,
-                hint = stringResource(R.string.state_province_region_hint),
-                title = stringResource(R.string.state_province_region),
+                textFieldState = expireDateTextState,
+                hint = stringResource(R.string.expire_date_hint),
+                title = stringResource(R.string.expire_date),
+                keyBoardType = KeyboardType.Number
             )
 
             ShopyTextField(
-                textFieldState = state.zipcodeTextState,
-                hint = stringResource(R.string.zip_code_postal_code_hint),
-                title = stringResource(R.string.zip_code_postal_code),
-            )
-
-            ShopyTextField(
-                textFieldState = state.countryTextState,
-                hint = stringResource(R.string.country_hint),
-                title = stringResource(R.string.country),
+                textFieldState = cvvTextState,
+                hint = stringResource(R.string.cvv_hint),
+                title = stringResource(R.string.cvv),
+                keyBoardType = KeyboardType.Number
             )
 
             Spacer(Modifier.height(0.dp))
@@ -128,15 +128,14 @@ fun EditeAddressDialog(
                 ShopyOutlinedButton(
                     modifier = Modifier.weight(1f),
                     text = stringResource(R.string.cancel),
-                    onClick = { onAction(ProfileAction.OnAddressToggle) }
+                    onClick = { onCardToggle() }
                 )
-
 
                 ShopyButton(
                     modifier = Modifier.weight(1f),
                     text = stringResource(R.string.save),
-                    enabled = state.canSavingAddress,
-                    onClick = { onAction(ProfileAction.OnSaveAddress) }
+                    enabled = canSavingCard,
+                    onClick = { onSaveCard() }
                 )
             }
 
@@ -148,12 +147,17 @@ fun EditeAddressDialog(
 
 @Preview
 @Composable
-private fun EditeAddressDialogPreview() {
+private fun ProfileScreenPreview() {
     ShopyTheme {
-        EditeAddressDialog(
-            onAction = {},
-            state = ProfileState(),
-            onDisclaimerClick = {}
+        EditeCardDialog(
+            nameOnCardTextState = TextFieldState(),
+            cardNumberTextState = TextFieldState(),
+            expireDateTextState = TextFieldState(),
+            cvvTextState = TextFieldState(),
+            canSavingCard = true,
+            onDisclaimer = {},
+            onCardToggle = {},
+            onSaveCard = {},
         )
     }
 }
