@@ -61,7 +61,7 @@ fun SuccessScreen(
         Spacer(Modifier.height(40.dp))
 
         ShopyButton(
-            text = stringResource(R.string.continue_shopping),
+            text = stringResource(R.string.view_order),
             onClick = onContinue
         )
 

@@ -15,5 +15,7 @@
     <string name="order_not_submitted">Couldn\'t submit your order.</string>
     <string name="success">Success!</string>
     <string name="thank_you_for_choosing_our_app">Thank you for choosing our app!</string>
-    <string name="continue_shopping">Continue Shopping</string>
+    <string name="no_address">No address</string>
+    <string name="no_payment_card">No payment card</string>
+    <string name="view_order">View Order</string>
 </resources>

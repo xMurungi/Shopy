@@ -161,7 +161,7 @@ private fun CheckoutScreen(
                         CheckoutInfoSection(
                             action = stringResource(R.string.add),
                             title = stringResource(R.string.shipping_address) + " 📦",
-                            headline = "No address",
+                            headline = stringResource(R.string.no_address),
                             details = "",
                             onChangeClick = { onAction(CheckoutAction.OnAddressToggle) }
                         )
@@ -181,7 +181,7 @@ private fun CheckoutScreen(
                         CheckoutInfoSection(
                             action = stringResource(R.string.add),
                             title = stringResource(R.string.payment_card) + " 💳",
-                            headline = "No payment card",
+                            headline = stringResource(R.string.no_payment_card),
                             details = "",
                             onChangeClick = { onAction(CheckoutAction.OnCardToggle) }
                         )
@@ -232,7 +232,7 @@ private fun CheckoutScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp),
                         text = stringResource(R.string.submit_order),
-                        enabled = state.user.address != null && state.card != null,
+//                        enabled = state.user.address != null && state.card != null,
                         onClick = {
                             onAction(CheckoutAction.OnSubmitClick)
                         }

@@ -11,10 +11,10 @@ interface CheckoutRepository {
 
     suspend fun getTotalPrice(): Result<Double, DataError.Network>
 
-    suspend fun updateUser(user: User?): Result<String, DataError.Network>
-
     suspend fun getUser(): Result<User, DataError.Network>
 
-    fun submitOrder()
+    suspend fun updateUser(user: User?): Result<String, DataError.Network>
+
+    suspend fun submitOrder(user: User?)
 
 }

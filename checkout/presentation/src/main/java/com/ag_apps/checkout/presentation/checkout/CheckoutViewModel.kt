@@ -69,8 +69,8 @@ class CheckoutViewModel(
 
             CheckoutAction.OnSubmitClick -> {
                 viewModelScope.launch {
-                    delay(2000)
                     eventChannel.send(CheckoutEvent.OrderSubmitted(true))
+                    checkoutRepository.submitOrder(state.user)
                 }
             }
 

@@ -39,6 +39,10 @@ class CheckoutRepositoryImpl(
         }
     }
 
+    override suspend fun getUser(): Result<User, DataError.Network> {
+        return userDataSource.getUser()
+    }
+
     override suspend fun updateUser(
         user: User?
     ): Result<String, DataError.Network> {
@@ -48,11 +52,8 @@ class CheckoutRepositoryImpl(
         return userDataSource.updateUser(user)
     }
 
-    override suspend fun getUser(): Result<User, DataError.Network> {
-        return userDataSource.getUser()
-    }
-
-    override fun submitOrder() {
-
+    override suspend fun submitOrder(user: User?) {
+        if (user == null) { return }
+        userDataSource.updateUser(user.copy(cart = mapOf()))
     }
 }

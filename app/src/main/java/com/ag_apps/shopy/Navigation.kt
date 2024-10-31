@@ -1,5 +1,6 @@
 package com.ag_apps.shopy
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
@@ -143,6 +144,8 @@ fun Navigation(
         composable<Screen.Checkout> {
             CheckoutScreenCore(
                 onOrdersSubmitted = {
+                    navController.popBackStack()
+                    navController.popBackStack()
                     navController.navigate(Screen.Success)
                 },
                 onBack = {
@@ -155,7 +158,7 @@ fun Navigation(
             SuccessScreen(
                 onContinue = {
                     navController.popBackStack()
-                    navController.popBackStack()
+                    navController.navigate(Screen.OrderDetails)
                 }
             )
         }
@@ -171,6 +174,10 @@ fun Navigation(
         }
 
         composable<Screen.OrderDetails> {
+            BackHandler {
+                navController.popBackStack()
+                navController.navigate(Screen.Main)
+            }
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
