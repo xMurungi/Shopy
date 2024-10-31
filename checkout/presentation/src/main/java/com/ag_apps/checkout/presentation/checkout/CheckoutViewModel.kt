@@ -70,7 +70,7 @@ class CheckoutViewModel(
             CheckoutAction.OnSubmitClick -> {
                 viewModelScope.launch {
                     eventChannel.send(CheckoutEvent.OrderSubmitted(true))
-                    checkoutRepository.submitOrder(state.user)
+                    checkoutRepository.submitOrder(state.user, state.totalPrice)
                 }
             }
 

@@ -1,6 +1,7 @@
 package com.ag_apps.core.user_data
 
 import com.ag_apps.core.domain.Address
+import com.ag_apps.core.domain.Order
 import com.ag_apps.core.domain.User
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
@@ -107,6 +108,21 @@ class FirestoreClient(
             "country" to (address?.country ?: "")
         )
 
+        val orders = orders.map { order ->
+            mapOf(
+                "date" to order.date,
+                "totalPrice" to order.totalPrice,
+                "address" to mapOf(
+                    "street" to order.address?.street,
+                    "city" to order.address?.city,
+                    "region" to order.address?.region,
+                    "zipCode" to order.address?.zipCode,
+                    "country" to order.address?.country
+                ),
+                "products" to order.products.mapKeys { it.key.toString() },
+            )
+        }
+
         val userMap = hashMapOf(
             "email" to email,
             "userId" to userId,
@@ -114,7 +130,8 @@ class FirestoreClient(
             "image" to image,
             "address" to address,
             "wishlist" to wishlist.map { it.toString() },
-            "cart" to cart.mapKeys { it.key.toString() }
+            "cart" to cart.mapKeys { it.key.toString() },
+            "orders" to orders
         )
 
         return userMap
@@ -139,6 +156,28 @@ class FirestoreClient(
             }
         }?.toMap() ?: emptyMap()
 
+        val orders = (this["orders"] as? List<*>)?.mapNotNull { orderMap ->
+            (orderMap as? Map<*, *>)?.let {
+                Order(
+                    date = it["date"] as Long,
+                    totalPrice = it["totalPrice"] as Double,
+                    address = (it["address"] as? Map<*, *>)?.let { addr ->
+                        Address(
+                            street = addr["street"] as String,
+                            city = addr["city"] as String,
+                            region = addr["region"] as String,
+                            zipCode = addr["zipCode"] as String,
+                            country = addr["country"] as String
+                        )
+                    },
+                    products = (this["products"] as? Map<*, *>)?.mapNotNull { (key, value) ->
+                        (key as? String)?.let { intKey ->
+                            intKey.toInt() to (value as? String)
+                        }
+                    }?.toMap() ?: emptyMap()
+                )
+            }
+        } ?: emptyList()
 
         return User(
             email = this["email"] as String,
@@ -148,6 +187,7 @@ class FirestoreClient(
             address = address,
             wishlist = wishlist.map { it.toInt() },
             cart = cart,
+            orders = orders
         )
     }
 }

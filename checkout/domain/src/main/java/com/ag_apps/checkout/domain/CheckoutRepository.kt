@@ -15,6 +15,6 @@ interface CheckoutRepository {
 
     suspend fun updateUser(user: User?): Result<String, DataError.Network>
 
-    suspend fun submitOrder(user: User?)
+    suspend fun submitOrder(user: User?, totalPrice: Double?)
 
 }

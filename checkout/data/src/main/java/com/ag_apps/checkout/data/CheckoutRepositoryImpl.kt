@@ -1,6 +1,7 @@
 package com.ag_apps.checkout.data
 
 import com.ag_apps.checkout.domain.CheckoutRepository
+import com.ag_apps.core.domain.Order
 import com.ag_apps.core.domain.Product
 import com.ag_apps.core.domain.ProductDataSource
 import com.ag_apps.core.domain.User
@@ -52,8 +53,21 @@ class CheckoutRepositoryImpl(
         return userDataSource.updateUser(user)
     }
 
-    override suspend fun submitOrder(user: User?) {
-        if (user == null) { return }
-        userDataSource.updateUser(user.copy(cart = mapOf()))
+    override suspend fun submitOrder(user: User?, totalPrice: Double?) {
+        if (user != null && totalPrice != null) {
+            val order = Order(
+                date = System.currentTimeMillis(),
+                totalPrice = totalPrice,
+                address = user.address,
+                products = user.cart
+            )
+
+            userDataSource.updateUser(
+                user.copy(
+                    cart = mapOf(),
+                    orders = user.orders.plus(order)
+                )
+            )
+        }
     }
 }
