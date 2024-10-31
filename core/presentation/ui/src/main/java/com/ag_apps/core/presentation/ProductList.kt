@@ -205,10 +205,7 @@ fun CategoryPager(
         modifier = modifier
             .fillMaxWidth()
             .height(200.dp)
-            .shadow(
-                elevation = 10.dp,
-                spotColor = MaterialTheme.colorScheme.primary.copy(0.5f),
-            )
+
     ) { page ->
         CategoryListItem(
             category = categories[page],

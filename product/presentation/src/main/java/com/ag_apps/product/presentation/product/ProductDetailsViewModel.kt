@@ -1,4 +1,4 @@
-package com.ag_apps.product.presentation.product_details
+package com.ag_apps.product.presentation.product
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

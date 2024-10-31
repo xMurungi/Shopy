@@ -13,10 +13,22 @@ class OrderRepositoryImpl(
     private val userDataSource: UserDataSource
 ) : OrderRepository {
 
+    override suspend fun getOrders(): Result<List<Order>, DataError.Network> {
+        return when (val userResult = userDataSource.getUser()) {
+            is Result.Error -> {
+                Result.Error(userResult.error)
+            }
+
+            is Result.Success -> {
+                Result.Success(userResult.data.orders)
+            }
+        }
+    }
+
     override suspend fun getOrder(
         orderIndex: Int
     ): Result<Order, DataError.Network> {
-        return when(val userResult = userDataSource.getUser()) {
+        return when (val userResult = userDataSource.getUser()) {
             is Result.Error -> {
                 Result.Error(userResult.error)
             }

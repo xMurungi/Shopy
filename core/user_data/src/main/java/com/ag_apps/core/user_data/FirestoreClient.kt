@@ -170,7 +170,7 @@ class FirestoreClient(
                             country = addr["country"] as String
                         )
                     },
-                    products = (this["products"] as? Map<*, *>)?.mapNotNull { (key, value) ->
+                    products = (it["products"] as? Map<*, *>)?.mapNotNull { (key, value) ->
                         (key as? String)?.let { intKey ->
                             intKey.toInt() to (value as? String)
                         }

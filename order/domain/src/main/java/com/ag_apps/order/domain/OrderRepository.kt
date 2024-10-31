@@ -10,6 +10,8 @@ import com.ag_apps.core.domain.util.Result
  */
 interface OrderRepository {
 
+    suspend fun getOrders(): Result<List<Order>, DataError.Network>
+
     suspend fun getOrder(orderIndex: Int): Result<Order, DataError.Network>
 
 }

@@ -46,7 +46,6 @@ import com.ag_apps.core.presentation.designsystem.components.ShopyLargeTopBar
 import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.ui.ObserveAsEvent
 import com.ag_apps.core.presentation.EditeAddressDialog
-import com.ag_apps.core.presentation.EditeCardDialog
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -105,7 +104,7 @@ private fun ProfileScreen(
     ShopyScaffold(
         topBar = {
             ShopyLargeTopBar(
-                title = stringResource(R.string.my_profile),
+                titleText = stringResource(R.string.my_profile),
                 windowInsets = WindowInsets(top = 0.dp)
             )
         }
@@ -249,7 +248,8 @@ private fun ProfileScreenPreview() {
                     userId = "",
                     address = null,
                     cart = mapOf(),
-                    wishlist = emptyList()
+                    wishlist = emptyList(),
+                    orders = emptyList()
                 ),
                 isEditeAddressShowing = false
             ),

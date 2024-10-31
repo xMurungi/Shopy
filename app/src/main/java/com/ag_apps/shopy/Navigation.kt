@@ -1,6 +1,5 @@
 package com.ag_apps.shopy
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
@@ -33,7 +32,8 @@ import com.ag_apps.checkout.presentation.checkout.CheckoutScreenCore
 import com.ag_apps.checkout.presentation.success.SuccessScreen
 import com.ag_apps.core.presentation.designsystem.components.ShopyBottomBar
 import com.ag_apps.core.presentation.designsystem.components.bottomBarItems
-import com.ag_apps.product.presentation.product_details.ProductDetailsScreenCore
+import com.ag_apps.order.presentation.order_overview.OrderOverviewScreenCore
+import com.ag_apps.product.presentation.product.ProductDetailsScreenCore
 import com.ag_apps.product.presentation.product_overview.ProductOverviewScreenCore
 import com.ag_apps.profile.presentation.ProfileScreenCore
 import com.ag_apps.search.presentation.SearchScreenCore
@@ -158,31 +158,32 @@ fun Navigation(
             SuccessScreen(
                 onContinue = {
                     navController.popBackStack()
-                    navController.navigate(Screen.OrderDetails)
+                    navController.navigate(Screen.OrderDetails(0))
                 }
             )
         }
 
         // order ------------------------------------------------------------------------------
         composable<Screen.OrderOverview> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "order overview")
-            }
+            OrderOverviewScreenCore(
+                onOrderClick = { orderId ->
+                    navController.navigate(Screen.OrderDetails(orderId))
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
 
-        composable<Screen.OrderDetails> {
-            BackHandler {
-                navController.popBackStack()
-                navController.navigate(Screen.Main)
-            }
+        composable<Screen.OrderDetails> { backStackEntry ->
+
+            val orderDetails: Screen.OrderDetails = backStackEntry.toRoute()
+
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "order details")
+                Text(text = "order ${orderDetails.orderId}")
             }
         }
     }
@@ -352,7 +353,7 @@ sealed interface Screen {
     data object OrderOverview : Screen
 
     @kotlinx.serialization.Serializable
-    data object OrderDetails : Screen
+    data class OrderDetails(val orderId: Int) : Screen
 }
 
 

@@ -104,7 +104,7 @@ fun ShopyTopBar(
 @Composable
 fun ShopyLargeTopBar(
     modifier: Modifier = Modifier,
-    title: String,
+    titleText: String,
     navigationIcon: ImageVector? = null,
     navigationIconDescription: String? = null,
     actionIcon: ImageVector? = null,
@@ -125,7 +125,7 @@ fun ShopyLargeTopBar(
         ),
         title = {
             Text(
-                text = title,
+                text = titleText,
                 color = MaterialTheme.colorScheme.onBackground,
             )
         },
@@ -179,7 +179,7 @@ private fun LargeToolbarPreview() {
             modifier = Modifier.fillMaxWidth(),
             navigationIcon = Icons.Outlined.ArrowBackIosNew,
             actionIcon = Icons.Outlined.Search,
-            title = "Shopy",
+            titleText = "Shopy",
         )
     }
 }

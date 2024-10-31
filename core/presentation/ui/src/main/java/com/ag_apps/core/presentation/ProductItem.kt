@@ -93,7 +93,7 @@ fun GridProductItem(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(10.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .clickable { onClick() }
     ) {
         Box(
@@ -210,15 +210,17 @@ fun ColumnProductItem(
     imageWidth: Dp,
 ) {
     Box(
-        modifier = modifier.height(160.dp)
+        modifier = modifier
+            .height(160.dp)
     ) {
         Box(
-            modifier = Modifier.padding(bottom = 10.dp)
+            modifier = Modifier
+                .padding(bottom = 10.dp)
         ) {
             Row(
                 modifier = Modifier
                     .clip(RoundedCornerShape(10.dp))
-                    .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                    .background(MaterialTheme.colorScheme.surfaceContainerLow)
                     .clickable { onClick() }
                     .padding(end = 7.dp)
             ) {
@@ -274,7 +276,9 @@ fun ColumnProductItem(
                                 verticalAlignment = Alignment.Bottom
                             ) {
                                 Text(
-                                    text = "$${product.price.originalPrice(product.discount)}".take(6),
+                                    text = "$${product.price.originalPrice(product.discount)}".take(
+                                        6
+                                    ),
                                     fontWeight = FontWeight.SemiBold,
                                     color = MaterialTheme.colorScheme.onBackground.copy(0.6f),
                                     fontSize = 14.sp,
@@ -451,7 +455,7 @@ private fun ProductItemPreview() {
             modifier = Modifier.fillMaxWidth(),
             imageWidth = 130.dp,
             product = previewProducts[0],
-            isGrid = false,
+            isGrid = true,
             onClick = {},
             onToggleInWishlist = {},
             onToggleInCart = {},

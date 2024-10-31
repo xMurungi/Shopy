@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -75,6 +76,7 @@ fun ShopyOutlinedButton(
     text: String? = null,
     isLoading: Boolean = false,
     enabled: Boolean = true,
+    verticalPadding: Dp = 4.dp,
     onClick: () -> Unit,
     content: @Composable () -> Unit = {}
 ) {
@@ -93,7 +95,7 @@ fun ShopyOutlinedButton(
         modifier = modifier
     ) {
         Box(
-            modifier = Modifier.padding(vertical = 4.dp),
+            modifier = Modifier.padding(vertical = verticalPadding),
             contentAlignment = Alignment.Center
         ) {
             if (text != null) {

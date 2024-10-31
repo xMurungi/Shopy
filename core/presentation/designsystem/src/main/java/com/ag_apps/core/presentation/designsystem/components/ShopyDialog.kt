@@ -42,7 +42,7 @@ fun ShopyDialog(
         Column(
             modifier = modifier
                 .clip(RoundedCornerShape(15.dp))
-                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.surfaceContainerLow)
                 .padding(15.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -51,15 +51,15 @@ fun ShopyDialog(
                 text = title,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
-                fontSize = 19.sp,
-                color = MaterialTheme.colorScheme.onSurface
+                fontSize = 23.sp,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Text(
                 text = description,
                 textAlign = descriptionTextAlign,
-                fontSize = 15.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                fontSize = 17.sp,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Row(
