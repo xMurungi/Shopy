@@ -12,6 +12,7 @@ data class Product(
     val discount: Int,
     val categoryName: String,
     val filter: String,
+    val selectedFilter: String? = null,
     val filterList: List<String>,
     val isInWishList: Boolean,
     val isInCartList: Boolean

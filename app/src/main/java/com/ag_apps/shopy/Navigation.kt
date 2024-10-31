@@ -145,7 +145,6 @@ fun Navigation(
             CheckoutScreenCore(
                 onOrdersSubmitted = {
                     navController.popBackStack()
-                    navController.popBackStack()
                     navController.navigate(Screen.Success)
                 },
                 onBack = {

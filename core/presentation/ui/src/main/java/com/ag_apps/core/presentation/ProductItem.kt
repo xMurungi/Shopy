@@ -176,16 +176,17 @@ fun GridProductItem(
                     .padding(horizontal = 8.dp),
                 verticalAlignment = Alignment.Bottom
             ) {
-                Text(
-                    text = "$${product.price.originalPrice(product.discount)}".take(6),
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onBackground.copy(0.6f),
-                    fontSize = 14.sp,
-                    lineHeight = 1.sp,
-                    textDecoration = TextDecoration.LineThrough
-                )
-
-                Spacer(Modifier.width(6.dp))
+                if (product.discount != 0) {
+                    Text(
+                        text = "$${product.price.originalPrice(product.discount)}".take(6),
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onBackground.copy(0.6f),
+                        fontSize = 14.sp,
+                        lineHeight = 1.sp,
+                        textDecoration = TextDecoration.LineThrough
+                    )
+                    Spacer(Modifier.width(6.dp))
+                }
 
                 Text(
                     text = "$${product.price}",
@@ -256,13 +257,30 @@ fun ColumnProductItem(
                                 text = product.title,
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 17.sp,
-                                maxLines = 2,
+                                maxLines = if (product.selectedFilter != null) 1 else 2,
                                 color = MaterialTheme.colorScheme.onBackground,
                                 overflow = TextOverflow.Ellipsis,
                             )
                         }
 
                         Column {
+                            product.selectedFilter?.let { selectedFilter ->
+                                Row {
+                                    Text(
+                                        text = product.filter + ": ",
+                                        fontSize = 14.sp,
+                                        color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
+                                    )
+
+                                    Text(
+                                        text = selectedFilter,
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.Medium,
+                                        color = MaterialTheme.colorScheme.onBackground,
+                                    )
+                                }
+                            }
+
                             ProductRatingSection(
                                 modifier = Modifier,
                                 rating = product.rating
@@ -275,18 +293,19 @@ fun ColumnProductItem(
                                     .padding(start = 1.dp),
                                 verticalAlignment = Alignment.Bottom
                             ) {
-                                Text(
-                                    text = "$${product.price.originalPrice(product.discount)}".take(
-                                        6
-                                    ),
-                                    fontWeight = FontWeight.SemiBold,
-                                    color = MaterialTheme.colorScheme.onBackground.copy(0.6f),
-                                    fontSize = 14.sp,
-                                    lineHeight = 1.sp,
-                                    textDecoration = TextDecoration.LineThrough
-                                )
-
-                                Spacer(Modifier.width(6.dp))
+                                if (product.discount != 0) {
+                                    Text(
+                                        text = "$${product.price.originalPrice(product.discount)}".take(
+                                            6
+                                        ),
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = MaterialTheme.colorScheme.onBackground.copy(0.6f),
+                                        fontSize = 14.sp,
+                                        lineHeight = 1.sp,
+                                        textDecoration = TextDecoration.LineThrough
+                                    )
+                                    Spacer(Modifier.width(6.dp))
+                                }
 
                                 Text(
                                     text = "$${product.price}",

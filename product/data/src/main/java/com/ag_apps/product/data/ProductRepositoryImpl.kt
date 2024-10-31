@@ -68,7 +68,10 @@ class ProductRepositoryImpl(
             }
 
             if (userResult.data.cart.contains(product.productId)) {
-                product = product.copy(isInCartList = true)
+                product = product.copy(
+                    isInCartList = true,
+                    selectedFilter = userResult.data.cart.getValue(product.productId)
+                )
             }
 
             return Result.Success(product)

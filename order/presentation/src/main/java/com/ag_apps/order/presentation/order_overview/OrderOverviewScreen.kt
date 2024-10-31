@@ -105,7 +105,6 @@ private fun OrderOverviewScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
                 .padding(horizontal = 16.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -149,7 +148,7 @@ fun OrderOverviewItem(
     ) {
 
         Text(
-            text = "Order №$index",
+            text = stringResource(R.string.order, index),
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -167,7 +166,7 @@ fun OrderOverviewItem(
                 verticalAlignment = Alignment.Bottom
             ) {
                 Text(
-                    text = stringResource(R.string.quantity),
+                    text = stringResource(R.string.items),
                     fontSize = 13.sp
                 )
                 Text(

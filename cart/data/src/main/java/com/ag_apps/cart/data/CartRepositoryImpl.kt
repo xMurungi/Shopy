@@ -22,10 +22,10 @@ class CartRepositoryImpl(
         when (val userResult = userDataSource.getUser()) {
             is Result.Success -> {
                 val productsForUser = mutableListOf<Product>()
-                userResult.data.cart.forEach { cartProduct ->
-                    when (val product = productDataSource.getProduct(cartProduct.key)) {
+                userResult.data.cart.forEach { userCart ->
+                    when (val product = productDataSource.getProduct(userCart.key)) {
                         is Result.Success -> {
-                            productsForUser.add(product.data)
+                            productsForUser.add(product.data.copy(selectedFilter = userCart.value))
                         }
 
                         is Result.Error -> Unit

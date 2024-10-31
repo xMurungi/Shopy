@@ -31,9 +31,8 @@ class ProductViewModel(
             }
 
             is ProductAction.SelectFilter -> {
-                state = state.copy(
-                    selectedFilterIndex = action.filterIndex
-                )
+                state = state.copy(selectedFilter = action.selectedFilter)
+                updateProductInCart()
             }
 
             is ProductAction.ToggleProductInWishlist -> {
@@ -66,7 +65,8 @@ class ProductViewModel(
                     state.copy(
                         isLoading = false,
                         isError = false,
-                        product = productResult.data
+                        product = productResult.data,
+                        selectedFilter = productResult.data.selectedFilter
                     )
                 }
             }
@@ -96,18 +96,34 @@ class ProductViewModel(
 
             state.product?.let { product ->
                 state = state.copy(
-                    product = product.copy(isInCartList = !product.isInCartList),
-                    isProductUpdate = true
+                    product = product.copy(isInCartList = !product.isInCartList)
                 )
 
                 if (!product.isInCartList) {
                     productRepository.addProductToCart(
                         productId = product.productId,
-                        filter = product.filterList[state.selectedFilterIndex ?: 0]
+                        filter = state.selectedFilter
                     )
                 } else {
                     productRepository.removeProductFromCart(product.productId)
                 }
+
+                state = state.copy(isProductUpdate = true)
+            }
+        }
+    }
+
+    private fun updateProductInCart() {
+        viewModelScope.launch {
+            state.product?.let { product ->
+
+                productRepository.removeProductFromCart(product.productId)
+                productRepository.addProductToCart(
+                    productId = product.productId,
+                    filter = state.selectedFilter
+                )
+
+                state = state.copy(isProductUpdate = true)
             }
         }
     }

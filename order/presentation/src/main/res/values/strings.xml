@@ -4,7 +4,8 @@
     <string name="success">Success</string>
     <string name="details">Details</string>
     <string name="total_price">"Total Price:"</string>
-    <string name="quantity">"Quantity:"</string>
+    <string name="items">"Items:"</string>
     <string name="can_t_load_orders_right_now">Can\'t load orders right now.</string>
     <string name="you_have_no_orders_yet">You have no orders yet.</string>
+    <string name="order">Order №%1$s</string>
 </resources>

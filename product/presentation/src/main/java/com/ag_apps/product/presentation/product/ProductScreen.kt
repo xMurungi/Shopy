@@ -286,15 +286,10 @@ fun ScreenContent(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = if (state.selectedFilterIndex == null) {
-                        product.filter
-                    } else {
-                        product.filterList[state.selectedFilterIndex]
-                    },
+                    text = state.selectedFilter ?: product.filter,
                     fontWeight = FontWeight.Medium,
                     fontSize = 19.sp
                 )
-
 
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowDown,
@@ -433,7 +428,7 @@ fun FiltersBottomSheet(
                             .clip(RoundedCornerShape(10.dp))
                             .background(MaterialTheme.colorScheme.surfaceContainerLowest.copy(0.4f))
                             .clickable {
-                                onAction(ProductAction.SelectFilter(index))
+                                onAction(ProductAction.SelectFilter(product.filterList[index]))
                                 onDismissRequest()
                             }
                             .padding(vertical = 10.dp),
