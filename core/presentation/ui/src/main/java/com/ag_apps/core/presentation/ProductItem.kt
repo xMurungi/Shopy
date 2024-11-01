@@ -43,7 +43,7 @@ import coil.compose.AsyncImage
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.domain.Product
 import com.ag_apps.core.presentation.util.originalPrice
-import com.ag_apps.core.presentation.util.previewProducts
+import com.ag_apps.core.presentation.util.PreviewProducts
 
 
 /**
@@ -473,7 +473,7 @@ private fun ProductItemPreview() {
         ProductItem(
             modifier = Modifier.fillMaxWidth(),
             imageWidth = 130.dp,
-            product = previewProducts[0],
+            product = PreviewProducts[0],
             isGrid = true,
             onClick = {},
             onToggleInWishlist = {},

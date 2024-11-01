@@ -110,6 +110,7 @@ class FirestoreClient(
 
         val orders = orders.map { order ->
             mapOf(
+                "orderId" to order.orderId.toLong(),
                 "date" to order.date,
                 "totalPrice" to order.totalPrice,
                 "address" to mapOf(
@@ -159,6 +160,7 @@ class FirestoreClient(
         val orders = (this["orders"] as? List<*>)?.mapNotNull { orderMap ->
             (orderMap as? Map<*, *>)?.let {
                 Order(
+                    orderId = (it["orderId"] as Long).toInt() ,
                     date = it["date"] as Long,
                     totalPrice = it["totalPrice"] as Double,
                     address = (it["address"] as? Map<*, *>)?.let { addr ->

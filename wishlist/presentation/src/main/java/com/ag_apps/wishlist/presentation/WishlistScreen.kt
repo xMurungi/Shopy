@@ -22,7 +22,7 @@ import com.ag_apps.core.presentation.ProductList
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.components.ShopyTopBar
-import com.ag_apps.core.presentation.util.previewProducts
+import com.ag_apps.core.presentation.util.PreviewProducts
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -82,7 +82,6 @@ private fun WishlistScreen(
                 modifier = Modifier.padding(top = padding.calculateTopPadding()),
                 products = state.products,
                 isGridLayout = false,
-                isLoading = state.isLoading,
                 onRemove = { index ->
                     onAction(WishlistAction.RemoveProductFromWishlist(index))
                 },
@@ -130,7 +129,7 @@ private fun WishlistScreenPreview() {
     ShopyTheme {
         WishlistScreen(
             state = WishlistState(
-                products = previewProducts
+                products = PreviewProducts
             ),
             onAction = {}
         )

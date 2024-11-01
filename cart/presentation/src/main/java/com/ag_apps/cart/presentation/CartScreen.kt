@@ -30,7 +30,7 @@ import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyButton
 import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.components.ShopyTopBar
-import com.ag_apps.core.presentation.util.previewProducts
+import com.ag_apps.core.presentation.util.PreviewProducts
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -95,7 +95,6 @@ private fun CartScreen(
                     modifier = Modifier,
                     products = state.products,
                     isGridLayout = false,
-                    isLoading = state.isLoading,
                     contentPadding = PaddingValues(bottom = 150.dp),
                     onToggleProductInWishlist = { index ->
                         onAction(CartAction.ToggleProductInWishlist(index))
@@ -181,7 +180,7 @@ private fun CartScreenPreview() {
     ShopyTheme {
         CartScreen(
             state = CartState(
-                products = previewProducts
+                products = PreviewProducts
             ),
             onAction = {}
         )

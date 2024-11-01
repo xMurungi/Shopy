@@ -56,6 +56,7 @@ class CheckoutRepositoryImpl(
     override suspend fun submitOrder(user: User?, totalPrice: Double?) {
         if (user != null && totalPrice != null) {
             val order = Order(
+                orderId = user.orders.size + 1,
                 date = System.currentTimeMillis(),
                 totalPrice = totalPrice,
                 address = user.address,

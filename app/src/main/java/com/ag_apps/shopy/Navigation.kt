@@ -2,18 +2,14 @@ package com.ag_apps.shopy
 
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -32,6 +28,7 @@ import com.ag_apps.checkout.presentation.checkout.CheckoutScreenCore
 import com.ag_apps.checkout.presentation.success.SuccessScreen
 import com.ag_apps.core.presentation.designsystem.components.ShopyBottomBar
 import com.ag_apps.core.presentation.designsystem.components.bottomBarItems
+import com.ag_apps.order.presentation.order.OrderScreenCore
 import com.ag_apps.order.presentation.order_overview.OrderOverviewScreenCore
 import com.ag_apps.product.presentation.product.ProductScreenCore
 import com.ag_apps.product.presentation.product_overview.ProductOverviewScreenCore
@@ -177,13 +174,15 @@ fun Navigation(
         composable<Screen.OrderDetails> { backStackEntry ->
 
             val orderDetails: Screen.OrderDetails = backStackEntry.toRoute()
-
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "order ${orderDetails.orderId}")
-            }
+            OrderScreenCore(
+                orderId = orderDetails.orderId,
+                onProductClick = { productId ->
+                    navController.navigate(Screen.Product(productId))
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

@@ -8,4 +8,5 @@
     <string name="can_t_load_orders_right_now">Can\'t load orders right now.</string>
     <string name="you_have_no_orders_yet">You have no orders yet.</string>
     <string name="order">Order №%1$s</string>
+    <string name="order_details">Order Details</string>
 </resources>

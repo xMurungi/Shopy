@@ -1,23 +1,19 @@
 package com.ag_apps.category.presentation.category
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,7 +25,7 @@ import com.ag_apps.core.presentation.ProductList
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.components.ShopyTopBar
-import com.ag_apps.core.presentation.util.previewProducts
+import com.ag_apps.core.presentation.util.PreviewProducts
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -98,7 +94,6 @@ private fun CategoryScreen(
             modifier = Modifier.padding(top = padding.calculateTopPadding()),
             products = state.products,
             isGridLayout = state.isGridLayout,
-            isLoading = state.isLoading,
             onToggleProductInWishlist = { index ->
                 onAction(CategoryAction.ToggleProductInWishlist(index))
             },
@@ -145,7 +140,7 @@ private fun CategoryScreenPreview() {
     ShopyTheme {
         CategoryScreen(
             state = CategoryState(
-                products = previewProducts,
+                products = PreviewProducts,
                 isGridLayout = true
             ),
             onAction = {}

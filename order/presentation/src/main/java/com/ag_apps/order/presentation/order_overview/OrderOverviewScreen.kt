@@ -237,36 +237,28 @@ private fun OrderOverviewScreenPreview() {
             state = OrderOverviewState(
                 orders = listOf(
                     Order(
+                        orderId = 11,
                         date = 1234567890,
                         totalPrice = 100.0,
                         address = null,
                         products = mapOf()
                     ),
                     Order(
+                        orderId = 11,
                         date = 1234567890,
                         totalPrice = 100.0,
                         address = null,
                         products = mapOf()
                     ),
                     Order(
+                        orderId = 11,
                         date = 1234567890,
                         totalPrice = 100.0,
                         address = null,
                         products = mapOf()
                     ),
                     Order(
-                        date = 1234567890,
-                        totalPrice = 100.0,
-                        address = null,
-                        products = mapOf()
-                    ),
-                    Order(
-                        date = 1234567890,
-                        totalPrice = 100.0,
-                        address = null,
-                        products = mapOf()
-                    ),
-                    Order(
+                        orderId = 11,
                         date = 1234567890,
                         totalPrice = 100.0,
                         address = null,

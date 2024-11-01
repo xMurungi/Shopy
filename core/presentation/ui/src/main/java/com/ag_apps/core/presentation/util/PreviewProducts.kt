@@ -7,7 +7,7 @@ import com.ag_apps.core.domain.Product
  */
 
 
-val previewProducts = listOf(
+val PreviewProducts = listOf(
     Product(
         productId = 1,
         title = "Blue Shirt with no logo and simple design",

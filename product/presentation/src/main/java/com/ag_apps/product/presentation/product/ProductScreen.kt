@@ -71,7 +71,7 @@ import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.components.ShopyTopBar
 import com.ag_apps.core.presentation.util.originalPrice
-import com.ag_apps.core.presentation.util.previewProducts
+import com.ag_apps.core.presentation.util.PreviewProducts
 import com.ag_apps.product.presentation.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.yield
@@ -570,7 +570,7 @@ private fun ProductDetailsScreenPreview() {
     ShopyTheme {
         ProductScreen(
             state = ProductState(
-                product = previewProducts[0]
+                product = PreviewProducts[0]
             ),
             onAction = {}
         )

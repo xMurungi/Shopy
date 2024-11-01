@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,24 +20,16 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -50,7 +41,7 @@ import coil.compose.AsyncImage
 import com.ag_apps.core.domain.Category
 import com.ag_apps.core.domain.Product
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
-import com.ag_apps.core.presentation.util.previewProducts
+import com.ag_apps.core.presentation.util.PreviewProducts
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -64,10 +55,11 @@ fun ProductList(
     modifier: Modifier = Modifier,
     products: List<Product>,
     isGridLayout: Boolean,
-    isLoading: Boolean,
+    isLoading: Boolean = false,
     isApplyingFilter: Boolean = false,
     categories: List<Category> = emptyList(),
     contentPadding: PaddingValues = PaddingValues(bottom = 22.dp),
+    firstItemContent: @Composable (() -> Unit)? = null,
     onToggleProductInWishlist: ((Int) -> Unit)? = null,
     onToggleProductInCart: ((Int) -> Unit)? = null,
     onRemove: ((Int) -> Unit)? = null,
@@ -115,6 +107,13 @@ fun ProductList(
             state = gridState,
             contentPadding = contentPadding
         ) {
+
+            if (firstItemContent != null) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    firstItemContent()
+                }
+            }
+
             if (categories.isNotEmpty()) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     CategoryPager(
@@ -149,6 +148,13 @@ fun ProductList(
             contentPadding = contentPadding,
             state = listState
         ) {
+
+            if (firstItemContent != null) {
+                item {
+                    firstItemContent()
+                }
+            }
+
             if (categories.isNotEmpty()) {
                 item {
                     CategoryPager(
@@ -307,7 +313,7 @@ private fun ProductListItem(
 private fun ProductListPreview() {
     ShopyTheme {
         ProductList(
-            products = previewProducts,
+            products = PreviewProducts,
             isGridLayout = false,
             isLoading = false,
             isApplyingFilter = false,

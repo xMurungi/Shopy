@@ -25,7 +25,7 @@ import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ProductsFilter
 import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.components.ShopyTopBar
-import com.ag_apps.core.presentation.util.previewProducts
+import com.ag_apps.core.presentation.util.PreviewProducts
 import com.ag_apps.product.presentation.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -165,7 +165,7 @@ private fun ProductOverviewScreenPreview() {
         ProductOverviewScreen(
             appName = "Shopy",
             state = ProductOverviewState(
-                products = previewProducts,
+                products = PreviewProducts,
                 isGridLayout = true
             ),
             onAction = {}

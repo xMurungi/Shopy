@@ -1,5 +1,6 @@
 package com.ag_apps.order.presentation.di
 
+import com.ag_apps.order.presentation.order.OrderViewModel
 import com.ag_apps.order.presentation.order_overview.OrderOverviewViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -9,4 +10,5 @@ import org.koin.dsl.module
  */
 val orderPresentationModule = module {
     viewModel { OrderOverviewViewModel(get()) }
+    viewModel { OrderViewModel(get()) }
 }
