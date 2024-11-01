@@ -1,5 +1,6 @@
 package com.ag_apps.category.presentation.category_overview
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +27,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -33,7 +37,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.ag_apps.category.presentation.R
+import com.ag_apps.core.domain.models.Category
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.components.ShopyTopBar
@@ -99,7 +105,7 @@ private fun CategoryOverviewScreen(
                             .clickable {
                                 onAction(CategoryOverviewAction.ClickCategory(index))
                             },
-                        categoryName = category.name
+                        category = category
                     )
                 }
             }
@@ -138,42 +144,55 @@ private fun CategoryOverviewScreen(
 @Composable
 fun CategoryItem(
     modifier: Modifier = Modifier,
-    categoryName: String,
+    category: Category,
 ) {
-    Column(
+    Box(
         modifier = modifier
+            .height(200.dp)
     ) {
 
-        Spacer(Modifier.height(20.dp))
+        AsyncImage(
+            model = category.image,
+            contentScale = ContentScale.Crop,
+            contentDescription = category.name,
+            modifier = Modifier.fillMaxSize()
+        )
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 22.dp),
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            Color.Black,
+                        )
+                    )
+                )
+                .padding(horizontal = 22.dp)
+                .padding(top = 20.dp, bottom = 16.dp)
+                .align(Alignment.BottomCenter),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = categoryName,
+                text = category.name,
                 maxLines = 1,
+                color = Color.White,
                 fontWeight = FontWeight.Medium,
                 overflow = TextOverflow.Ellipsis,
-                fontSize = 18.sp,
+                fontSize = 20.sp,
             )
 
             Icon(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
-                contentDescription = categoryName,
+                contentDescription = null,
+                tint = Color.White,
                 modifier = Modifier
-                    .size(18.dp)
-                    .alpha(0.5f)
+                    .size(24.dp)
+                    .alpha(0.7f)
             )
         }
-
-        Spacer(Modifier.height(20.dp))
-
-        HorizontalDivider(Modifier.alpha(0.8f))
-
     }
 }
 
