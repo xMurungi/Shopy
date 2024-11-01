@@ -10,6 +10,6 @@
     <string name="order">Order №</string>
     <string name="order_details">Order Details</string>
     <string name="can_t_load_order_right_now">Can\'t load order right now.</string>
-    <string name="order_information">Order Information</string>
+    <string name="order_information">Order Information:</string>
     <string name="shipping_address">Shipping Address:</string>
 </resources>

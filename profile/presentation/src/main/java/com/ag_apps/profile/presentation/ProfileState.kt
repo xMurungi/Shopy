@@ -1,8 +1,7 @@
 package com.ag_apps.profile.presentation
 
 import androidx.compose.foundation.text.input.TextFieldState
-import com.ag_apps.core.domain.Card
-import com.ag_apps.core.domain.User
+import com.ag_apps.core.domain.models.User
 
 /**
  * @author Ahmed Guedmioui
@@ -21,4 +20,4 @@ data class ProfileState(
     val zipcodeTextState: TextFieldState = TextFieldState(""),
     val countryTextState: TextFieldState = TextFieldState(""),
 
-)
+    )

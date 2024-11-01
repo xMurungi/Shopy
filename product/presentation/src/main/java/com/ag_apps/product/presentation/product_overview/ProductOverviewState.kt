@@ -1,8 +1,8 @@
 package com.ag_apps.product.presentation.product_overview
 
 import androidx.compose.foundation.text.input.TextFieldState
-import com.ag_apps.core.domain.Category
-import com.ag_apps.core.domain.Product
+import com.ag_apps.core.domain.models.Category
+import com.ag_apps.core.domain.models.Product
 
 /**
  * @author Ahmed Guedmioui

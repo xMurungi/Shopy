@@ -11,6 +11,7 @@ import com.ag_apps.category.data.di.categoryDataModule
 import com.ag_apps.category.presentation.di.categoryPresentationModule
 import com.ag_apps.checkout.data.di.checkoutDataModule
 import com.ag_apps.checkout.presentation.di.checkoutPresentationModule
+import com.ag_apps.core.data.di.coreDataModule
 import com.ag_apps.core.user_data.di.coreUserDataModule
 import com.ag_apps.core.product_data.di.coreProductDataModule
 import com.ag_apps.order.data.di.orderDataModule
@@ -54,6 +55,7 @@ class ShopyApp: Application() {
             modules(
                 appModule,
 
+                coreDataModule,
                 coreProductDataModule,
                 coreUserDataModule,
 

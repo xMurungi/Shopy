@@ -1,6 +1,6 @@
 package com.ag_apps.core.user_data.di
 
-import com.ag_apps.core.domain.UserDataSource
+import com.ag_apps.core.domain.abstractions.UserDataSource
 import com.ag_apps.core.user_data.FirebaseUserDataSource
 import com.ag_apps.core.user_data.FirestoreClient
 import org.koin.core.module.dsl.singleOf

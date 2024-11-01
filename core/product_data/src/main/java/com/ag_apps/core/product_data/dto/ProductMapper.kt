@@ -1,7 +1,7 @@
 package com.ag_apps.core.product_data.dto
 
-import com.ag_apps.core.domain.Category
-import com.ag_apps.core.domain.Product
+import com.ag_apps.core.domain.models.Category
+import com.ag_apps.core.domain.models.Product
 import kotlin.random.Random
 
 /**
@@ -10,19 +10,27 @@ import kotlin.random.Random
 
 fun ProductDto.toProduct(): Product {
 
-    val discount = Random.nextInt(-20, 35)
+    val brand = if (category.name.contains("cloth", ignoreCase = true)) {
+        "H&M"
+    } else if (category.name.contains("electronic", ignoreCase = true)) {
+        "Samsung"
+    } else if (category.name.contains("shoe", ignoreCase = true)) {
+        "Nike"
+    } else {
+        "C-Corp"
+    }
 
     return Product(
         title = title,
         categoryName = category.name,
         description = description,
-        brand = if (category.name.contains("clothe")) "H&M" else "Brand",
+        brand = brand,
         productId = id,
         images = images,
         thumbnail = images.random(),
-        rating = Random.nextInt(5, 10).toFloat(),
+        rating = 7.5f,
         price = price.toDouble(),
-        discount = if (discount < 20) 0 else discount,
+        discount = 0,
         filter = if (category.name.contains("clothe", ignoreCase = true)) "Size" else "Color",
         filterList = if (category.name.contains("clothe", ignoreCase = true)) {
             listOf("S", "M", "L", "XL")

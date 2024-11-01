@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ag_apps.core.domain.Order
+import com.ag_apps.core.domain.models.Order
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyLargeTopBar
 import com.ag_apps.core.presentation.designsystem.components.ShopyOutlinedButton

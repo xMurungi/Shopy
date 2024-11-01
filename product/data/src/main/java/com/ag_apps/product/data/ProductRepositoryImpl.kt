@@ -1,9 +1,9 @@
 package com.ag_apps.product.data
 
-import com.ag_apps.core.domain.Category
-import com.ag_apps.core.domain.Product
-import com.ag_apps.core.domain.ProductDataSource
-import com.ag_apps.core.domain.UserDataSource
+import com.ag_apps.core.domain.models.Category
+import com.ag_apps.core.domain.models.Product
+import com.ag_apps.core.domain.abstractions.ProductDataSource
+import com.ag_apps.core.domain.abstractions.UserDataSource
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
 import com.ag_apps.product.domain.ProductRepository

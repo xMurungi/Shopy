@@ -1,7 +1,7 @@
 package com.ag_apps.order.domain
 
-import com.ag_apps.core.domain.Order
-import com.ag_apps.core.domain.Product
+import com.ag_apps.core.domain.models.Order
+import com.ag_apps.core.domain.models.Product
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
 

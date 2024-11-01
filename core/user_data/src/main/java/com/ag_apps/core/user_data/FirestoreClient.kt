@@ -1,8 +1,8 @@
 package com.ag_apps.core.user_data
 
-import com.ag_apps.core.domain.Address
-import com.ag_apps.core.domain.Order
-import com.ag_apps.core.domain.User
+import com.ag_apps.core.domain.models.Address
+import com.ag_apps.core.domain.models.Order
+import com.ag_apps.core.domain.models.User
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
 import com.google.firebase.firestore.FirebaseFirestore

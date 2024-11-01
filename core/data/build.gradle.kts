@@ -10,6 +10,7 @@ android {
 dependencies {
     implementation(libs.timber)
     implementation(libs.bundles.koin)
+    implementation(libs.androidx.security.crypto.ktx)
 
     implementation(projects.core.domain)
 }

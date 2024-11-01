@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
-import com.ag_apps.core.domain.Product
+import com.ag_apps.core.domain.models.Product
 import com.ag_apps.core.presentation.util.originalPrice
 import com.ag_apps.core.presentation.util.PreviewProducts
 

@@ -39,8 +39,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.ag_apps.core.domain.Category
-import com.ag_apps.core.domain.Product
+import com.ag_apps.core.domain.models.Category
+import com.ag_apps.core.domain.models.Product
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.util.PreviewProducts
 import kotlinx.coroutines.delay
@@ -207,31 +207,34 @@ fun CategoryPager(
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .shadow(
-                elevation = 16.dp,
-                spotColor = MaterialTheme.colorScheme.onBackground,
-            )
-    )
-
-    HorizontalPager(
-        state = pagerState,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .background(MaterialTheme.colorScheme.background)
-            .background(MaterialTheme.colorScheme.onBackground.copy(0.1f))
-    ) { page ->
-        CategoryListItem(
-            category = categories[page],
+    Box {
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .clickable { onCategoryClick(page) }
+                .fillMaxWidth()
+                .height(200.dp)
+                .shadow(
+                    elevation = 16.dp,
+                    spotColor = MaterialTheme.colorScheme.onBackground,
+                )
         )
+
+        HorizontalPager(
+            state = pagerState,
+            modifier = modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(MaterialTheme.colorScheme.background)
+                .background(MaterialTheme.colorScheme.onBackground.copy(0.1f))
+        ) { page ->
+            CategoryListItem(
+                category = categories[page],
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable { onCategoryClick(page) }
+            )
+        }
     }
+
 }
 
 @Composable

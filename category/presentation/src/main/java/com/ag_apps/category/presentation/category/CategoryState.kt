@@ -1,7 +1,7 @@
 package com.ag_apps.category.presentation.category
 
-import com.ag_apps.core.domain.Category
-import com.ag_apps.core.domain.Product
+import com.ag_apps.core.domain.models.Category
+import com.ag_apps.core.domain.models.Product
 
 /**
  * @author Ahmed Guedmioui

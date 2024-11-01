@@ -1,4 +1,4 @@
-package com.ag_apps.core.domain
+package com.ag_apps.core.domain.models
 
 data class Product(
     val productId: Int,

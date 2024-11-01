@@ -1,5 +1,6 @@
-package com.ag_apps.core.domain
+package com.ag_apps.core.domain.abstractions
 
+import com.ag_apps.core.domain.models.User
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
 

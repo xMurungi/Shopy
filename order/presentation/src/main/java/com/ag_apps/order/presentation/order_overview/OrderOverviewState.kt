@@ -1,6 +1,6 @@
 package com.ag_apps.order.presentation.order_overview
 
-import com.ag_apps.core.domain.Order
+import com.ag_apps.core.domain.models.Order
 
 /**
  * @author Ahmed Guedmioui

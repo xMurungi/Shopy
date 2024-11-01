@@ -15,12 +15,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,7 +30,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,9 +39,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ag_apps.checkout.presentation.R
-import com.ag_apps.core.domain.Address
-import com.ag_apps.core.domain.Card
-import com.ag_apps.core.domain.User
+import com.ag_apps.core.domain.models.Address
+import com.ag_apps.core.domain.models.Card
+import com.ag_apps.core.domain.models.User
 import com.ag_apps.core.presentation.DisclaimerInfoDialog
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
@@ -203,10 +199,10 @@ private fun CheckoutScreen(
                         )
                     } else {
                         CheckoutInfoSection(
-                            action = stringResource(R.string.edit),
+                            action = stringResource(R.string.change),
                             title = stringResource(R.string.payment_card) + " 💳",
                             headline = state.card.nameOnCard,
-                            details = "**** **** **** ${state.card.cardNumber.takeLast(4)}",
+                            details = if (state.card.cardNumber.isNotEmpty()) "**** **** **** ${state.card.cardNumber.takeLast(4)}" else "",
                             onChangeClick = { onAction(CheckoutAction.OnCardToggle) }
                         )
                     }

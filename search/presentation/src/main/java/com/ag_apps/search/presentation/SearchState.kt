@@ -1,8 +1,7 @@
 package com.ag_apps.search.presentation
 
 import androidx.compose.foundation.text.input.TextFieldState
-import com.ag_apps.core.domain.Category
-import com.ag_apps.core.domain.Product
+import com.ag_apps.core.domain.models.Product
 
 /**
  * @author Ahmed Guedmioui

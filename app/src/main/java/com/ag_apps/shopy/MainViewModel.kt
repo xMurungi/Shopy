@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ag_apps.core.domain.UserDataSource
+import com.ag_apps.core.domain.abstractions.UserDataSource
 import kotlinx.coroutines.launch
 
 /**

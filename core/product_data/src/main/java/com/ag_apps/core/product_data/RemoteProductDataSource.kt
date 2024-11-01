@@ -1,9 +1,9 @@
 package com.ag_apps.core.product_data
 
 import android.app.Application
-import com.ag_apps.core.domain.Category
-import com.ag_apps.core.domain.Product
-import com.ag_apps.core.domain.ProductDataSource
+import com.ag_apps.core.domain.models.Category
+import com.ag_apps.core.domain.models.Product
+import com.ag_apps.core.domain.abstractions.ProductDataSource
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
 import com.ag_apps.core.domain.util.map
@@ -13,7 +13,6 @@ import com.ag_apps.core.product_data.dto.toCategory
 import com.ag_apps.core.product_data.dto.toProduct
 import io.ktor.client.HttpClient
 import timber.log.Timber
-import java.io.IOException
 
 /**
  * @author Ahmed Guedmioui

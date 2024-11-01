@@ -1,9 +1,9 @@
 package com.ag_apps.auth.data
 
 import com.ag_apps.auth.domain.AuthRepository
-import com.ag_apps.core.domain.User
-import com.ag_apps.core.domain.UserDataSource
-import com.ag_apps.core.domain.EmptyFieldsUser
+import com.ag_apps.core.domain.models.User
+import com.ag_apps.core.domain.abstractions.UserDataSource
+import com.ag_apps.core.domain.models.EmptyFieldsUser
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.EmptyResult
 import com.ag_apps.core.domain.util.Result

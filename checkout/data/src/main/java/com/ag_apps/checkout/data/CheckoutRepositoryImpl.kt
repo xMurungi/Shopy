@@ -1,11 +1,13 @@
 package com.ag_apps.checkout.data
 
 import com.ag_apps.checkout.domain.CheckoutRepository
-import com.ag_apps.core.domain.Order
-import com.ag_apps.core.domain.Product
-import com.ag_apps.core.domain.ProductDataSource
-import com.ag_apps.core.domain.User
-import com.ag_apps.core.domain.UserDataSource
+import com.ag_apps.core.domain.abstractions.LocalStorageDataSource
+import com.ag_apps.core.domain.models.Order
+import com.ag_apps.core.domain.models.Product
+import com.ag_apps.core.domain.abstractions.ProductDataSource
+import com.ag_apps.core.domain.models.User
+import com.ag_apps.core.domain.abstractions.UserDataSource
+import com.ag_apps.core.domain.models.Card
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
 
@@ -15,6 +17,7 @@ import com.ag_apps.core.domain.util.Result
 class CheckoutRepositoryImpl(
     private val productDataSource: ProductDataSource,
     private val userDataSource: UserDataSource,
+    private val localStorageDataSource: LocalStorageDataSource
 ) : CheckoutRepository {
 
     override suspend fun getTotalPrice(): Result<Double, DataError.Network> {
@@ -51,6 +54,31 @@ class CheckoutRepositoryImpl(
             return Result.Error(DataError.Network.UNKNOWN)
         }
         return userDataSource.updateUser(user)
+    }
+
+    override suspend fun saveCard(card: Card) {
+        localStorageDataSource.set(key = "nameOnCard", value = card.nameOnCard)
+        localStorageDataSource.set(key = "cardNumber", value = card.cardNumber)
+        localStorageDataSource.set(key = "expireDate", value = card.expireDate)
+        localStorageDataSource.set(key = "cvv", value = card.cvv)
+    }
+
+    override suspend fun getCard(): Card? {
+        val nameOnCard = localStorageDataSource.get("nameOnCard")
+        val cardNumber = localStorageDataSource.get("cardNumber")
+        val expireDate = localStorageDataSource.get("expireDate")
+        val cvv = localStorageDataSource.get("cvv")
+
+        if (nameOnCard == null || cardNumber == null || expireDate == null || cvv == null) {
+            return null
+
+        }
+        return Card(
+            nameOnCard = nameOnCard,
+            cardNumber = cardNumber,
+            expireDate = expireDate,
+            cvv = cvv
+        )
     }
 
     override suspend fun submitOrder(user: User?, totalPrice: Double?) {

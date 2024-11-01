@@ -39,7 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.ag_apps.core.domain.User
+import com.ag_apps.core.domain.models.User
 import com.ag_apps.core.presentation.DisclaimerInfoDialog
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyLargeTopBar

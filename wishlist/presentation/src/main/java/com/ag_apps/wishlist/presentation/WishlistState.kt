@@ -1,6 +1,6 @@
 package com.ag_apps.wishlist.presentation
 
-import com.ag_apps.core.domain.Product
+import com.ag_apps.core.domain.models.Product
 
 /**
  * @author Ahmed Guedmioui

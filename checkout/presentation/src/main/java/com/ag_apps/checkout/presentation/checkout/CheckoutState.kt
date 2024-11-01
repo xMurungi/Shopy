@@ -1,8 +1,8 @@
 package com.ag_apps.checkout.presentation.checkout
 
 import androidx.compose.foundation.text.input.TextFieldState
-import com.ag_apps.core.domain.Card
-import com.ag_apps.core.domain.User
+import com.ag_apps.core.domain.models.Card
+import com.ag_apps.core.domain.models.User
 
 /**
  * @author Ahmed Guedmioui

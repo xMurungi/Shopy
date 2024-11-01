@@ -28,8 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ag_apps.core.domain.Address
-import com.ag_apps.core.domain.Order
+import com.ag_apps.core.domain.models.Address
+import com.ag_apps.core.domain.models.Order
 import com.ag_apps.core.presentation.ProductList
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
@@ -182,6 +182,7 @@ fun OrderInformation(
         Text(
             text = stringResource(R.string.order_information),
             fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Medium
         )
 

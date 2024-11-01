@@ -1,6 +1,6 @@
 package com.ag_apps.category.presentation.category_overview
 
-import com.ag_apps.core.domain.Category
+import com.ag_apps.core.domain.models.Category
 
 /**
  * @author Ahmed Guedmioui

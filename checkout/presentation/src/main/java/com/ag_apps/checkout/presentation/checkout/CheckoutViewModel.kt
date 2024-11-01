@@ -8,10 +8,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ag_apps.checkout.domain.CheckoutRepository
-import com.ag_apps.core.domain.Card
+import com.ag_apps.core.domain.models.Card
 import com.ag_apps.core.domain.util.Result
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -33,6 +32,10 @@ class CheckoutViewModel(
         state = state.copy(totalPrice = null)
         observeAddressTextFieldStates()
         observeCardTextFieldStates()
+
+        viewModelScope.launch {
+            state = state.copy(card = checkoutRepository.getCard())
+        }
     }
 
     fun onAction(action: CheckoutAction) {
@@ -140,15 +143,12 @@ class CheckoutViewModel(
             )
         }
 
-        val card = state.card
-        card?.let {
-            state = state.copy(
-                nameOnCardTextState = TextFieldState(card.nameOnCard),
-                cardNumberTextState = TextFieldState(card.cardNumber),
-                expireDateTextState = TextFieldState(card.expireDate),
-                cvvTextState = TextFieldState(card.cvv)
-            )
-        }
+        state = state.copy(
+            nameOnCardTextState = TextFieldState(""),
+            cardNumberTextState = TextFieldState(""),
+            expireDateTextState = TextFieldState(""),
+            cvvTextState = TextFieldState(""),
+        )
     }
 
     private fun saveAddress() {
@@ -185,19 +185,27 @@ class CheckoutViewModel(
     }
 
     private fun saveCard() {
-        state = state.copy(
-            card = Card(
-                nameOnCard = state.nameOnCardTextState.text.toString(),
-                cardNumber = state.cardNumberTextState.text.toString(),
-                expireDate = state.expireDateTextState.text.toString(),
-                cvv = state.cvvTextState.text.toString()
-            )
+        val card = Card(
+            nameOnCard = state.nameOnCardTextState.text.toString(),
+            cardNumber = state.cardNumberTextState.text.toString(),
+            expireDate = state.expireDateTextState.text.toString(),
+            cvv = state.cvvTextState.text.toString()
         )
+
         state = state.copy(
+            card = card,
+            nameOnCardTextState = TextFieldState(""),
+            cardNumberTextState = TextFieldState(""),
+            expireDateTextState = TextFieldState(""),
+            cvvTextState = TextFieldState(""),
+            isSavingCard = true,
             isEditeCardShowing = false,
         )
+
         viewModelScope.launch {
+            checkoutRepository.saveCard(card)
             eventChannel.send(CheckoutEvent.CardSaved(true))
+            state = state.copy(isSavingCard = false)
         }
     }
 
@@ -342,13 +350,25 @@ class CheckoutViewModel(
 
         return when {
             sanitizedNumber.startsWith("4") && sanitizedNumber.length in 13..16 -> "Visa"
-            sanitizedNumber.startsWith("5") && sanitizedNumber.substring(0, 2).toInt() in 51..55 -> "MasterCard"
-            sanitizedNumber.startsWith("22") && sanitizedNumber.substring(0, 4).toInt() in 2221..2720 -> "MasterCard"
+            sanitizedNumber.startsWith("5") && sanitizedNumber.substring(0, 2)
+                .toInt() in 51..55 -> "MasterCard"
+
+            sanitizedNumber.startsWith("22") && sanitizedNumber.substring(0, 4)
+                .toInt() in 2221..2720 -> "MasterCard"
+
             sanitizedNumber.startsWith("34") || sanitizedNumber.startsWith("37") && sanitizedNumber.length == 15 -> "American Express"
-            sanitizedNumber.startsWith("6011") || sanitizedNumber.substring(0, 3).toInt() in 644..649 || sanitizedNumber.startsWith("65") -> "Discover"
+            sanitizedNumber.startsWith("6011") || sanitizedNumber.substring(0, 3)
+                .toInt() in 644..649 || sanitizedNumber.startsWith("65") -> "Discover"
+
             sanitizedNumber.substring(0, 4).toInt() in 3528..3589 -> "JCB"
-            sanitizedNumber.substring(0, 3).toInt() in 300..305 || sanitizedNumber.startsWith("36") || sanitizedNumber.startsWith("38") -> "Diners Club"
-            sanitizedNumber.startsWith("50") || sanitizedNumber.substring(0, 2).toInt() in 56..69 -> "Maestro"
+            sanitizedNumber.substring(0, 3)
+                .toInt() in 300..305 || sanitizedNumber.startsWith("36") || sanitizedNumber.startsWith(
+                "38"
+            ) -> "Diners Club"
+
+            sanitizedNumber.startsWith("50") || sanitizedNumber.substring(0, 2)
+                .toInt() in 56..69 -> "Maestro"
+
             else -> "Unknown"
         }
     }
