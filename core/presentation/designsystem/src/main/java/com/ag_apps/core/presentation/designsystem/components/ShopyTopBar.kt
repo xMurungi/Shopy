@@ -74,9 +74,6 @@ fun ShopyTopBar(
                         imageVector = navigationIcon,
                         contentDescription = navigationIconDescription,
                         tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.clickable {
-                            onNavigationClick()
-                        }
                     )
                 }
             } else if (navigationIconContent != null) {

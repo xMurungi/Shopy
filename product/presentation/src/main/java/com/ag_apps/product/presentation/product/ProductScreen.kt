@@ -117,7 +117,7 @@ private fun ProductScreen(
 
     ShopyScaffold(
         topBarContainerColor = Color.Transparent,
-        topBar = { scrollBehavior->
+        topBar = { scrollBehavior ->
             ShopyTopBar(
                 scrollBehavior = scrollBehavior,
                 containerColor = Color.Transparent,
@@ -301,13 +301,15 @@ fun ScreenContent(
             Column(
                 horizontalAlignment = Alignment.End
             ) {
-                Text(
-                    text = "$${product.price.originalPrice(product.discount)}".take(6),
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onBackground.copy(0.6f),
-                    fontSize = 20.sp,
-                    textDecoration = TextDecoration.LineThrough
-                )
+                if (product.discount != 0) {
+                    Text(
+                        text = "$${product.price.originalPrice(product.discount)}".take(6),
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onBackground.copy(0.6f),
+                        fontSize = 20.sp,
+                        textDecoration = TextDecoration.LineThrough
+                    )
+                }
 
                 Text(
                     text = "$${product.price}",
@@ -471,16 +473,23 @@ fun ImagePager(
         }
     }
 
-    Box {
-        HorizontalPager(
-            state = pagerState,
-            modifier = modifier
+    Box(modifier = modifier) {
+        Box(
+            modifier = Modifier
                 .fillMaxWidth()
                 .height(450.dp)
                 .shadow(
                     elevation = 16.dp,
-                    spotColor = MaterialTheme.colorScheme.primary.copy(0.5f),
+                    spotColor = MaterialTheme.colorScheme.onBackground,
                 )
+        )
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(450.dp)
+                .background(MaterialTheme.colorScheme.background)
+                .background(MaterialTheme.colorScheme.onBackground.copy(0.1f))
         ) { page ->
             AsyncImage(
                 model = product.images[page],

@@ -30,6 +30,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -206,12 +207,23 @@ fun CategoryPager(
         }
     }
 
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .shadow(
+                elevation = 16.dp,
+                spotColor = MaterialTheme.colorScheme.onBackground,
+            )
+    )
+
     HorizontalPager(
         state = pagerState,
         modifier = modifier
             .fillMaxWidth()
             .height(200.dp)
-
+            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.onBackground.copy(0.1f))
     ) { page ->
         CategoryListItem(
             category = categories[page],

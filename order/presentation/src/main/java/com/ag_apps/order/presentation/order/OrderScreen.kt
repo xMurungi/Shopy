@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -94,38 +96,74 @@ private fun OrderScreen(
         ) {
 
             Column {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .shadow(
-                            elevation = 5.dp,
-                            spotColor = MaterialTheme.colorScheme.onBackground
+                if (state.order != null) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .shadow(
+                                elevation = 5.dp,
+                                spotColor = MaterialTheme.colorScheme.onBackground
+                            )
+                            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = stringResource(R.string.order) + state.order.orderId,
+                            fontWeight = FontWeight.Medium
                         )
-                        .background(MaterialTheme.colorScheme.surfaceContainerLowest)
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "Order: №${state.order?.orderId}",
-                        fontWeight = FontWeight.Medium
-                    )
-                    Text(
-                        text = "${state.order?.date?.toFormattedDate()}",
-                        fontWeight = FontWeight.Medium
+                        Text(
+                            text = state.order.date.toFormattedDate(),
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+
+                if (state.products.isNotEmpty()) {
+                    ProductList(
+                        products = state.products,
+                        isGridLayout = false,
+                        onProductClick = {
+                            onAction(OrderAction.OnProductClick(state.products[it].productId))
+                        },
+                        onToggleProductInWishlist = { index ->
+                            onAction(OrderAction.ToggleProductInWishlist(index))
+                        },
+                        onToggleProductInCart = { index ->
+                            onAction(OrderAction.ToggleProductInCart(index))
+                        },
                     )
                 }
-                ProductList(
-                    products = state.products,
-                    isGridLayout = false,
-                    onProductClick = { onAction(OrderAction.OnProductClick(it)) },
-                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .align(Alignment.Center)
+            ) {
+                if (state.isLoading && state.products.isEmpty()) {
+                    CircularProgressIndicator()
+                }
+                if (!state.isLoading && state.products.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.can_t_load_order_right_now),
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
 
 
-            OrderInformation(
-                state = state,
-                modifier = Modifier.align(Alignment.BottomCenter)
-            )
+            if (state.order != null) {
+                OrderInformation(
+                    state = state,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.surfaceContainerLow)
+                        .padding(vertical = 16.dp)
+                        .padding(start = 16.dp, end = 8.dp, bottom = 8.dp)
+                        .align(Alignment.BottomCenter)
+                )
+            }
 
         }
 
@@ -139,14 +177,10 @@ fun OrderInformation(
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceContainerLow)
-            .padding(vertical = 16.dp)
-            .padding(start = 16.dp, end = 8.dp)
     ) {
 
         Text(
-            text = "Order Information",
+            text = stringResource(R.string.order_information),
             fontSize = 18.sp,
             fontWeight = FontWeight.Medium
         )
@@ -155,7 +189,7 @@ fun OrderInformation(
 
         Row {
             Text(
-                text = "Shipping Address:",
+                text = stringResource(R.string.shipping_address),
                 fontSize = 14.sp
             )
             Spacer(Modifier.width(8.dp))
@@ -169,7 +203,7 @@ fun OrderInformation(
 
         Row {
             Text(
-                text = "Total Price:",
+                text = stringResource(R.string.total_price),
                 fontSize = 14.sp
             )
             Spacer(Modifier.width(8.dp))

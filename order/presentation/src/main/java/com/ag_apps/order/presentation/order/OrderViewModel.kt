@@ -28,6 +28,14 @@ class OrderViewModel(
 
             is OrderAction.OnProductClick -> Unit
 
+            is OrderAction.ToggleProductInWishlist -> {
+                toggleProductInWishlist(action.productIndex)
+            }
+
+            is OrderAction.ToggleProductInCart -> {
+                toggleProductInCart(action.productIndex)
+            }
+
             OrderAction.OnBackClick -> Unit
         }
     }
@@ -46,25 +54,72 @@ class OrderViewModel(
                 is Result.Success -> {
                     state = state.copy(
                         isError = false,
-                        isLoading = false,
                         order = orderResult.data
                     )
-
                     loadOrderProducts(orderResult.data.products)
                 }
             }
         }
     }
 
-    private fun loadOrderProducts(productsMap: Map<Int, String?>) {
+    private suspend fun loadOrderProducts(productsMap: Map<Int, String?>) {
+        state = when (val productsResult = orderRepository.getOrderProducts(productsMap)) {
+            is Result.Error -> {
+                state.copy(
+                    isLoading = false
+                )
+            }
+
+            is Result.Success -> {
+                state.copy(
+                    isLoading = false,
+                    products = productsResult.data
+                )
+            }
+        }
+    }
+
+    private fun toggleProductInWishlist(index: Int) {
         viewModelScope.launch {
-            when (val productsResult = orderRepository.getOrderProducts(productsMap)) {
-                is Result.Error -> Unit
-                is Result.Success -> {
-                    state = state.copy(
-                        products = productsResult.data
-                    )
+
+            state = state.copy(
+                products = state.products.map { product ->
+                    if (product.productId == state.products[index].productId) {
+                        product.copy(isInWishList = !state.products[index].isInWishList)
+                    } else {
+                        product
+                    }
                 }
+            )
+
+            if (state.products[index].isInWishList) {
+                orderRepository.addProductToWishlist(state.products[index].productId)
+            } else {
+                orderRepository.removeProductFromWishlist(state.products[index].productId)
+            }
+        }
+    }
+
+    private fun toggleProductInCart(index: Int) {
+        viewModelScope.launch {
+
+            state = state.copy(
+                products = state.products.map { product ->
+                    if (product.productId == state.products[index].productId) {
+                        product.copy(isInCartList = !state.products[index].isInCartList)
+                    } else {
+                        product
+                    }
+                }
+            )
+
+            if (state.products[index].isInCartList) {
+                orderRepository.addProductToCart(
+                    productId = state.products[index].productId,
+                    filter = state.products[index].filterList.firstOrNull()
+                )
+            } else {
+                orderRepository.removeProductFromCart(state.products[index].productId)
             }
         }
     }

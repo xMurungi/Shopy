@@ -23,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -54,7 +53,7 @@ fun OrderOverviewScreenCore(
         onAction = { action ->
             when (action) {
                 is OrderOverviewAction.OnOrderClick -> {
-                    onOrderClick(action.orderIndex)
+                    onOrderClick(action.orderId)
                 }
 
                 OrderOverviewAction.OnBackClick -> {
@@ -148,7 +147,7 @@ fun OrderOverviewItem(
     ) {
 
         Text(
-            text = stringResource(R.string.order, index),
+            text = stringResource(R.string.order) + order.orderId,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -220,7 +219,7 @@ fun OrderOverviewItem(
                 text = stringResource(R.string.details),
                 verticalPadding = 0.dp,
                 onClick = {
-                    onAction(OrderOverviewAction.OnOrderClick(index))
+                    onAction(OrderOverviewAction.OnOrderClick(order.orderId))
                 }
             )
         }

@@ -47,6 +47,7 @@ fun Navigation(
 ) {
 
     val navController = rememberNavController()
+    val bottomBarNavController = rememberNavController()
 
     NavHost(
         navController = navController,
@@ -82,7 +83,10 @@ fun Navigation(
 
         // main ------------------------------------------------------------------------------
         composable<Screen.Main> {
-            MainBottomBar(navController = navController)
+            MainBottomBar(
+                navController = navController,
+                bottomBarNavController = bottomBarNavController
+            )
         }
 
         // product ------------------------------------------------------------------------------
@@ -154,7 +158,7 @@ fun Navigation(
             SuccessScreen(
                 onContinue = {
                     navController.popBackStack()
-                    navController.navigate(Screen.OrderDetails(0))
+                    bottomBarNavController.popBackStack()
                 }
             )
         }
@@ -189,9 +193,9 @@ fun Navigation(
 
 @Composable
 private fun MainBottomBar(
-    navController: NavHostController
+    navController: NavHostController,
+    bottomBarNavController: NavHostController,
 ) {
-    val bottomBarNavController = rememberNavController()
 
     var selectedItem by rememberSaveable {
         mutableIntStateOf(0)

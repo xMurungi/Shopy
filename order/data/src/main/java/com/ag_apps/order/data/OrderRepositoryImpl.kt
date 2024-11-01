@@ -23,7 +23,7 @@ class OrderRepositoryImpl(
             }
 
             is Result.Success -> {
-                Result.Success(userResult.data.orders)
+                Result.Success(userResult.data.orders.reversed())
             }
         }
     }
@@ -62,4 +62,29 @@ class OrderRepositoryImpl(
 
         return Result.Success(products)
     }
+
+    override suspend fun addProductToWishlist(
+        productId: Int
+    ): Result<Unit, DataError.Network> {
+        return userDataSource.addProductToWishlist(productId)
+    }
+
+    override suspend fun removeProductFromWishlist(
+        productId: Int
+    ): Result<Unit, DataError.Network> {
+        return userDataSource.removeProductFromWishlist(productId)
+    }
+
+    override suspend fun addProductToCart(
+        productId: Int, filter: String?
+    ): Result<Unit, DataError.Network> {
+        return userDataSource.addProductToCart(productId, filter)
+    }
+
+    override suspend fun removeProductFromCart(
+        productId: Int
+    ): Result<Unit, DataError.Network> {
+        return userDataSource.removeProductFromCart(productId)
+    }
+
 }
