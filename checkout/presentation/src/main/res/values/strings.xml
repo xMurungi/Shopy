@@ -2,7 +2,7 @@
 <resources>
     <string name="address_saved">Address is saved</string>
     <string name="address_not_saved">Couldn\'t save address</string>
-    <string name="card_saved">Card is saved</string>
+    <string name="card_saved">Card is saved locally</string>
     <string name="card_not_saved">Couldn\'t save card</string>
     <string name="checkout">Checkout</string>
     <string name="shipping_address">Shipping Address</string>

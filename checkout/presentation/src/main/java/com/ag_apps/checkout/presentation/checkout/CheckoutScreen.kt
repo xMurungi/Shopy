@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
+import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -121,18 +122,30 @@ private fun CheckoutScreen(
     state: CheckoutState,
     onAction: (CheckoutAction) -> Unit,
 ) {
+    var isCardAndAddressDisclaimerShowing by remember { mutableStateOf(false) }
 
     ShopyScaffold(
         topBar = {
             ShopyTopBar(
                 titleText = stringResource(R.string.checkout),
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBackIos,
+                navigationIcon = Icons.Outlined.ArrowBackIosNew,
                 onNavigationClick = { onAction(CheckoutAction.OnBackClick) },
                 actionIcon = Icons.Outlined.Info,
-                onActionClick = { onAction(CheckoutAction.OnDisclaimerClick) },
+                onActionClick = {
+                    onAction(CheckoutAction.OnDisclaimerClick)
+                    isCardAndAddressDisclaimerShowing = true
+                },
             )
         }
     ) { paddingValues ->
+
+        if (isCardAndAddressDisclaimerShowing) {
+            DisclaimerInfoDialog(
+                isBoth = true
+            ) {
+                isCardAndAddressDisclaimerShowing = false
+            }
+        }
 
         Box(
             modifier = Modifier
@@ -235,7 +248,7 @@ private fun CheckoutScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp),
                         text = stringResource(R.string.submit_order),
-//                        enabled = state.user.address != null && state.card != null,
+                        enabled = state.user.address != null && state.card != null,
                         onClick = {
                             onAction(CheckoutAction.OnSubmitClick)
                         }
@@ -278,7 +291,10 @@ private fun CheckoutScreen(
         }
 
         if (isAddressDisclaimerShowing || isCardDisclaimerShowing) {
-            DisclaimerInfoDialog(isAddress = isAddressDisclaimerShowing) {
+            DisclaimerInfoDialog(
+                isAddress = isAddressDisclaimerShowing,
+                isCard =  isCardDisclaimerShowing
+            ) {
                 isAddressDisclaimerShowing = false
                 isCardDisclaimerShowing = false
             }
@@ -378,7 +394,6 @@ private fun ProfileScreenPreview() {
                     expireDate = "12/25",
                     cvv = "123",
                 ),
-                isEditeAddressShowing = false,
                 totalPrice = 23.45
             ),
             onAction = {},

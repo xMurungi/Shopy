@@ -22,14 +22,23 @@ import com.ag_apps.core.presentation.ui.R
 @Composable
 fun DisclaimerInfoDialog(
     modifier: Modifier = Modifier,
-    isAddress: Boolean,
+    isAddress: Boolean = false,
+    isCard: Boolean = false,
+    isBoth: Boolean = false,
     onDismiss: () -> Unit
 ) {
-    val description = if (isAddress) {
-        stringResource(R.string.disclaimer_address_info)
-    } else {
-        stringResource(R.string.disclaimer_card_info)
+    var description = ""
+
+    if (isAddress) {
+        description = stringResource(R.string.disclaimer_address_info)
     }
+    if (isCard) {
+        description = stringResource(R.string.disclaimer_card_info)
+    }
+    if (isBoth) {
+        description = stringResource(R.string.disclaimer_card_and_address_info)
+    }
+
     ShopyDialog(
         modifier = modifier
             .padding(horizontal = 16.dp),
@@ -52,6 +61,6 @@ fun DisclaimerInfoDialog(
 @Composable
 private fun DisclaimerInfoDialogPreview() {
     ShopyTheme {
-        DisclaimerInfoDialog(isAddress = true) {}
+        DisclaimerInfoDialog(isBoth = true) {}
     }
 }

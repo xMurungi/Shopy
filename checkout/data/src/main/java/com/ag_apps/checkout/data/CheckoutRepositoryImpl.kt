@@ -14,7 +14,7 @@ import com.ag_apps.core.domain.util.Result
  */
 class CheckoutRepositoryImpl(
     private val productDataSource: ProductDataSource,
-    private val userDataSource: UserDataSource
+    private val userDataSource: UserDataSource,
 ) : CheckoutRepository {
 
     override suspend fun getTotalPrice(): Result<Double, DataError.Network> {
