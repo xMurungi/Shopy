@@ -1,6 +1,7 @@
 package com.ag_apps.checkout.payment
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
 import com.ag_apps.checkout.domain.PaymentConfig
 import com.ag_apps.core.domain.util.DataError
@@ -8,7 +9,6 @@ import com.ag_apps.core.domain.util.Error
 import com.ag_apps.core.domain.util.Result
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
-import com.stripe.android.paymentsheet.PaymentSheetResultCallback
 import com.stripe.android.paymentsheet.rememberPaymentSheet
 
 /**
@@ -20,53 +20,59 @@ import com.stripe.android.paymentsheet.rememberPaymentSheet
 fun PaymentSheet(
     paymentConfig: PaymentConfig,
     onPaymentResult: (Result<Unit, Error>) -> Unit
-){
+) {
 
-    println("Payment PaymentSheet")
+    println(
+        "Payment PaymentSheet ${paymentConfig.customerId}"
+    )
 
-    val paymentResultCallback = PaymentSheetResultCallback { paymentSheetResult ->
-        when (paymentSheetResult) {
-            is PaymentSheetResult.Canceled -> {
-                println("Payment Canceled")
-                onPaymentResult(Result.Error(DataError.Network.CANCELED))
-            }
-
-            is PaymentSheetResult.Failed -> {
-                println("Payment Error: ${paymentSheetResult.error}")
-                onPaymentResult(Result.Error(DataError.Network.PAYMENT_FAILED))
-            }
-
-            is PaymentSheetResult.Completed -> {
-                println("Payment Completed")
-                onPaymentResult(Result.Success(Unit))
-            }
-        }
-    }
 
     val paymentSheet = rememberPaymentSheet(
-        paymentResultCallback = paymentResultCallback
-    )
-    presentPaymentSheet(
-        paymentSheet = paymentSheet,
-        merchantDisplayName =  stringResource(R.string.checkout_your_order),
-        paymentConfig = paymentConfig
-    )
-}
+        paymentResultCallback = { paymentSheetResult ->
+            when (paymentSheetResult) {
+                is PaymentSheetResult.Canceled -> {
+                    println("Payment Canceled")
+                    onPaymentResult(Result.Error(DataError.Network.CANCELED))
+                }
 
-private fun presentPaymentSheet(
-    paymentSheet: PaymentSheet,
-    merchantDisplayName: String,
-    paymentConfig: PaymentConfig
-) {
-    println("Payment presentPaymentSheet")
+                is PaymentSheetResult.Failed -> {
+                    println("Payment Error: ${paymentSheetResult.error}")
+                    onPaymentResult(Result.Error(DataError.Network.PAYMENT_FAILED))
+                }
 
-   val customerConfig = PaymentSheet.CustomerConfiguration(
+                is PaymentSheetResult.Completed -> {
+                    println("Payment Completed")
+                    onPaymentResult(Result.Success(Unit))
+                }
+            }
+        }
+    )
+
+    val customerConfig = PaymentSheet.CustomerConfiguration(
         id = paymentConfig.customerId,
         ephemeralKeySecret = paymentConfig.ephemeralKeySecret
     )
 
+    LaunchedEffect(true) {
+        presentPaymentSheet(
+            paymentSheet = paymentSheet,
+            merchantDisplayName = "Checkout",
+            customerConfig = customerConfig,
+            paymentIntentClientSecret = paymentConfig.paymentIntentClientSecret
+        )
+    }
+}
+
+fun presentPaymentSheet(
+    paymentSheet: PaymentSheet,
+    merchantDisplayName: String,
+    customerConfig: PaymentSheet.CustomerConfiguration,
+    paymentIntentClientSecret: String
+) {
+    println("Payment presentPaymentSheet")
+
     paymentSheet.presentWithPaymentIntent(
-        paymentConfig.paymentIntentClientSecret,
+        paymentIntentClientSecret,
         PaymentSheet.Configuration(
             merchantDisplayName = merchantDisplayName,
             customer = customerConfig,

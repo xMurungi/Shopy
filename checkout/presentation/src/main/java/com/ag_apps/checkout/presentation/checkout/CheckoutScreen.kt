@@ -43,14 +43,13 @@ import com.ag_apps.checkout.presentation.R
 import com.ag_apps.core.domain.models.Address
 import com.ag_apps.core.domain.models.Card
 import com.ag_apps.core.domain.models.User
-import com.ag_apps.core.domain.util.Result
 import com.ag_apps.core.presentation.DisclaimerInfoDialog
-import com.ag_apps.core.presentation.designsystem.ShopyTheme
-import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
-import com.ag_apps.core.presentation.ui.ObserveAsEvent
 import com.ag_apps.core.presentation.EditeAddressDialog
+import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyButton
+import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.designsystem.components.ShopyTopBar
+import com.ag_apps.core.presentation.ui.ObserveAsEvent
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -120,7 +119,6 @@ private fun CheckoutScreen(
     onAction: (CheckoutAction) -> Unit,
 ) {
     var isCardAndAddressDisclaimerShowing by remember { mutableStateOf(false) }
-
     ShopyScaffold(
         topBar = {
             ShopyTopBar(
@@ -256,6 +254,7 @@ private fun CheckoutScreen(
                 }
             }
         }
+
 
         if (state.isPaymentSheetShowing && state.paymentConfig != null) {
             PaymentSheet(

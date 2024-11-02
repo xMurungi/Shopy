@@ -94,8 +94,6 @@ class CheckoutViewModel(
         )
 
         viewModelScope.launch {
-
-
             when (val userResult = checkoutRepository.getUser()) {
                 is Result.Error -> {
                     state = state.copy(
