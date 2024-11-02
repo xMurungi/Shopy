@@ -8,8 +8,12 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ag_apps.checkout.domain.CheckoutRepository
+import com.ag_apps.checkout.presentation.R
 import com.ag_apps.core.domain.models.Card
+import com.ag_apps.core.domain.util.DataError
+import com.ag_apps.core.domain.util.Error
 import com.ag_apps.core.domain.util.Result
+import com.ag_apps.core.presentation.ui.UiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -41,7 +45,7 @@ class CheckoutViewModel(
     fun onAction(action: CheckoutAction) {
         when (action) {
 
-            CheckoutAction.Refresh -> {
+            CheckoutAction.OnRefresh -> {
                 loadUser()
             }
 
@@ -70,10 +74,13 @@ class CheckoutViewModel(
                 saveCard()
             }
 
-            CheckoutAction.OnSubmitClick -> {
+            CheckoutAction.OnCheckoutClick -> {
+                checkout()
+            }
+
+            is CheckoutAction.OnSubmitResult -> {
                 viewModelScope.launch {
-                    eventChannel.send(CheckoutEvent.OrderSubmitted(true))
-                    checkoutRepository.submitOrder(state.user, state.totalPrice)
+                    processOrder(action.result)
                 }
             }
 
@@ -107,6 +114,60 @@ class CheckoutViewModel(
 
                     setDefaultAddressAndCardInfo()
                 }
+            }
+        }
+    }
+
+    private fun checkout() {
+        viewModelScope.launch {
+            if (state.user != null && state.totalPrice != null) {
+                val paymentConfig = checkoutRepository.getPaymentConfig(
+                    state.user!!, state.totalPrice!!
+                )
+                if (paymentConfig != null) {
+                    state = state.copy(
+                        paymentConfig = paymentConfig,
+                        isPaymentSheetShowing = true
+                    )
+                    checkoutRepository.updateUser(
+                        user = state.user?.copy(customerId = paymentConfig.customerId)
+                    )
+                }
+            }
+        }
+    }
+
+    private suspend fun processOrder(result: Result<Unit, Error>) {
+
+        state = state.copy(
+            paymentConfig = null,
+            isPaymentSheetShowing = true
+        )
+        when (result) {
+            is Result.Error -> {
+                when (result.error) {
+                    DataError.Network.CANCELED -> {
+                        eventChannel.send(
+                            CheckoutEvent.OrderSubmitted(
+                                false, UiText.StringResource(R.string.payment_canceled)
+                            )
+                        )
+                    }
+
+                    else -> {
+                        eventChannel.send(
+                            CheckoutEvent.OrderSubmitted(
+                                false, UiText.StringResource(R.string.payment_failed)
+                            )
+                        )
+                    }
+                }
+
+            }
+
+            is Result.Success -> {
+                checkoutRepository.submitOrder(state.user, state.totalPrice)
+                eventChannel.send(CheckoutEvent.OrderSubmitted(true))
             }
         }
     }

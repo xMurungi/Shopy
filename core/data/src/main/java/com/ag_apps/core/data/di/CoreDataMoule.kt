@@ -14,6 +14,10 @@ import org.koin.dsl.module
  * @author Ahmed Guedmioui
  */
 val coreDataModule = module {
+    single {
+        HttpClientFactory().build()
+    }
+
     single<SharedPreferences> {
         EncryptedSharedPreferences(
             androidApplication(),

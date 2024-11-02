@@ -10,9 +10,5 @@ import org.koin.dsl.module
  * @author Ahmed Guedmioui
  */
 val coreProductDataModule = module {
-    single {
-        HttpClientFactory().build()
-    }
-
     singleOf(::RemoteProductDataSource).bind<ProductDataSource>()
 }

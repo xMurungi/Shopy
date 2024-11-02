@@ -1,8 +1,5 @@
 package com.ag_apps.shopy.di
 
-import android.content.SharedPreferences
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
 import com.ag_apps.shopy.MainViewModel
 import com.ag_apps.shopy.ShopyApp
 import kotlinx.coroutines.CoroutineScope

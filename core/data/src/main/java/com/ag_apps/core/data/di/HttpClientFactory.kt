@@ -1,4 +1,4 @@
-package com.ag_apps.core.product_data.di
+package com.ag_apps.core.data.di
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android

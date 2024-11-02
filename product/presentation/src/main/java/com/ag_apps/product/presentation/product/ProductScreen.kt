@@ -263,7 +263,7 @@ fun ScreenContent(
                 .padding(start = 2.dp)
         )
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(16.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),

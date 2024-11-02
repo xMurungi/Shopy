@@ -1,13 +1,15 @@
 package com.ag_apps.checkout.data
 
 import com.ag_apps.checkout.domain.CheckoutRepository
+import com.ag_apps.checkout.domain.PaymentConfig
+import com.ag_apps.checkout.payment.StripeClient
 import com.ag_apps.core.domain.abstractions.LocalStorageDataSource
-import com.ag_apps.core.domain.models.Order
-import com.ag_apps.core.domain.models.Product
 import com.ag_apps.core.domain.abstractions.ProductDataSource
-import com.ag_apps.core.domain.models.User
 import com.ag_apps.core.domain.abstractions.UserDataSource
 import com.ag_apps.core.domain.models.Card
+import com.ag_apps.core.domain.models.Order
+import com.ag_apps.core.domain.models.Product
+import com.ag_apps.core.domain.models.User
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
 
@@ -17,7 +19,8 @@ import com.ag_apps.core.domain.util.Result
 class CheckoutRepositoryImpl(
     private val productDataSource: ProductDataSource,
     private val userDataSource: UserDataSource,
-    private val localStorageDataSource: LocalStorageDataSource
+    private val localStorageDataSource: LocalStorageDataSource,
+    private val client: StripeClient
 ) : CheckoutRepository {
 
     override suspend fun getTotalPrice(): Result<Double, DataError.Network> {
@@ -79,6 +82,13 @@ class CheckoutRepositoryImpl(
             expireDate = expireDate,
             cvv = cvv
         )
+    }
+
+    override suspend fun getPaymentConfig(
+        user: User,
+        totalPrice: Double
+    ): PaymentConfig? {
+        return client.getPaymentConfig(user, totalPrice)
     }
 
     override suspend fun submitOrder(user: User?, totalPrice: Double?) {

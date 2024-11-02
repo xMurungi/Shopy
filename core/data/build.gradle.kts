@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.shopy.android.library)
     alias(libs.plugins.shopy.kotlinx.serialization)
+    alias(libs.plugins.shopy.jvm.ktor)
 }
 
 android {

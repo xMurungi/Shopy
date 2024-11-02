@@ -1,6 +1,7 @@
 package com.ag_apps.core.product_data
 
 import android.app.Application
+import com.ag_apps.core.data.get
 import com.ag_apps.core.domain.models.Category
 import com.ag_apps.core.domain.models.Product
 import com.ag_apps.core.domain.abstractions.ProductDataSource

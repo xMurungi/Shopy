@@ -1,78 +1,77 @@
-//package com.ag_apps.checkout.payment
-//
-//import androidx.compose.runtime.Composable
-//import androidx.compose.runtime.LaunchedEffect
-//import androidx.compose.runtime.getValue
-//import androidx.compose.runtime.mutableStateOf
-//import androidx.compose.runtime.remember
-//import androidx.compose.runtime.setValue
-//import androidx.compose.ui.platform.LocalContext
-//import com.ag_apps.core.domain.User
-//import com.stripe.android.PaymentConfiguration
-//import com.stripe.android.paymentsheet.PaymentSheet
-//import com.stripe.android.paymentsheet.PaymentSheetResult
-//import com.stripe.android.paymentsheet.rememberPaymentSheet
-//
-///**
-// * @author Ahmed Guedmioui
-// */
-//@Composable
-//fun StripePayment(user: User) {
-//    val paymentSheet = rememberPaymentSheet(::onPaymentSheetResult)
-//    val context = LocalContext.current
-//    var customerConfig by remember {
-//        mutableStateOf<PaymentSheet.CustomerConfiguration?>(null)
-//    }
-//    var paymentIntentClientSecret by remember {
-//        mutableStateOf<String?>(null)
-//    }
-//
-//    LaunchedEffect(key1 = context, key2 = user) {
-//
-//        paymentIntentClientSecret = "paymentIntent"
-//        customerConfig = PaymentSheet.CustomerConfiguration(
-//            id = user.userId,
-//            ephemeralKeySecret = "ephemeralKey"
-//        )
-//        val publishableKey = "publishableKey"
-//        PaymentConfiguration.init(context, publishableKey)
-//
-//        val currentConfig = customerConfig
-//        val currentClientSecret = paymentIntentClientSecret
-//
-//        if (currentConfig != null && currentClientSecret != null) {
-//            presentPaymentSheet(paymentSheet, currentConfig, currentClientSecret)
-//        }
-//    }
-//}
-//
-//private fun presentPaymentSheet(
-//    paymentSheet: PaymentSheet,
-//    customerConfig: PaymentSheet.CustomerConfiguration,
-//    paymentIntentClientSecret: String
-//) {
-//    paymentSheet.presentWithPaymentIntent(
-//        paymentIntentClientSecret,
-//        PaymentSheet.Configuration(
-//            merchantDisplayName = "My merchant name",
-//            customer = customerConfig,
-//            allowsDelayedPaymentMethods = true
-//        )
-//    )
-//}
-//
-//private fun onPaymentSheetResult(paymentSheetResult: PaymentSheetResult) {
-//    when (paymentSheetResult) {
-//        is PaymentSheetResult.Canceled -> {
-//            print("Canceled")
-//        }
-//
-//        is PaymentSheetResult.Failed -> {
-//            print("Error: ${paymentSheetResult.error}")
-//        }
-//
-//        is PaymentSheetResult.Completed -> {
-//            print("Completed")
-//        }
-//    }
-//}
+package com.ag_apps.checkout.payment
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.ag_apps.checkout.domain.PaymentConfig
+import com.ag_apps.core.domain.util.DataError
+import com.ag_apps.core.domain.util.Error
+import com.ag_apps.core.domain.util.Result
+import com.stripe.android.paymentsheet.PaymentSheet
+import com.stripe.android.paymentsheet.PaymentSheetResult
+import com.stripe.android.paymentsheet.PaymentSheetResultCallback
+import com.stripe.android.paymentsheet.rememberPaymentSheet
+
+/**
+ * @author Ahmed Guedmioui
+ */
+
+
+@Composable
+fun PaymentSheet(
+    paymentConfig: PaymentConfig,
+    onPaymentResult: (Result<Unit, Error>) -> Unit
+){
+
+    println("Payment PaymentSheet")
+
+    val paymentResultCallback = PaymentSheetResultCallback { paymentSheetResult ->
+        when (paymentSheetResult) {
+            is PaymentSheetResult.Canceled -> {
+                println("Payment Canceled")
+                onPaymentResult(Result.Error(DataError.Network.CANCELED))
+            }
+
+            is PaymentSheetResult.Failed -> {
+                println("Payment Error: ${paymentSheetResult.error}")
+                onPaymentResult(Result.Error(DataError.Network.PAYMENT_FAILED))
+            }
+
+            is PaymentSheetResult.Completed -> {
+                println("Payment Completed")
+                onPaymentResult(Result.Success(Unit))
+            }
+        }
+    }
+
+    val paymentSheet = rememberPaymentSheet(
+        paymentResultCallback = paymentResultCallback
+    )
+    presentPaymentSheet(
+        paymentSheet = paymentSheet,
+        merchantDisplayName =  stringResource(R.string.checkout_your_order),
+        paymentConfig = paymentConfig
+    )
+}
+
+private fun presentPaymentSheet(
+    paymentSheet: PaymentSheet,
+    merchantDisplayName: String,
+    paymentConfig: PaymentConfig
+) {
+    println("Payment presentPaymentSheet")
+
+   val customerConfig = PaymentSheet.CustomerConfiguration(
+        id = paymentConfig.customerId,
+        ephemeralKeySecret = paymentConfig.ephemeralKeySecret
+    )
+
+    paymentSheet.presentWithPaymentIntent(
+        paymentConfig.paymentIntentClientSecret,
+        PaymentSheet.Configuration(
+            merchantDisplayName = merchantDisplayName,
+            customer = customerConfig,
+            allowsDelayedPaymentMethods = true
+        )
+    )
+}
+

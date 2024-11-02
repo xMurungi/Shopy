@@ -38,16 +38,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ag_apps.checkout.payment.PaymentSheet
 import com.ag_apps.checkout.presentation.R
 import com.ag_apps.core.domain.models.Address
 import com.ag_apps.core.domain.models.Card
 import com.ag_apps.core.domain.models.User
+import com.ag_apps.core.domain.util.Result
 import com.ag_apps.core.presentation.DisclaimerInfoDialog
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
 import com.ag_apps.core.presentation.ui.ObserveAsEvent
 import com.ag_apps.core.presentation.EditeAddressDialog
-import com.ag_apps.core.presentation.EditeCardDialog
 import com.ag_apps.core.presentation.designsystem.components.ShopyButton
 import com.ag_apps.core.presentation.designsystem.components.ShopyTopBar
 import org.koin.androidx.compose.koinViewModel
@@ -63,7 +64,7 @@ fun CheckoutScreenCore(
 ) {
 
     LaunchedEffect(true) {
-        viewModel.onAction(CheckoutAction.Refresh)
+        viewModel.onAction(CheckoutAction.OnRefresh)
     }
 
     val context = LocalContext.current
@@ -187,25 +188,25 @@ private fun CheckoutScreen(
                         )
                     }
 
-                    Spacer(Modifier.height(42.dp))
-
-                    if (state.card == null) {
-                        CheckoutInfoSection(
-                            action = stringResource(R.string.add),
-                            title = stringResource(R.string.payment_card) + " 💳",
-                            headline = stringResource(R.string.no_payment_card),
-                            details = "",
-                            onChangeClick = { onAction(CheckoutAction.OnCardToggle) }
-                        )
-                    } else {
-                        CheckoutInfoSection(
-                            action = stringResource(R.string.change),
-                            title = stringResource(R.string.payment_card) + " 💳",
-                            headline = state.card.nameOnCard,
-                            details = if (state.card.cardNumber.isNotEmpty()) "**** **** **** ${state.card.cardNumber.takeLast(4)}" else "",
-                            onChangeClick = { onAction(CheckoutAction.OnCardToggle) }
-                        )
-                    }
+//                    Spacer(Modifier.height(42.dp))
+//
+//                    if (state.card == null) {
+//                        CheckoutInfoSection(
+//                            action = stringResource(R.string.add),
+//                            title = stringResource(R.string.payment_card) + " 💳",
+//                            headline = stringResource(R.string.no_payment_card),
+//                            details = "",
+//                            onChangeClick = { onAction(CheckoutAction.OnCardToggle) }
+//                        )
+//                    } else {
+//                        CheckoutInfoSection(
+//                            action = stringResource(R.string.change),
+//                            title = stringResource(R.string.payment_card) + " 💳",
+//                            headline = state.card.nameOnCard,
+//                            details = if (state.card.cardNumber.isNotEmpty()) "**** **** **** ${state.card.cardNumber.takeLast(4)}" else "",
+//                            onChangeClick = { onAction(CheckoutAction.OnCardToggle) }
+//                        )
+//                    }
                 }
 
                 Column(
@@ -243,10 +244,10 @@ private fun CheckoutScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp),
-                        text = stringResource(R.string.submit_order),
-                        enabled = state.user.address != null && state.card != null,
+                        text = stringResource(R.string.checkout_order),
+                        enabled = state.user.address != null,
                         onClick = {
-                            onAction(CheckoutAction.OnSubmitClick)
+                            onAction(CheckoutAction.OnCheckoutClick)
                         }
                     )
 
@@ -254,6 +255,15 @@ private fun CheckoutScreen(
 
                 }
             }
+        }
+
+        if (state.isPaymentSheetShowing && state.paymentConfig != null) {
+            PaymentSheet(
+                paymentConfig = state.paymentConfig,
+                onPaymentResult = { result ->
+                   onAction(CheckoutAction.OnSubmitResult(result))
+                }
+            )
         }
 
         var isAddressDisclaimerShowing by remember { mutableStateOf(false) }
@@ -273,23 +283,23 @@ private fun CheckoutScreen(
             )
         }
 
-        if (state.isEditeCardShowing && !isCardDisclaimerShowing) {
-            EditeCardDialog(
-                nameOnCardTextState = state.nameOnCardTextState,
-                cardNumberTextState = state.cardNumberTextState,
-                expireDateTextState = state.expireDateTextState,
-                cvvTextState = state.cvvTextState,
-                canSavingCard = state.canSavingCard,
-                onDisclaimer = { isCardDisclaimerShowing = true },
-                onSaveCard = { onAction(CheckoutAction.OnSaveCard) },
-                onCardToggle = { onAction(CheckoutAction.OnCardToggle) },
-            )
-        }
+//        if (state.isEditeCardShowing && !isCardDisclaimerShowing) {
+//            EditeCardDialog(
+//                nameOnCardTextState = state.nameOnCardTextState,
+//                cardNumberTextState = state.cardNumberTextState,
+//                expireDateTextState = state.expireDateTextState,
+//                cvvTextState = state.cvvTextState,
+//                canSavingCard = state.canSavingCard,
+//                onDisclaimer = { isCardDisclaimerShowing = true },
+//                onSaveCard = { onAction(CheckoutAction.OnSaveCard) },
+//                onCardToggle = { onAction(CheckoutAction.OnCardToggle) },
+//            )
+//        }
 
         if (isAddressDisclaimerShowing || isCardDisclaimerShowing) {
             DisclaimerInfoDialog(
                 isAddress = isAddressDisclaimerShowing,
-                isCard =  isCardDisclaimerShowing
+                isCard = isCardDisclaimerShowing
             ) {
                 isAddressDisclaimerShowing = false
                 isCardDisclaimerShowing = false
@@ -373,6 +383,7 @@ private fun ProfileScreenPreview() {
                     image = "",
                     email = "ahmed@gmail.com",
                     userId = "",
+                    customerId = "",
                     address = Address(
                         street = "Hay Salam",
                         city = "Agadir",

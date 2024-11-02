@@ -127,6 +127,7 @@ class FirestoreClient(
         val userMap = hashMapOf(
             "email" to email,
             "userId" to userId,
+            "customerId" to customerId,
             "name" to name,
             "image" to image,
             "address" to address,
@@ -184,6 +185,7 @@ class FirestoreClient(
         return User(
             email = this["email"] as String,
             userId = this["userId"] as String,
+            customerId = this["customerId"] as String,
             name = this["name"] as String,
             image = this["image"] as String,
             address = address,

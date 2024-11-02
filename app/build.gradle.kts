@@ -97,6 +97,7 @@ dependencies {
     implementation(projects.checkout.domain)
     implementation(projects.checkout.data)
     implementation(projects.checkout.presentation)
+    implementation(projects.checkout.payment)
 
     implementation(projects.order.domain)
     implementation(projects.order.data)

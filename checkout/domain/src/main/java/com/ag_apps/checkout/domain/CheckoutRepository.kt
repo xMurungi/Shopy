@@ -20,6 +20,11 @@ interface CheckoutRepository {
 
     suspend fun getCard(): Card?
 
+    suspend fun getPaymentConfig(
+        user: User,
+        totalPrice: Double
+    ): PaymentConfig?
+
     suspend fun submitOrder(user: User?, totalPrice: Double?)
 
 }

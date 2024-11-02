@@ -8,8 +8,9 @@ android {
 
 dependencies {
     implementation(projects.core.domain)
-    implementation(projects.checkout.payment)
+
     implementation(projects.checkout.domain)
+    implementation(projects.checkout.payment)
 
     implementation(libs.bundles.koin)
 }

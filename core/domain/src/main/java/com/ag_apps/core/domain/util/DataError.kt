@@ -16,6 +16,8 @@ sealed interface DataError: Error {
         PARSING_ERROR,
         NOT_FOUND,
         UNEXPECTED_TYPE,
+        CANCELED,
+        PAYMENT_FAILED,
         UNKNOWN
     }
 

@@ -246,6 +246,7 @@ private fun ProfileScreenPreview() {
                     image = "",
                     email = "ahmed@gmail.com",
                     userId = "",
+                    customerId = "",
                     address = null,
                     cart = mapOf(),
                     wishlist = emptyList(),

@@ -1,6 +1,7 @@
 package com.ag_apps.checkout.presentation.checkout
 
 import androidx.compose.foundation.text.input.TextFieldState
+import com.ag_apps.checkout.domain.PaymentConfig
 import com.ag_apps.core.domain.models.Card
 import com.ag_apps.core.domain.models.User
 
@@ -13,6 +14,9 @@ data class CheckoutState(
     val totalPrice: Double? = null,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
+
+    val isPaymentSheetShowing: Boolean = false,
+    val paymentConfig: PaymentConfig? = null,
 
     val isEditeAddressShowing: Boolean = false,
     val isSavingAddress: Boolean = false,
