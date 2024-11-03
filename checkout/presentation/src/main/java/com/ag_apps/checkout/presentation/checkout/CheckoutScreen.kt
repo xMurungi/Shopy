@@ -45,6 +45,7 @@ import com.ag_apps.core.domain.models.Card
 import com.ag_apps.core.domain.models.User
 import com.ag_apps.core.presentation.DisclaimerInfoDialog
 import com.ag_apps.core.presentation.EditeAddressDialog
+import com.ag_apps.core.presentation.OnResume
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyButton
 import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
@@ -61,10 +62,6 @@ fun CheckoutScreenCore(
     onOrdersSubmitted: () -> Unit,
     onBack: () -> Unit,
 ) {
-
-    LaunchedEffect(true) {
-        viewModel.onAction(CheckoutAction.OnRefresh)
-    }
 
     val context = LocalContext.current
     ObserveAsEvent(viewModel.event) { event ->

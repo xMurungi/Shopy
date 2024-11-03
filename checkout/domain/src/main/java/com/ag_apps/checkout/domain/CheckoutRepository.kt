@@ -20,10 +20,11 @@ interface CheckoutRepository {
 
     suspend fun getCard(): Card?
 
-    suspend fun getPaymentConfig(
+    fun getPaymentConfig(
         user: User,
-        totalPrice: Double
-    ): PaymentConfig?
+        totalPrice: Double,
+        onPaymentConfig: (PaymentConfig?) -> Unit
+    )
 
     suspend fun submitOrder(user: User?, totalPrice: Double?)
 

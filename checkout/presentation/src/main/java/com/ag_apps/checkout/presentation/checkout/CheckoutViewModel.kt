@@ -37,6 +37,8 @@ class CheckoutViewModel(
         observeAddressTextFieldStates()
         observeCardTextFieldStates()
 
+        loadUser()
+
         viewModelScope.launch {
             state = state.copy(card = checkoutRepository.getCard())
         }
@@ -89,6 +91,7 @@ class CheckoutViewModel(
     }
 
     private fun loadUser() {
+        println("Payment loadUser isLoading = true")
         state = state.copy(
             isLoading = true, isError = false
         )
@@ -96,6 +99,7 @@ class CheckoutViewModel(
         viewModelScope.launch {
             when (val userResult = checkoutRepository.getUser()) {
                 is Result.Error -> {
+                    println("Payment loadUser isLoading = false")
                     state = state.copy(
                         isLoading = false,
                         isError = true
@@ -104,6 +108,7 @@ class CheckoutViewModel(
 
                 is Result.Success -> {
                     loadTotalPrice()
+                    println("Payment loadUser isLoading = false")
                     state = state.copy(
                         isLoading = false,
                         isError = false,
@@ -117,20 +122,23 @@ class CheckoutViewModel(
     }
 
     private fun checkout() {
-        viewModelScope.launch {
-            if (state.user != null && state.totalPrice != null) {
-                val paymentConfig = checkoutRepository.getPaymentConfig(
-                    state.user!!, state.totalPrice!!
-                )
+        if (state.user != null && state.totalPrice != null) {
+            checkoutRepository.getPaymentConfig(state.user!!, state.totalPrice!!) { paymentConfig ->
+
                 if (paymentConfig != null) {
                     state = state.copy(
                         paymentConfig = paymentConfig,
                         isPaymentSheetShowing = true
                     )
-                    checkoutRepository.updateUser(
-                        user = state.user?.copy(customerId = paymentConfig.customerId)
-                    )
+                    if (state.user?.customerId?.isBlank() == true) {
+                        viewModelScope.launch {
+                            checkoutRepository.updateUser(
+                                user = state.user?.copy(customerId = paymentConfig.customerId)
+                            )
+                        }
+                    }
                 }
+
             }
         }
     }

@@ -2,7 +2,6 @@ package com.ag_apps.checkout.payment
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.res.stringResource
 import com.ag_apps.checkout.domain.PaymentConfig
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Error
@@ -10,6 +9,10 @@ import com.ag_apps.core.domain.util.Result
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
 import com.stripe.android.paymentsheet.rememberPaymentSheet
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 /**
  * @author Ahmed Guedmioui
@@ -54,12 +57,14 @@ fun PaymentSheet(
     )
 
     LaunchedEffect(true) {
-        presentPaymentSheet(
-            paymentSheet = paymentSheet,
-            merchantDisplayName = "Checkout",
-            customerConfig = customerConfig,
-            paymentIntentClientSecret = paymentConfig.paymentIntentClientSecret
-        )
+        CoroutineScope(Dispatchers.IO).launch {
+            presentPaymentSheet(
+                paymentSheet = paymentSheet,
+                merchantDisplayName = "Checkout",
+                customerConfig = customerConfig,
+                paymentIntentClientSecret = paymentConfig.paymentIntentClientSecret
+            )
+        }
     }
 }
 

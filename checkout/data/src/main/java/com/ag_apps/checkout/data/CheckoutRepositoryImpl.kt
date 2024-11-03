@@ -84,11 +84,12 @@ class CheckoutRepositoryImpl(
         )
     }
 
-    override suspend fun getPaymentConfig(
+    override fun getPaymentConfig(
         user: User,
-        totalPrice: Double
-    ): PaymentConfig? {
-        return client.getPaymentConfig(user, totalPrice)
+        totalPrice: Double,
+        onPaymentConfig: (PaymentConfig?) -> Unit
+    ) {
+        return client.getPaymentConfig(user, totalPrice, onPaymentConfig)
     }
 
     override suspend fun submitOrder(user: User?, totalPrice: Double?) {
