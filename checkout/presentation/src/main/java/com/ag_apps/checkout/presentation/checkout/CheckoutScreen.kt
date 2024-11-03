@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ag_apps.checkout.payment.PaymentSheet
+import com.ag_apps.checkout.payment.TestPayment
 import com.ag_apps.checkout.presentation.R
 import com.ag_apps.core.domain.models.Address
 import com.ag_apps.core.domain.models.Card
@@ -183,6 +184,7 @@ private fun CheckoutScreen(
                         )
                     }
 
+                    // Not needed because stripe handles card data
 //                    Spacer(Modifier.height(42.dp))
 //
 //                    if (state.card == null) {
@@ -251,7 +253,6 @@ private fun CheckoutScreen(
                 }
             }
         }
-
 
         if (state.isPaymentSheetShowing && state.paymentConfig != null) {
             PaymentSheet(

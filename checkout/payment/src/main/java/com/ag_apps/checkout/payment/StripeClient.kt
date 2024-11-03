@@ -96,8 +96,6 @@ class StripeClient(
                 if (e is CancellationException) throw e
                 onPaymentConfig(null)
 
-            } finally {
-                client.close()
             }
         }
     }

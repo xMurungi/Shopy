@@ -122,6 +122,11 @@ class CheckoutViewModel(
     }
 
     private fun checkout() {
+//        state = state.copy(
+//            isPaymentSheetShowing = true
+//        )
+//        return
+
         if (state.user != null && state.totalPrice != null) {
             checkoutRepository.getPaymentConfig(state.user!!, state.totalPrice!!) { paymentConfig ->
 
@@ -138,7 +143,6 @@ class CheckoutViewModel(
                         }
                     }
                 }
-
             }
         }
     }
@@ -147,7 +151,7 @@ class CheckoutViewModel(
 
         state = state.copy(
             paymentConfig = null,
-            isPaymentSheetShowing = true
+            isPaymentSheetShowing = false
         )
         when (result) {
             is Result.Error -> {
