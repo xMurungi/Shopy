@@ -8,5 +8,5 @@ import org.koin.dsl.module
  */
 
 val checkoutPaymentModule = module {
-    single { StripeClient(get(), get(), get()) }
+    single { StripeClient(get(), get()) }
 }

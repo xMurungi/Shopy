@@ -46,18 +46,15 @@ fun ShopyButton(
             modifier = Modifier.padding(vertical = 4.dp),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .size(15.dp)
-                    .alpha(if (isLoading) 1f else 0f),
-                strokeWidth = 1.5.dp,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-
-            if (text != null) {
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(15.dp),
+                    strokeWidth = 1.5.dp,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            } else if (text != null) {
                 Text(
                     text = text,
-                    modifier = Modifier.alpha(if (isLoading) 0f else 1f),
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.onPrimary

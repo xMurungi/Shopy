@@ -84,7 +84,7 @@ class CheckoutRepositoryImpl(
         )
     }
 
-    override fun getPaymentConfig(
+    override suspend fun getPaymentConfig(
         user: User,
         totalPrice: Double,
         onPaymentConfig: (PaymentConfig?) -> Unit

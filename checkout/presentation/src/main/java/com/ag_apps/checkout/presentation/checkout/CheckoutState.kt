@@ -13,6 +13,7 @@ data class CheckoutState(
     val card: Card? = null,
     val totalPrice: Double? = null,
     val isLoading: Boolean = false,
+    val isLoadingPaymentSheet: Boolean = false,
     val isError: Boolean = false,
 
     val isPaymentSheetShowing: Boolean = false,

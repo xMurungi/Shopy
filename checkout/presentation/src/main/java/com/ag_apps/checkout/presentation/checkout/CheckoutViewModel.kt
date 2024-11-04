@@ -122,13 +122,18 @@ class CheckoutViewModel(
     }
 
     private fun checkout() {
-//        state = state.copy(
-//            isPaymentSheetShowing = true
-//        )
-//        return
+        if (state.user == null || state.totalPrice == null) {
+            return
+        }
 
-        if (state.user != null && state.totalPrice != null) {
-            checkoutRepository.getPaymentConfig(state.user!!, state.totalPrice!!) { paymentConfig ->
+        state = state.copy(isLoadingPaymentSheet = true)
+
+        viewModelScope.launch {
+            checkoutRepository.getPaymentConfig(
+                state.user!!, state.totalPrice!!
+            ) { paymentConfig ->
+
+                state = state.copy(isLoadingPaymentSheet = false)
 
                 if (paymentConfig != null) {
                     state = state.copy(

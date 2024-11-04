@@ -39,14 +39,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ag_apps.checkout.payment.PaymentSheet
-import com.ag_apps.checkout.payment.TestPayment
 import com.ag_apps.checkout.presentation.R
 import com.ag_apps.core.domain.models.Address
 import com.ag_apps.core.domain.models.Card
 import com.ag_apps.core.domain.models.User
 import com.ag_apps.core.presentation.DisclaimerInfoDialog
 import com.ag_apps.core.presentation.EditeAddressDialog
-import com.ag_apps.core.presentation.OnResume
 import com.ag_apps.core.presentation.designsystem.ShopyTheme
 import com.ag_apps.core.presentation.designsystem.components.ShopyButton
 import com.ag_apps.core.presentation.designsystem.components.ShopyScaffold
@@ -242,7 +240,8 @@ private fun CheckoutScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp),
                         text = stringResource(R.string.checkout_order),
-                        enabled = state.user.address != null,
+                        enabled = state.user.address != null && !state.isLoadingPaymentSheet,
+                        isLoading = state.isPaymentSheetShowing,
                         onClick = {
                             onAction(CheckoutAction.OnCheckoutClick)
                         }
