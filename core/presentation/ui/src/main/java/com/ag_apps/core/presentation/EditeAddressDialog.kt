@@ -45,6 +45,7 @@ fun EditeAddressDialog(
     zipcodeTextState: TextFieldState,
     countryTextState: TextFieldState,
     canSavingAddress: Boolean,
+    isSavingAddress: Boolean,
     onDisclaimerClick: () -> Unit,
     onSaveAddress: () -> Unit,
     onAddressToggle: () -> Unit
@@ -136,7 +137,8 @@ fun EditeAddressDialog(
                 ShopyButton(
                     modifier = Modifier.weight(1f),
                     text = stringResource(R.string.save),
-                    enabled = canSavingAddress,
+                    enabled = canSavingAddress && !isSavingAddress,
+                    isLoading = isSavingAddress,
                     onClick = { onSaveAddress() }
                 )
             }
@@ -158,6 +160,7 @@ private fun EditeAddressDialogPreview() {
             zipcodeTextState = TextFieldState(),
             countryTextState = TextFieldState(),
             canSavingAddress = true,
+            isSavingAddress = true,
             onDisclaimerClick = {},
             onSaveAddress = {},
             onAddressToggle = {},

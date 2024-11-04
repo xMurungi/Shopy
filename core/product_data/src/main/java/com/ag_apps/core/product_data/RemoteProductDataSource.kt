@@ -35,6 +35,7 @@ class RemoteProductDataSource(
     }
 
     private fun isImageValid(image: String): Boolean {
+        return true
         return !(image.contains("[") ||
                 image.contains("]") ||
                 image.contains("\"")) &&

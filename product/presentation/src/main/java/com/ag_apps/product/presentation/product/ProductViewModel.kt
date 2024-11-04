@@ -27,6 +27,7 @@ class ProductViewModel(
     fun onAction(action: ProductAction) {
         when (action) {
             is ProductAction.LoadProduct -> {
+                state = state.copy(productId = action.productId)
                 loadProduct(action.productId)
             }
 
@@ -44,6 +45,12 @@ class ProductViewModel(
             }
 
             ProductAction.GoBack -> Unit
+
+            ProductAction.Refresh -> {
+                state.productId?.let {
+                    loadProduct(it)
+                }
+            }
         }
     }
 

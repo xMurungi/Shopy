@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
 import androidx.compose.material.icons.rounded.Search
@@ -68,6 +70,8 @@ fun CategoryOverviewScreenCore(
                 is CategoryOverviewAction.Search -> {
                     onSearch()
                 }
+
+                else -> viewModel.onAction(action)
             }
         }
     )
@@ -89,6 +93,9 @@ private fun CategoryOverviewScreen(
                 actionIconDescription = stringResource(R.string.search_products),
                 onActionClick = { onAction(CategoryOverviewAction.Search) },
             )
+        },
+        onRefresh = {
+            onAction(CategoryOverviewAction.Refresh)
         }
     ) { padding ->
 
@@ -109,34 +116,37 @@ private fun CategoryOverviewScreen(
                     )
                 }
             }
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(padding)
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                if (state.isLoading && !state.isError && state.categories.isEmpty()) {
+                    CircularProgressIndicator()
+                }
+                if (state.isError && state.categories.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.can_t_load_categories_right_now),
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+                if (!state.isLoading && !state.isError && state.categories.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.no_categories_found),
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
+                        textAlign = TextAlign.Center,
+                    )
+                }
+            }
+
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = 16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            if (state.isLoading && !state.isError && state.categories.isEmpty()) {
-                CircularProgressIndicator()
-            }
-            if (state.isError && state.categories.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.can_t_load_categories_right_now),
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center,
-                )
-            }
-            if (!state.isLoading && !state.isError && state.categories.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.no_categories_found),
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
     }
 
 }

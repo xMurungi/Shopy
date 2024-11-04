@@ -8,5 +8,6 @@ sealed interface OrderAction {
     data class OnProductClick(val productId: Int) : OrderAction
     data class ToggleProductInWishlist(val productIndex: Int) : OrderAction
     data class ToggleProductInCart(val productIndex: Int) : OrderAction
+    data object Refresh : OrderAction
     data object OnBackClick : OrderAction
 }

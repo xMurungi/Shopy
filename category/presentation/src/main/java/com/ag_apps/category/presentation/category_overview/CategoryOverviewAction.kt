@@ -5,5 +5,6 @@ package com.ag_apps.category.presentation.category_overview
  */
 sealed interface CategoryOverviewAction {
     data class ClickCategory(val categoryIndex: Int) : CategoryOverviewAction
+    data object Refresh : CategoryOverviewAction
     data object Search : CategoryOverviewAction
 }

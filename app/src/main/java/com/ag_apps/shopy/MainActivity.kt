@@ -1,6 +1,7 @@
 package com.ag_apps.shopy
 
 import android.os.Bundle
+import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +15,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.requestFeature(Window.FEATURE_NO_TITLE)
+        installSplashScreen()
         enableEdgeToEdge()
 
         installSplashScreen().apply {

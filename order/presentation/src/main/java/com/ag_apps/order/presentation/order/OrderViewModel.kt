@@ -23,6 +23,7 @@ class OrderViewModel(
     fun onAction(action: OrderAction) {
         when (action) {
             is OrderAction.LoadOrder -> {
+                state = state.copy(orderId = action.orderId)
                 loadOrder(action.orderId)
             }
 
@@ -37,6 +38,10 @@ class OrderViewModel(
             }
 
             OrderAction.OnBackClick -> Unit
+
+            OrderAction.Refresh -> {
+                state.orderId?.let { loadOrder(it) }
+            }
         }
     }
 

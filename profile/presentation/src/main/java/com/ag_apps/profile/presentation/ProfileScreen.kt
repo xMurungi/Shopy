@@ -148,6 +148,7 @@ private fun ProfileScreen(
                 zipcodeTextState = state.zipcodeTextState,
                 countryTextState = state.countryTextState,
                 canSavingAddress = state.canSavingAddress,
+                isSavingAddress = state.isSavingAddress,
                 onDisclaimerClick = { isAddressDisclaimerShowing = true },
                 onSaveAddress = { onAction(ProfileAction.OnSaveAddress) },
                 onAddressToggle = { onAction(ProfileAction.OnAddressToggle) },

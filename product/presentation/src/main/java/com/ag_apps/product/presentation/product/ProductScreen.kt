@@ -188,27 +188,11 @@ private fun ProductScreen(
                     }
                 }
             }
+        },
+        onRefresh = {
+            onAction(ProductAction.Refresh)
         }
     ) { padding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = 16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            if (state.isLoading && !state.isError && state.product == null) {
-                CircularProgressIndicator()
-            }
-            if (state.isError && state.product == null) {
-                Text(
-                    text = stringResource(R.string.can_t_load_product_right_now),
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
-
         state.product?.let { product ->
             Column(
                 modifier = Modifier
@@ -232,6 +216,27 @@ private fun ProductScreen(
                     state = state,
                     onAction = onAction
                 )
+            }
+        }
+
+        if (state.product == null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                if (state.isLoading && !state.isError) {
+                    CircularProgressIndicator()
+                }
+                if (state.isError) {
+                    Text(
+                        text = stringResource(R.string.can_t_load_product_right_now),
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
         }
     }

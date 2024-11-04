@@ -17,6 +17,7 @@ data class CheckoutState(
     val isError: Boolean = false,
 
     val isPaymentSheetShowing: Boolean = false,
+    val isProcessingOrder: Boolean = false,
     val paymentConfig: PaymentConfig? = null,
 
     val isEditeAddressShowing: Boolean = false,

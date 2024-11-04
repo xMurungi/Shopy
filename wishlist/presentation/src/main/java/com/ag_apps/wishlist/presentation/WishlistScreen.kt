@@ -3,6 +3,8 @@ package com.ag_apps.wishlist.presentation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CircularProgressIndicator
@@ -75,6 +77,9 @@ private fun WishlistScreen(
                 actionIconDescription = stringResource(R.string.search_products),
                 onActionClick = { onAction(WishlistAction.Search) },
             )
+        },
+        onRefresh = {
+            onAction(WishlistAction.Refresh)
         }
     ) { padding ->
         if (state.products.isNotEmpty()) {
@@ -92,34 +97,36 @@ private fun WishlistScreen(
                     onAction(WishlistAction.ClickProduct(index))
                 }
             )
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(padding)
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                if (state.isLoading && !state.isError && state.products.isEmpty()) {
+                    CircularProgressIndicator()
+                }
+                if (state.isError && state.products.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.can_t_load_wishlist_right_now),
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+                if (!state.isLoading && !state.isError && state.products.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.your_wishlist_is_empty),
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
+                        textAlign = TextAlign.Center,
+                    )
+                }
+            }
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = 16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            if (state.isLoading && !state.isError && state.products.isEmpty()) {
-                CircularProgressIndicator()
-            }
-            if (state.isError && state.products.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.can_t_load_wishlist_right_now),
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center,
-                )
-            }
-            if (!state.isLoading && !state.isError && state.products.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.your_wishlist_is_empty),
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
     }
 }
 

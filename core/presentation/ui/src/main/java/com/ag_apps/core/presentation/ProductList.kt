@@ -65,7 +65,6 @@ fun ProductList(
     onToggleProductInCart: ((Int) -> Unit)? = null,
     onRemove: ((Int) -> Unit)? = null,
     onPaginate: () -> Unit = {},
-    onRefresh: () -> Unit = {},
     onProductClick: (Int) -> Unit,
     onCategoryClick: (Int) -> Unit = {},
 ) {
@@ -334,7 +333,6 @@ private fun ProductListPreview() {
             isApplyingFilter = false,
             onPaginate = {},
             onProductClick = {},
-            onRefresh = {},
         )
     }
 }

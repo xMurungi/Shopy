@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.CircularProgressIndicator
@@ -59,6 +61,9 @@ fun OrderOverviewScreenCore(
                 OrderOverviewAction.OnBackClick -> {
                     onBackClick()
                 }
+
+                else -> viewModel.onAction(action)
+
             }
         }
     )
@@ -81,6 +86,9 @@ private fun OrderOverviewScreen(
                     onAction(OrderOverviewAction.OnBackClick)
                 }
             )
+        },
+        onRefresh = {
+            onAction(OrderOverviewAction.Refresh)
         }
     ) { padding ->
         if (state.orders.isNotEmpty()) {
@@ -99,33 +107,36 @@ private fun OrderOverviewScreen(
                     Spacer(Modifier.height(16.dp))
                 }
             }
+        }else {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(padding)
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                if (state.isLoading && !state.isError && state.orders.isEmpty()) {
+                    CircularProgressIndicator()
+                }
+                if (state.isError && state.orders.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.can_t_load_orders_right_now),
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+                if (!state.isLoading && !state.isError && state.orders.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.you_have_no_orders_yet),
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
+                        textAlign = TextAlign.Center,
+                    )
+                }
+            }
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            if (state.isLoading && !state.isError && state.orders.isEmpty()) {
-                CircularProgressIndicator()
-            }
-            if (state.isError && state.orders.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.can_t_load_orders_right_now),
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center,
-                )
-            }
-            if (!state.isLoading && !state.isError && state.orders.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.you_have_no_orders_yet),
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
     }
 }
 
@@ -147,7 +158,7 @@ fun OrderOverviewItem(
     ) {
 
         Text(
-            text = stringResource(R.string.order) + order.orderId,
+            text = stringResource(R.string.order) + " " + stringResource(R.string.number) + order.orderId,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -205,7 +216,7 @@ fun OrderOverviewItem(
 
             Column {
                 Text(
-                    text = stringResource(R.string.success),
+                    text = stringResource(R.string.success_orders),
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 14.sp
                 )

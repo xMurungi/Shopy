@@ -27,6 +27,7 @@ class CategoryOverviewViewModel(
         when (action) {
             is CategoryOverviewAction.ClickCategory -> Unit
             CategoryOverviewAction.Search -> Unit
+            CategoryOverviewAction.Refresh -> loadCategories()
         }
     }
 

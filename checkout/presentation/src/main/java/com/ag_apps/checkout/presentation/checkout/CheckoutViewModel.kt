@@ -181,8 +181,10 @@ class CheckoutViewModel(
             }
 
             is Result.Success -> {
+                state = state.copy(isProcessingOrder = true)
                 checkoutRepository.submitOrder(state.user, state.totalPrice)
                 eventChannel.send(CheckoutEvent.OrderSubmitted(true))
+                state = state.copy(isProcessingOrder = false)
             }
         }
     }

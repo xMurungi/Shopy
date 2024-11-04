@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CircularProgressIndicator
@@ -100,6 +102,9 @@ private fun ProductOverviewScreen(
                 toggleProductsLayout = { onAction(ProductOverviewAction.ToggleProductsLayout) },
                 applyFilter = { onAction(ProductOverviewAction.ApplyFilter) },
             )
+        },
+        onRefresh = {
+            onAction(ProductOverviewAction.Refresh)
         }
     ) { padding ->
 
@@ -127,32 +132,33 @@ private fun ProductOverviewScreen(
                     onAction(ProductOverviewAction.ClickCategory(index))
                 }
             )
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = 16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            if (state.isApplyingFilter || state.isLoading && !state.isError && state.products.isEmpty()) {
-                CircularProgressIndicator()
-            }
-            if (state.isError && state.products.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.can_t_load_products_right_now),
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center,
-                )
-            }
-            if (!state.isLoading && !state.isError && state.products.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.can_t_load_products_right_now),
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
-                    textAlign = TextAlign.Center,
-                )
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(padding)
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                if (state.isApplyingFilter || state.isLoading && !state.isError) {
+                    CircularProgressIndicator()
+                }
+                if (state.isError) {
+                    Text(
+                        text = stringResource(R.string.can_t_load_products_right_now),
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+                if (!state.isLoading && !state.isError) {
+                    Text(
+                        text = stringResource(R.string.can_t_load_products_right_now),
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
         }
     }

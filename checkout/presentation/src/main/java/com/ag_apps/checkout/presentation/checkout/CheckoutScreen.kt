@@ -240,8 +240,8 @@ private fun CheckoutScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp),
                         text = stringResource(R.string.checkout_order),
-                        enabled = state.user.address != null && !state.isLoadingPaymentSheet,
-                        isLoading = state.isPaymentSheetShowing,
+                        enabled = state.user.address != null && !state.isLoadingPaymentSheet && !state.isProcessingOrder,
+                        isLoading = state.isPaymentSheetShowing || state.isProcessingOrder,
                         onClick = {
                             onAction(CheckoutAction.OnCheckoutClick)
                         }
@@ -273,6 +273,7 @@ private fun CheckoutScreen(
                 zipcodeTextState = state.zipcodeTextState,
                 countryTextState = state.countryTextState,
                 canSavingAddress = state.canSavingAddress,
+                isSavingAddress = state.isSavingAddress,
                 onDisclaimerClick = { isAddressDisclaimerShowing = true },
                 onSaveAddress = { onAction(CheckoutAction.OnSaveAddress) },
                 onAddressToggle = { onAction(CheckoutAction.OnAddressToggle) },

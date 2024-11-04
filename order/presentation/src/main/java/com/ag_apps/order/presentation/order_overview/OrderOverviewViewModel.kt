@@ -27,6 +27,7 @@ class OrderOverviewViewModel(
         when (action) {
             is OrderOverviewAction.OnOrderClick -> Unit
             OrderOverviewAction.OnBackClick -> Unit
+            OrderOverviewAction.Refresh -> loadOrders()
         }
     }
 

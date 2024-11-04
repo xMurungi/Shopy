@@ -9,4 +9,5 @@ sealed interface ProductAction {
     data object GoBack : ProductAction
     data object ToggleProductInWishlist : ProductAction
     data object ToggleProductInCart : ProductAction
+    data object Refresh : ProductAction
 }

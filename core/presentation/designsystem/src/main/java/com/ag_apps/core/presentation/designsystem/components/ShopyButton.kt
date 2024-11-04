@@ -48,16 +48,18 @@ fun ShopyButton(
         ) {
             if (isLoading) {
                 CircularProgressIndicator(
-                    modifier = Modifier.size(15.dp),
+                    modifier = Modifier.size(20.dp),
                     strokeWidth = 1.5.dp,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
-            } else if (text != null) {
+            }
+
+            if (text != null) {
                 Text(
                     text = text,
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = MaterialTheme.colorScheme.onPrimary.copy(if (isLoading) 0f else 1f)
                 )
             } else {
                 content()

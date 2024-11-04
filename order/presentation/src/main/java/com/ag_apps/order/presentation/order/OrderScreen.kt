@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material3.CircularProgressIndicator
@@ -86,59 +88,50 @@ private fun OrderScreen(
                 navigationIcon = Icons.Rounded.ArrowBackIosNew,
                 onNavigationClick = { onAction(OrderAction.OnBackClick) }
             )
+        },
+        onRefresh = {
+            onAction(OrderAction.Refresh)
         }
     ) { padding ->
 
-        Box(
-            modifier = Modifier
-                .padding(padding)
-                .fillMaxSize()
-        ) {
+        if (state.products.isNotEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                ProductList(
+                    modifier = Modifier.weight(1f),
+                    products = state.products,
+                    isGridLayout = false,
+                    onProductClick = {
+                        onAction(OrderAction.OnProductClick(state.products[it].productId))
+                    },
+                    onToggleProductInWishlist = { index ->
+                        onAction(OrderAction.ToggleProductInWishlist(index))
+                    },
+                    onToggleProductInCart = { index ->
+                        onAction(OrderAction.ToggleProductInCart(index))
+                    }
+                )
 
-            Column {
                 if (state.order != null) {
-                    Row(
+                    OrderInformation(
+                        state = state,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .shadow(
-                                elevation = 5.dp,
-                                spotColor = MaterialTheme.colorScheme.onBackground
-                            )
-                            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = stringResource(R.string.order) + state.order.orderId,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Text(
-                            text = state.order.date.toFormattedDate(),
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                }
-
-                if (state.products.isNotEmpty()) {
-                    ProductList(
-                        products = state.products,
-                        isGridLayout = false,
-                        onProductClick = {
-                            onAction(OrderAction.OnProductClick(state.products[it].productId))
-                        },
-                        onToggleProductInWishlist = { index ->
-                            onAction(OrderAction.ToggleProductInWishlist(index))
-                        },
-                        onToggleProductInCart = { index ->
-                            onAction(OrderAction.ToggleProductInCart(index))
-                        },
+                            .background(MaterialTheme.colorScheme.surfaceContainerLow)
+                            .padding(vertical = 16.dp)
+                            .padding(start = 16.dp, end = 8.dp, bottom = 8.dp)
                     )
                 }
             }
-
+        } else {
             Box(
                 modifier = Modifier
-                    .align(Alignment.Center)
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
             ) {
                 if (state.isLoading && state.products.isEmpty()) {
                     CircularProgressIndicator()
@@ -151,20 +144,6 @@ private fun OrderScreen(
                     )
                 }
             }
-
-
-            if (state.order != null) {
-                OrderInformation(
-                    state = state,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surfaceContainerLow)
-                        .padding(vertical = 16.dp)
-                        .padding(start = 16.dp, end = 8.dp, bottom = 8.dp)
-                        .align(Alignment.BottomCenter)
-                )
-            }
-
         }
 
     }
@@ -190,17 +169,17 @@ fun OrderInformation(
 
         Row {
             Text(
-                text = stringResource(R.string.shipping_address),
+                text = stringResource(R.string.order),
                 fontSize = 14.sp
             )
             Spacer(Modifier.width(8.dp))
             Text(
-                text = "${state.order?.address?.street}, ${state.order?.address?.city}, ${state.order?.address?.region}, ${state.order?.address?.zipCode}, ${state.order?.address?.country}",
+                text = stringResource(R.string.number) +"${state.order?.orderId}",
                 fontWeight = FontWeight.Medium
             )
         }
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(4.dp))
 
         Row {
             Text(
@@ -210,6 +189,20 @@ fun OrderInformation(
             Spacer(Modifier.width(8.dp))
             Text(
                 text = "$${state.order?.totalPrice}",
+                fontWeight = FontWeight.Medium
+            )
+        }
+
+        Spacer(Modifier.height(4.dp))
+
+        Row {
+            Text(
+                text = stringResource(R.string.shipping_address_orders),
+                fontSize = 14.sp
+            )
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = "${state.order?.address?.street}, ${state.order?.address?.city}, ${state.order?.address?.region}, ${state.order?.address?.zipCode}, ${state.order?.address?.country}",
                 fontWeight = FontWeight.Medium
             )
         }

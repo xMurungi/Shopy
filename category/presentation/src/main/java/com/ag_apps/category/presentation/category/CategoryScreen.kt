@@ -3,6 +3,8 @@ package com.ag_apps.category.presentation.category
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material.icons.rounded.Search
@@ -88,49 +90,55 @@ private fun CategoryScreen(
                 navigationIconDescription = stringResource(R.string.go_back),
                 onNavigationClick = { onAction(CategoryAction.Back) },
             )
+        }, onRefresh = {
+            onAction(CategoryAction.Refresh)
         }
     ) { padding ->
-        ProductList(
-            modifier = Modifier.padding(top = padding.calculateTopPadding()),
-            products = state.products,
-            isGridLayout = state.isGridLayout,
-            onToggleProductInWishlist = { index ->
-                onAction(CategoryAction.ToggleProductInWishlist(index))
-            },
-            onToggleProductInCart = { index ->
-                onAction(CategoryAction.ToggleProductInCart(index))
-            },
-            onProductClick = { index ->
-                onAction(CategoryAction.ClickProduct(index))
-            }
-        )
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = 16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            if (state.isLoading && !state.isError && state.products.isEmpty()) {
-                CircularProgressIndicator()
-            }
-            if (state.isError && state.products.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.can_t_load_products_right_now),
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center,
-                )
-            }
-            if (!state.isLoading && !state.isError && state.products.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.no_products_found_in_this_category),
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
-                    textAlign = TextAlign.Center,
-                )
+        if (state.products.isNotEmpty()) {
+            ProductList(
+                modifier = Modifier.padding(top = padding.calculateTopPadding()),
+                products = state.products,
+                isGridLayout = state.isGridLayout,
+                onToggleProductInWishlist = { index ->
+                    onAction(CategoryAction.ToggleProductInWishlist(index))
+                },
+                onToggleProductInCart = { index ->
+                    onAction(CategoryAction.ToggleProductInCart(index))
+                },
+                onProductClick = { index ->
+                    onAction(CategoryAction.ClickProduct(index))
+                }
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(padding)
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                if (state.isLoading && !state.isError && state.products.isEmpty()) {
+                    CircularProgressIndicator()
+                }
+                if (state.isError && state.products.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.can_t_load_products_right_now),
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+                if (!state.isLoading && !state.isError && state.products.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.no_products_found_in_this_category),
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onBackground.copy(0.7f),
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
         }
+
     }
 }
 

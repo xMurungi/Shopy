@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -43,7 +45,6 @@ fun CartScreenCore(
     onProductClick: (Int) -> Unit,
     onCheckout: () -> Unit,
 ) {
-
 
     LaunchedEffect(true) {
         viewModel.onAction(CartAction.Refresh)
@@ -82,15 +83,17 @@ private fun CartScreen(
                 scrollBehavior = scrollBehavior,
                 titleText = stringResource(R.string.my_cart),
             )
+        },
+        onRefresh = {
+            onAction(CartAction.Refresh)
         }
     ) { padding ->
-        Box(
-            modifier = Modifier
-                .padding(top = padding.calculateTopPadding())
-                .fillMaxSize()
-        ) {
-
-            if (state.products.isNotEmpty()) {
+        if (state.products.isNotEmpty()) {
+            Box(
+                modifier = Modifier
+                    .padding(top = padding.calculateTopPadding())
+                    .fillMaxSize()
+            ) {
                 ProductList(
                     modifier = Modifier,
                     products = state.products,
@@ -149,8 +152,15 @@ private fun CartScreen(
 
                 }
             }
-
-            Box(modifier = Modifier.align(Alignment.Center)) {
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(padding)
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
                 if (state.isLoading && !state.isError && state.products.isEmpty()) {
                     CircularProgressIndicator()
                 }
