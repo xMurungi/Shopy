@@ -47,7 +47,6 @@ fun Navigation(
 ) {
 
     val navController = rememberNavController()
-    val bottomBarNavController = rememberNavController()
 
     NavHost(
         navController = navController,
@@ -85,7 +84,6 @@ fun Navigation(
         composable<Screen.Main> {
             MainBottomBar(
                 navController = navController,
-                bottomBarNavController = bottomBarNavController
             )
         }
 
@@ -193,8 +191,9 @@ fun Navigation(
 @Composable
 private fun MainBottomBar(
     navController: NavHostController,
-    bottomBarNavController: NavHostController,
 ) {
+
+    val bottomBarNavController = rememberNavController()
 
     var selectedItem by rememberSaveable {
         mutableIntStateOf(0)
