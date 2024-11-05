@@ -2,9 +2,9 @@
 
 
 ## Overview
-- Shopy App is a multi-module Android application built by **Ahmed Guedmioui** with **Kotlin** and **Jetpack Compose** to demonstrate industry-level Android development practices. This app serves as a comprehensive shopping platform, offering a verity of products with key features like cart and wish list, product categories, secure authentication and data synchronization across devices. It designed with modern Android development techniques and libraries to ensure a **scalable**, **maintainable**, and **testability**. 
+- Shopy App is a multi-module Android application built by **Ahmed Guedmioui** with **Kotlin** and **Jetpack Compose** to demonstrate industry-level Android development practices. This app serves as a comprehensive shopping platform, offering a variety of products with key features like cart and wish list, product categories, secure authentication and data synchronization across devices. It is designed with modern Android development techniques and libraries to ensure a **scalable**, **maintainable**, and **testability**. 
 
-- With Shopy, you can browse and purchase a wide variety of products, easily manage your shopping cart and wishlist, and securely complete purchases with integrated Stripe payment options. Shopy saves your preferences and cart data to your account, allowing you to seamlessly access your shopping experience across any device. You can explore products by category, and review your past orders.
+- With Shopy, you can browse and purchase a wide collection of products, easily manage your shopping cart and wishlist, and securely complete purchases with integrated Stripe payment options. Shopy saves your preferences and cart data to your account, allowing you to seamlessly access your shopping experience across any device. You can explore products by category, and review your past orders.
 
 
 ## Features
