@@ -29,7 +29,8 @@ git clone https://github.com/ahmed-guedmioui/Shopy.git
 
 
 ## Screenshots
-![shopy_images](https://github.com/user-attachments/assets/94b912b0-a1b4-49b2-86f3-4c9cf49f9c48)
+![shopy_images copy](https://github.com/user-attachments/assets/480bbfbc-cdb0-497d-afe8-dc7f2a7ad402)
+
 
 
 
