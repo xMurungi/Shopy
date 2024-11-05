@@ -2,8 +2,9 @@
 
 
 ## Overview
-- The Shopy App is a **multi-module** native Android application built with **Kotlin** and **Jetpack Compose** to demonstrate **industry-level** Android development practices. This app is designed to provide a verity of products for customers to buy, offering features like cart and wish list, categories, authentication and data synchronization across devices. It leverages modern Android development techniques and libraries to ensure a **scalable**, **maintainable**, and **testability**. 
+- Shopy App is a multi-module Android application built by **Ahmed Guedmioui** with **Kotlin** and **Jetpack Compose** to demonstrate industry-level Android development practices. This app serves as a comprehensive shopping platform, offering a verity of products with key features like cart and wish list, product categories, secure authentication and data synchronization across devices. It designed with modern Android development techniques and libraries to ensure a **scalable**, **maintainable**, and **testability**. 
 
+- With Shopy, you can browse and purchase a wide variety of products, easily manage your shopping cart and wishlist, and securely complete purchases with integrated Stripe payment options. Shopy saves your preferences and cart data to your account, allowing you to seamlessly access your shopping experience across any device. You can explore products by category, and review your past orders.
 
 
 ## Features
@@ -19,7 +20,17 @@ Modern UI implementation using Jetpack Compose, tailored for industry-scale proj
 Secure and reliable Firebase authentication system integrated for user management.
 - **Stripe Payments Gateway Integration:**
 Cats checking out powred by Stripe payment processing.
+- **Cart & Wishlist Management:**
+Allows users to add products to their cart and wishlist with smooth, responsive handling.
+Features synchronized cart and wishlist data, ensuring consistency across devices.
 
+## Tech Stack
+
+- **Kotlin:** Language for Android development.
+- **Jetpack Compose:** For building responsive, modern UIs.
+- **Firebase:** For authentication and backend integration.
+- **Stripe API:** For secure payment processing.
+- **Gradle:** With multi-module and convention plugin configurations.
 
 ## Getting Started
 - Clone the repo:
