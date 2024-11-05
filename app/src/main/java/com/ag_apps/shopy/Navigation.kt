@@ -158,7 +158,6 @@ fun Navigation(
             SuccessScreen(
                 onContinue = {
                     navController.popBackStack()
-                    bottomBarNavController.popBackStack()
                 }
             )
         }

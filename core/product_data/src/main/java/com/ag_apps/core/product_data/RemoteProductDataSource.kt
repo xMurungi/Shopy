@@ -221,7 +221,7 @@ class RemoteProductDataSource(
             val listType = object : TypeToken<List<ProductDto>>() {}.type
             val products = Gson().fromJson<List<ProductDto>>(jsonText, listType)
             println("datasourceAssets Product $products")
-            products.map { it.toProduct() }
+            products.map { it.toProduct() }.shuffled()
         } catch (e: Exception) {
             e.printStackTrace()
             println("datasourceAssets Product null")
@@ -240,7 +240,7 @@ class RemoteProductDataSource(
             val categories = Gson().fromJson<List<CategoryDto>>(jsonText, listType)
 
             println("datasourceAssets Category $categories")
-            categories.map { it.toCategory() }
+            categories.map { it.toCategory() }.shuffled()
         } catch (e: Exception) {
             e.printStackTrace()
             println("datasourceAssets Category null")
