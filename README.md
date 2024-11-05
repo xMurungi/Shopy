@@ -31,6 +31,7 @@ Features synchronized cart and wishlist data, ensuring consistency across device
 - **Firebase:** For authentication and backend integration.
 - **Stripe API:** For secure payment processing.
 - **Gradle:** With multi-module and convention plugin configurations.
+- **Node.js:** For security processing payment sever side (https://github.com/ahmed-guedmioui/Shopy-NodeJs-Server)
 
 ## Getting Started
 - Clone the repo:
