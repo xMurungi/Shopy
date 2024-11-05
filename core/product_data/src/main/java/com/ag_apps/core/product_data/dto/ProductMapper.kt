@@ -2,7 +2,6 @@ package com.ag_apps.core.product_data.dto
 
 import com.ag_apps.core.domain.models.Category
 import com.ag_apps.core.domain.models.Product
-import kotlin.random.Random
 
 /**
  * @author Ahmed Guedmioui
@@ -22,6 +21,7 @@ fun ProductDto.toProduct(): Product {
 
     return Product(
         title = title,
+        categoryId = category.id,
         categoryName = category.name,
         description = description,
         brand = brand,

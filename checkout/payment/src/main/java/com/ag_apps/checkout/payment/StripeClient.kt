@@ -52,7 +52,7 @@ class StripeClient(
         try {
 
             val response: HttpResponse = client.post {
-                url("http://localhost:4242/payment-sheet")
+                url("https://your-server.com/payment-sheet")
                 setBody(requestBody)
             }
             println("Payment getPaymentConfig post")

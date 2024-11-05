@@ -10,6 +10,7 @@ data class Product(
     val rating: Float,
     val price: Double,
     val discount: Int,
+    val categoryId: Int,
     val categoryName: String,
     val filter: String,
     val selectedFilter: String? = null,

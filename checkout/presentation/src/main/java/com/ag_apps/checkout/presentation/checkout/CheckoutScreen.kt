@@ -241,7 +241,7 @@ private fun CheckoutScreen(
                             .padding(horizontal = 16.dp),
                         text = stringResource(R.string.checkout_order),
                         enabled = state.user.address != null && !state.isLoadingPaymentSheet && !state.isProcessingOrder,
-                        isLoading = state.isPaymentSheetShowing || state.isProcessingOrder,
+                        isLoading = state.isLoadingPaymentSheet || state.isProcessingOrder,
                         onClick = {
                             onAction(CheckoutAction.OnCheckoutClick)
                         }
