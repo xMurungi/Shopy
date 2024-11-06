@@ -19,7 +19,7 @@ Modern UI implementation using Jetpack Compose, tailored for industry-scale proj
 - **Authentication:**
 Secure and reliable Firebase authentication system integrated for user management.
 - **Stripe Payments Gateway Integration:**
-Cats checking out powred by Stripe payment processing.
+Carts checking out powred by Stripe payment processing.
 - **Cart & Wishlist Management:**
 Allows users to add products to their cart and wishlist with smooth, responsive handling.
 Features synchronized cart and wishlist data, ensuring consistency across devices.
