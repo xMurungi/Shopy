@@ -1,5 +1,5 @@
 ##  **Shopy App** ##
-- Shopy App is a multi-module Android application built by **Ahmed Guedmioui** with **Kotlin** and **Jetpack Compose**. This app serves as a comprehensive shopping platform, offering a variety of products with key features like cart and wish list, product categories, secure authentication and data synchronization across devices. It is designed with modern Android development techniques and libraries to ensure a **scalability**, **maintainability**, and **testability**. 
+- Shopy App is a multi-module E-commerce app built with **Kotlin** and **Jetpack Compose**. This app serves as a rich shopping platform, offering a variety of products with key features like cart and wish list, product categories, Payment Getaway, secure authentication and data synchronization across devices. With a tech stack of **Firebase, Stripe Payments, Node.js, Gradle**.
 
 
 ## Overview
