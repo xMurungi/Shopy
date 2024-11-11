@@ -31,6 +31,7 @@ Features synchronized cart and wishlist data, ensuring consistency across device
 - **Jetpack Compose:** For building responsive, modern UIs.
 - **Firebase:** For authentication and backend integration.
 - **Stripe API:** For secure payment processing.
+- **Ktor:** For product data fetching and connecting to the payments node.js server.
 - **Gradle:** With multi-module and convention plugin configurations.
 - **Node.js:** For securly processing payment sever side (https://github.com/ahmed-guedmioui/Shopy-NodeJs-Server)
 
