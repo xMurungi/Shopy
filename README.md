@@ -3,8 +3,10 @@
 
 
 ## Overview
-- With Shopy, you can browse and purchase a wide collection of products, easily manage your shopping cart and wishlist, and securely complete purchases with integrated Stripe payment options. Shopy saves your preferences and cart data to your account, allowing you to seamlessly access your shopping experience across any device. You can explore products by category, and review your past orders.
-
+- Safe and secure authentication with Firebase.
+- Explore, search and filter a wide collection of products and categories,
+- Save your preferences and cart data to your account, and access them across any device.
+- Securely complete purchases with integrated Stripe payment getaway and view your orders.
 
 ## Features
 - **Project Planning & Clean Architecture:**
