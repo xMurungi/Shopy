@@ -32,7 +32,7 @@ Features synchronized cart and wishlist data, ensuring consistency across device
 - **Stripe API:** For secure payment processing.
 - **Ktor:** For product data fetching and connecting to the payments node.js server.
 - **Gradle:** With multi-module and convention plugin configurations.
-- **Node.js:** For securly processing payment sever side ([Shopy Payments Server](https://github.com/ahmed-guedmioui/Shopy-NodeJs-Server))
+- **Node.js:** For securly processing payment sever side ([Shopy Payments Server](https://github.com/ahmed-guedmioui/Shopy-NodeJs-Server)).
 
 ## Getting Started
 - Clone the repo:
