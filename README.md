@@ -10,8 +10,7 @@
 
 ## Features
 - **Project Planning & Clean Architecture:**
-Thoughtful planning and architectural design for scalable and maintainable app development.
-Incorporates the fundamentals of software architecture, ensuring a solid foundation.
+Thoughtful planning and the fundamentals of software architecture for a scalable and maintainable app development.
 - **Gradle & Multi-Module Architecture:**
 Utilizes advanced Gradle configurations, including convention plugins and version catalogs.
 Implements a multi-module architecture to improve build times and code separation.
@@ -19,7 +18,7 @@ Implements a multi-module architecture to improve build times and code separatio
 Modern UI implementation using Jetpack Compose, tailored for industry-scale projects.
 - **Authentication:**
 Secure and reliable Firebase authentication system integrated for user management.
-- **Stripe Payments Gateway Integration:**
+- **Payment Gateway Integration:**
 Carts checking out powred by Stripe payment processing.
 - **Cart & Wishlist Management:**
 Allows users to add products to their cart and wishlist with smooth, responsive handling.
