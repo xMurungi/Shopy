@@ -1,12 +1,13 @@
 ##  **Shopy App** ##
 - Shopy App is a multi-module E-commerce app built with **Kotlin** and **Jetpack Compose**. This app serves as a rich shopping platform, offering a variety of products with key features like cart and wish list, product categories, Payment Getaway, secure authentication and data synchronization across devices. With a tech stack of **Firebase, Stripe Payments, Node.js, Gradle**.
 
-
 ## Overview
 - Safe and secure authentication with Firebase.
 - Explore, search and filter a wide collection of products and categories,
 - Save your preferences and cart data to your account, and access them across any device.
 - Securely complete purchases with integrated Stripe payment getaway and view your orders.
+
+## Download Shopy: [HERE](https://archive.org/download/Shopy/Shopy.apk)
 
 ## Features
 - **Project Planning & Clean Architecture:**
