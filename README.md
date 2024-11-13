@@ -7,7 +7,7 @@
 - Save your preferences and cart data to your account, and access them across any device.
 - Securely complete purchases with integrated Stripe payment getaway and view your orders.
 
-## Download Shopy: [HERE](https://archive.org/download/Shopy/Shopy.apk)
+## Download Shopy: [Here ⬇](https://archive.org/download/Shopy/Shopy.apk)
 
 ## Features
 - **Project Planning & Clean Architecture:**
