@@ -22,7 +22,8 @@ internal fun Project.configureBuildTypes(
             buildConfig = true
         }
 
-        val baseUrl = gradleLocalProperties(rootDir).getProperty("BASE_URL")
+        val paymentsBaseUrl = gradleLocalProperties(rootDir).getProperty("PAYMENTS_SERVER_BASE_URL")
+        val productsApiBaseUrl = gradleLocalProperties(rootDir).getProperty("PRODUCTS_API_BASE_URL")
         val firebaseWebClientId = gradleLocalProperties(rootDir).getProperty("FIREBASE_WEB_CLIENT_ID")
 
         when (extensionType) {
@@ -30,10 +31,19 @@ internal fun Project.configureBuildTypes(
                 extensions.configure<ApplicationExtension>() {
                     buildTypes {
                         debug {
-                            configureDebugBuildType(baseUrl, firebaseWebClientId)
+                            configureDebugBuildType(
+                                paymentsBaseUrl = paymentsBaseUrl,
+                                productsApiBaseUrl = productsApiBaseUrl,
+                                firebaseWebClientId = firebaseWebClientId
+                            )
                         }
                         release {
-                            configureReleaseBuildType(commonExtension, baseUrl, firebaseWebClientId)
+                            configureReleaseBuildType(
+                                commonExtension = commonExtension,
+                                paymentsBaseUrl = paymentsBaseUrl,
+                                productsApiBaseUrl = productsApiBaseUrl,
+                                firebaseWebClientId = firebaseWebClientId
+                            )
                         }
                     }
                 }
@@ -43,10 +53,19 @@ internal fun Project.configureBuildTypes(
                 extensions.configure<LibraryExtension>() {
                     buildTypes {
                         debug {
-                            configureDebugBuildType(baseUrl, firebaseWebClientId)
+                            configureDebugBuildType(
+                                paymentsBaseUrl = paymentsBaseUrl,
+                                productsApiBaseUrl = productsApiBaseUrl,
+                                firebaseWebClientId = firebaseWebClientId
+                            )
                         }
                         release {
-                            configureReleaseBuildType(commonExtension, baseUrl, firebaseWebClientId)
+                            configureReleaseBuildType(
+                                commonExtension = commonExtension,
+                                paymentsBaseUrl = paymentsBaseUrl,
+                                productsApiBaseUrl = productsApiBaseUrl,
+                                firebaseWebClientId = firebaseWebClientId
+                            )
                         }
                     }
                 }
@@ -56,21 +75,26 @@ internal fun Project.configureBuildTypes(
 }
 
 private fun BuildType.configureDebugBuildType(
-    baseUrl: String,
+    paymentsBaseUrl: String,
+    productsApiBaseUrl: String,
     firebaseWebClientId: String
 ) {
-    buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+    buildConfigField("String", "PAYMENTS_SERVER_BASE_URL", "\"$paymentsBaseUrl\"")
+    buildConfigField("String", "PRODUCTS_API_BASE_URL", "\"$productsApiBaseUrl\"")
     buildConfigField("String", "FIREBASE_WEB_CLIENT_ID", "\"$firebaseWebClientId\"")
 }
 
 private fun BuildType.configureReleaseBuildType(
     commonExtension: CommonExtension<*, *, *, *, *>,
-    baseUrl: String,
+    paymentsBaseUrl: String,
+    productsApiBaseUrl: String,
     firebaseWebClientId: String
 ) {
-    buildConfigField("String", "FIREBASE_WEB_CLIENT_ID", "\"$baseUrl\"")
+    buildConfigField("String", "PAYMENTS_SERVER_BASE_URL", "\"$paymentsBaseUrl\"")
+    buildConfigField("String", "PRODUCTS_API_BASE_URL", "\"$productsApiBaseUrl\"")
+    buildConfigField("String", "FIREBASE_WEB_CLIENT_ID", "\"$firebaseWebClientId\"")
 
-    isMinifyEnabled = true
+    isMinifyEnabled = false
     proguardFiles(
         commonExtension.getDefaultProguardFile("proguard-android-optimize.txt"),
         "proguard-rules.pro"

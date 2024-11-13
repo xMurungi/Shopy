@@ -12,7 +12,7 @@ import timber.log.Timber
  * @author Ahmed Guedmioui
  */
 class FirebaseUserDataSource(
-    private val firestoreClient: FirestoreClient
+    private val firestoreClient: FirestoreClient,
 ) : UserDataSource {
 
     private val tag = "UserDataSource"

@@ -10,6 +10,11 @@ import com.ag_apps.core.domain.util.Result
  */
 interface ProductRepository {
 
+    // only needed because Render where the server is deployed,
+    // delays the very first request after not being active for a while.
+    // if I deployed the server somewhere else it would not be needed.
+    suspend fun wakeupPaymentServer()
+
     suspend fun getProducts(
         offset: Int,
         minPrice: Int? = null,

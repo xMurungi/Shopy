@@ -1,10 +1,9 @@
 package com.ag_apps.core.product_data
 
-import android.app.Application
 import com.ag_apps.core.data.get
+import com.ag_apps.core.domain.abstractions.ProductDataSource
 import com.ag_apps.core.domain.models.Category
 import com.ag_apps.core.domain.models.Product
-import com.ag_apps.core.domain.abstractions.ProductDataSource
 import com.ag_apps.core.domain.util.DataError
 import com.ag_apps.core.domain.util.Result
 import com.ag_apps.core.domain.util.map
@@ -12,28 +11,24 @@ import com.ag_apps.core.product_data.dto.CategoryDto
 import com.ag_apps.core.product_data.dto.ProductDto
 import com.ag_apps.core.product_data.dto.toCategory
 import com.ag_apps.core.product_data.dto.toProduct
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import io.ktor.client.HttpClient
+import io.ktor.client.request.get
 import timber.log.Timber
-import java.io.BufferedReader
 
 /**
  * @author Ahmed Guedmioui
  */
 class RemoteProductDataSource(
-    private val httpClient: HttpClient,
-    private val application: Application
+    private val client: HttpClient,
 ) : ProductDataSource {
 
     private val tag = "ProductDataSource"
 
-    private var dummyCategories: List<Category>? = null
-    private var dummyProducts: List<Product>? = null
-
-    init {
-        dummyProducts = loadProductsFromAssets()
-        dummyCategories = loadCategoriesFromAssets()
+    // only needed because Render where the server is deployed,
+    // delays the very first request after not being active for a while.
+    // if I deployed the server somewhere else it would not be needed.
+    override suspend fun wakeupPaymentServer() {
+       client.get(BuildConfig.PAYMENTS_SERVER_BASE_URL + "/wakeup")
     }
 
     override suspend fun getProducts(
@@ -42,11 +37,6 @@ class RemoteProductDataSource(
         minPrice: Int?,
         maxPrice: Int?,
     ): Result<List<Product>, DataError.Network> {
-
-        dummyProducts?.let { dummyProducts ->
-            if (offset > 0) return Result.Success(emptyList())
-            return Result.Success(dummyProducts)
-        }
 
         Timber.tag(tag).d(
             "getProducts: query: $query, offset: $offset, minPrice: $minPrice, maxPrice: $maxPrice"
@@ -67,7 +57,7 @@ class RemoteProductDataSource(
             queryParameters["title"] = query
         }
 
-        val productsResult = httpClient.get<List<ProductDto>>(
+        val productsResult = client.get<List<ProductDto>>(
             route = "/products",
             queryParameters = queryParameters
         )
@@ -97,11 +87,7 @@ class RemoteProductDataSource(
         productId: Int
     ): Result<Product, DataError.Network> {
 
-        dummyProducts?.let { dummyProducts ->
-            return Result.Success(dummyProducts.first { it.productId == productId })
-        }
-
-        return httpClient.get<ProductDto>(
+        return client.get<ProductDto>(
             route = "/products/$productId"
         ).map { productDto ->
             productDto.toProduct()
@@ -110,12 +96,7 @@ class RemoteProductDataSource(
 
     override suspend fun getCategories(): Result<List<Category>, DataError.Network> {
 
-        dummyCategories?.let { dummyCategories ->
-            return Result.Success(dummyCategories)
-        }
-
-
-        val categoriesResult = httpClient.get<List<CategoryDto>>(
+        val categoriesResult = client.get<List<CategoryDto>>(
             route = "/categories"
         )
 
@@ -147,11 +128,7 @@ class RemoteProductDataSource(
         categoryId: Int
     ): Result<Category, DataError.Network> {
 
-        dummyCategories?.let { dummyCategories ->
-            return Result.Success(dummyCategories.first { it.categoryId == categoryId })
-        }
-
-        return httpClient.get<CategoryDto>(
+        return client.get<CategoryDto>(
             route = "/categories/$categoryId"
         ).map { categoryDto ->
             categoryDto.toCategory()
@@ -162,11 +139,7 @@ class RemoteProductDataSource(
         categoryId: Int
     ): Result<List<Product>, DataError.Network> {
 
-        dummyProducts?.let { dummyProducts ->
-            return Result.Success(dummyProducts.filter { it.categoryId == categoryId })
-        }
-
-        val productsResult = httpClient.get<List<ProductDto>>(
+        val productsResult = client.get<List<ProductDto>>(
             route = "/categories/$categoryId/products"
         )
 
@@ -209,42 +182,5 @@ class RemoteProductDataSource(
                 (image.contains("png", ignoreCase = true) ||
                         image.contains("jpeg", ignoreCase = true) ||
                         image.contains("jpg", ignoreCase = true))
-    }
-
-    private fun loadProductsFromAssets(): List<Product>? {
-        println("datasourceAssets Product")
-        return try {
-            val inputStream = application.assets.open("Products.json")
-            val bufferedReader = BufferedReader(inputStream.reader())
-            val jsonText = bufferedReader.use { it.readText() }
-
-            val listType = object : TypeToken<List<ProductDto>>() {}.type
-            val products = Gson().fromJson<List<ProductDto>>(jsonText, listType)
-            println("datasourceAssets Product $products")
-            products.map { it.toProduct() }.shuffled()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            println("datasourceAssets Product null")
-            null
-        }
-    }
-
-    private fun loadCategoriesFromAssets(): List<Category>? {
-        println("datasourceAssets Category")
-        return try {
-            val inputStream = application.assets.open("Categories.json")
-            val bufferedReader = BufferedReader(inputStream.reader())
-            val jsonText = bufferedReader.use { it.readText() }
-
-            val listType = object : TypeToken<List<CategoryDto>>() {}.type
-            val categories = Gson().fromJson<List<CategoryDto>>(jsonText, listType)
-
-            println("datasourceAssets Category $categories")
-            categories.map { it.toCategory() }.shuffled()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            println("datasourceAssets Category null")
-            null
-        }
     }
 }

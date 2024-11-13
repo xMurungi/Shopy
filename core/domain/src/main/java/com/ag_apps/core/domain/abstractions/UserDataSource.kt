@@ -25,7 +25,6 @@ interface UserDataSource {
 
     suspend fun removeProductFromCart(productId: Int): Result<Unit, DataError.Network>
 
-
     fun isLoggedIn(): Boolean
 
     fun logout()

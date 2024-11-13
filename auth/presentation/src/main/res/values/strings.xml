@@ -23,7 +23,7 @@
     <string name="contains_a_uppercase_letter">Contains a uppercase letter</string>
     <string name="error_email_exists">This email is already taken.</string>
     <string name="you_re_registered">You\'re registered!</string>
-    <string name="don_t_have_na_account">Don\'t have na account?</string>
+    <string name="don_t_have_na_account">Don\'t have an account?</string>
     <string name="you_re_logged_in">You\'re logged in!</string>
     <string name="error_email_password_incorrect">Email or password is incorrect.</string>
     <string name="error_google_login">Google login failed, try a different account.</string>

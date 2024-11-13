@@ -23,7 +23,7 @@ suspend inline fun <reified Response : Any> HttpClient.get(
     return safeCall(
         execute = {
             get {
-                url(BuildConfig.BASE_URL + route)
+                url(BuildConfig.PRODUCTS_API_BASE_URL + route)
                 queryParameters.forEach { (key, value) ->
                     parameter(key, value)
                 }

@@ -1,8 +1,10 @@
 package com.ag_apps.profile.presentation
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +23,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -105,7 +108,11 @@ private fun ProfileScreen(
         topBar = {
             ShopyLargeTopBar(
                 titleText = stringResource(R.string.my_profile),
-                windowInsets = WindowInsets(top = 0.dp)
+                windowInsets = WindowInsets(top = 0.dp),
+                colors = TopAppBarDefaults.largeTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    scrolledContainerColor = MaterialTheme.colorScheme.background
+                )
             )
         }
     ) { paddingValues ->
@@ -175,14 +182,30 @@ fun ProfileInfo(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        AsyncImage(
-            model = state.user?.image,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(80.dp)
-                .clip(CircleShape)
-        )
+        if (state.user?.image?.isNotBlank() == true) {
+            AsyncImage(
+                model = state.user.image,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(CircleShape)
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "${state.user?.name?.take(1)?.uppercase()}",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    fontSize = 44.sp
+                )
+            }
+        }
 
         Spacer(Modifier.width(16.dp))
 

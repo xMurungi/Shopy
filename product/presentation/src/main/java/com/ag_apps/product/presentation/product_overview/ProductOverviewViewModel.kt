@@ -28,6 +28,7 @@ class ProductOverviewViewModel(
     val event = eventChannel.receiveAsFlow()
 
     init {
+
         state = state.copy(
             productsOffset = 0,
             minPriceState = TextFieldState(""),
@@ -51,6 +52,10 @@ class ProductOverviewViewModel(
                     maxPriceState = TextFieldState(minPrice.toString())
                 )
             }
+        }
+
+        viewModelScope.launch {
+            productRepository.wakeupPaymentServer()
         }
     }
 

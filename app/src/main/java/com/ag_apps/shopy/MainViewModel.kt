@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ag_apps.core.domain.abstractions.ProductDataSource
 import com.ag_apps.core.domain.abstractions.UserDataSource
 import kotlinx.coroutines.launch
 
@@ -12,7 +13,7 @@ import kotlinx.coroutines.launch
  * @author Ahmed Guedmioui
  */
 class MainViewModel(
-    private val userDataSource: UserDataSource
+    private val userDataSource: UserDataSource,
 ) : ViewModel() {
 
     var state by mutableStateOf(MainState())

@@ -18,6 +18,10 @@ class ProductRepositoryImpl(
 
     private val tag = "ProductRepository: "
 
+    override suspend fun wakeupPaymentServer() {
+        productDataSource.wakeupPaymentServer()
+    }
+
     override suspend fun getProducts(
         offset: Int,
         minPrice: Int?,
