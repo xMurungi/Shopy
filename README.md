@@ -19,7 +19,7 @@ Modern UI implementation using Jetpack Compose, tailored for industry-scale proj
 - **Authentication:**
 Secure and reliable Firebase authentication system integrated for user management.
 - **Payment Gateway Integration:**
-Carts checking out powred by Stripe payment processing.
+Carts checking out powered by Stripe payment processing.
 - **Cart & Wishlist Management:**
 Allows users to add products to their cart and wishlist with smooth, responsive handling.
 Features synchronized cart and wishlist data, ensuring consistency across devices.
@@ -32,7 +32,7 @@ Features synchronized cart and wishlist data, ensuring consistency across device
 - **Stripe API:** For secure payment processing.
 - **Ktor:** For product data fetching and connecting to the payments node.js server.
 - **Gradle:** With multi-module and convention plugin configurations.
-- **Node.js:** For securly processing payment sever side ([Shopy Payments Server](https://github.com/ahmed-guedmioui/Shopy-NodeJs-Server)).
+- **Node.js:** For securely processing payment sever side ([Shopy Payments Server](https://github.com/ahmed-guedmioui/Shopy-NodeJs-Server)).
 
 ## Getting Started
 - Clone the repo:
@@ -41,10 +41,10 @@ git clone https://github.com/ahmed-guedmioui/Shopy.git
 - Build the project and run it on your preferred device or emulator.
 
 ## Configuration:
-**1-** Put google-services.json in /app<br/>
+**1-** Put google-services.json in /app<br/><br/>
 **2-** Your local.properties file should contain:
 - PAYMENTS_SERVER_BASE_URL=https://your-stripe-sever-url.com
-- PRODUCTS_API_BASE_URL= https://api.escuelajs.co/api/v1
+- PRODUCTS_API_BASE_URL=https://api.escuelajs.co/api/v1
 - FIREBASE_WEB_CLIENT_ID=your-firebase-web-client-id
 
 
