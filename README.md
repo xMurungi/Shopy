@@ -41,8 +41,8 @@ git clone https://github.com/ahmed-guedmioui/Shopy.git
 - Build the project and run it on your preferred device or emulator.
 
 ## Configuration:
-1- Put google-services.json in /app
-2- Your local.properties file should contain:
+**1-** Put google-services.json in /app<br/>
+**2-** Your local.properties file should contain:
 - PAYMENTS_SERVER_BASE_URL=https://your-stripe-sever-url.com
 - PRODUCTS_API_BASE_URL= https://api.escuelajs.co/api/v1
 - FIREBASE_WEB_CLIENT_ID=your-firebase-web-client-id
